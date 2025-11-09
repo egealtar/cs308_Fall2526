@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using e_commerce.Models;
+using CS308Main.Models;
 using System.Security.Claims;
-using e_commerce.Data;
+using CS308Main.Data;
 
-namespace e_commerce.Controllers
+namespace CS308Main.Controllers
 {
     public class HomeController : Controller
     {

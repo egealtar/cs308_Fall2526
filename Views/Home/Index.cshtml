@@ -1,16 +1,22 @@
-﻿@model IEnumerable<e_commerce.Models.Product>
+﻿@model IEnumerable<CS308Main.Models.Product>
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="banner-area">
-    <img src="~/images/hero-image.jpeg" alt="Bookery Banner" class="banner-img">
+    <img src="~/images/maxresdefault.jpg" alt="" class="banner-img">
     <div class="banner-shade"></div>
     <div class="container">
         <div class="banner-text text-center">
-            <h1 class="display-4 fw-bold text-white">Bookery'ye Hoşgeldiniz</h1>
-            <p class="lead text-white mb-4">Bir sonraki favori kitabınızı keşfedin</p>
-            <a href="#booksList" class="btn btn-light btn-lg px-4 smooth-scroll">Kitapları İncele</a>
+            <h1 class="display-2 fw-bold text-white hero-title">
+                <span class="welcome-text">Welcome to</span>
+                <span class="brand-highlight">MotorMatch</span>
+            </h1>
+            <p class="lead text-white mb-4 hero-subtitle">Choose your car for the best price</p>
+            <a href="#booksList" class="btn btn-custom btn-lg px-5 smooth-scroll">
+                <span class="btn-text">Your Next Ride Awaits</span>
+                <span class="btn-icon">→</span>
+            </a>
         </div>
     </div>
 </div>
@@ -23,28 +29,28 @@
                     <div class="d-flex gap-3 align-items-center">
                         <div class="main-search">
                             <div class="input-group">
-                                <input type="text" id="keywordInput" class="form-control" placeholder="Kitap Adı, Yazar veya Açıklama ile Ara">
+                                <input type="text" id="keywordInput" class="form-control" placeholder="Search for brand and model">
                                 <button id="searchBtn" class="btn btn-search">
-                                    Ara
+                                    Search
                                 </button>
                             </div>
                         </div>
 
                         <select id="priceOrder" class="form-select">
-                            <option value="">Fiyata Göre Sırala</option>
-                            <option value="asc">Düşükten Yükseğe</option>
-                            <option value="desc">Yüksekten Düşüğe</option>
+                            <option value="">Sort by price</option>
+                            <option value="asc">Lower to higher</option>
+                            <option value="desc">Higher to lower</option>
                         </select>
 
                         <select id="ratingOrder" class="form-select">
-                            <option value="">Popülerliğe Göre</option>
-                            <option value="asc">Az Popülerden Çok Popülere</option>
-                            <option value="desc">Çok Popülerden Az Popülere</option>
+                            <option value="">Sort by popularity</option>
+                            <option value="asc">Less popular to more popular</option>
+                            <option value="desc">More popular to less popular</option>
                         </select>
 
                         <div class="dropdown">
                             <button class="btn btn-filter dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Kategori Seç
+                                Choose category
                             </button>
                             <div class="dropdown-menu category-menu" aria-labelledby="categoryDropdown">
                                 <div class="category-list">
@@ -61,13 +67,13 @@
                                 </div>
                                 <div class="dropdown-divider"></div>
                                 <div class="action-buttons">
-                                    <button id="confirmFilters" class="btn btn-primary btn-sm">Filtreleri Uygula</button>
+                                    <button id="confirmFilters" class="btn btn-primary btn-sm">Apply Filters</button>
                                 </div>
                             </div>
                         </div>
 
                         <button id="clearFilters" class="btn btn-outline-secondary">
-                            Sıfırla
+                            Reset
                         </button>
                     </div>
                 </div>
@@ -103,12 +109,12 @@
                             }
                             else
                             {
-                                <span class="availability-tag unavailable">Stokta Yok</span>
+                                <span class="availability-tag unavailable">Out of Stock</span>
                             }
                             <img src="@imgPath" class="card-img-top" alt="@product.Name">
                             <div class="card-body">
                                 <h5 class="card-title">@product.Name</h5>
-                                <p class="text-muted">@product.Author tarafından</p>
+                                <p class="text-muted">by @product.Author</p>
                                 <span class="category-tag">@product.Genre</span>
                                 <p class="card-text mt-3">@product.Description</p>
                                 <span class="cost-label">$@product.Price.ToString("F2")</span>
@@ -119,50 +125,10 @@
                             <div class="sale-tag">
                                 <div class="sale-info">
                                     <span class="percent-off">-@discountPercent%</span>
-                                    <span class="off-label">İNDİRİM</span>
+                                    <span class="off-label">SALE</span>
                                 </div>
                             </div>
                             }
-
-                            <style>
-                            .sale-tag {
-                            position: absolute;
-                            top: 10px;
-                            right: 10px;
-                            background: #5cb85c;
-                            background: linear-gradient(135deg, #5cb85c, #4cae4c);
-                            padding: 8px 12px;
-                            border-radius: 50px;
-                            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-                            transform: rotate(0deg);
-                            transition: transform 0.3s ease;
-                            }
-
-                            .sale-tag:hover {
-                            transform: rotate(-10deg) scale(1.1);
-                            }
-
-                            .sale-info {
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            line-height: 1;
-                            }
-
-                            .percent-off {
-                            color: white;
-                            font-weight: bold;
-                            font-size: 1.1em;
-                            margin-bottom: 2px;
-                            }
-
-                            .off-label {
-                            color: rgba(255,255,255,0.9);
-                            font-size: 0.7em;
-                            text-transform: uppercase;
-                            letter-spacing: 1px;
-                            }
-                            </style>
                         </div>
                     </a>
                 </div>
@@ -179,7 +145,7 @@
         right: 50%;
         margin-left: -50vw;
         margin-right: -50vw;
-        height: 400px;
+        height: 500px;
         overflow: hidden;
     }
 
@@ -187,7 +153,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: brightness(0.7);
+        filter: brightness(0.5);
     }
 
     .banner-shade {
@@ -196,7 +162,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0,0,0,0.3);
+        background: linear-gradient(135deg, rgba(230, 57, 70, 0.3), rgba(26, 26, 26, 0.5));
     }
 
     .banner-text {
@@ -206,6 +172,152 @@
         transform: translate(-50%, -50%);
         width: 100%;
         z-index: 2;
+    }
+
+    .hero-title {
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 3px;
+        margin-bottom: 1rem;
+        animation: fadeInDown 1s ease-out;
+    }
+
+    .welcome-text {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+    }
+
+    .brand-highlight {
+        display: block;
+        font-size: 4rem;
+        font-weight: 900;
+        color: #fff;
+        text-shadow: 0 0 30px rgba(230, 57, 70, 0.8), 0 0 60px rgba(230, 57, 70, 0.4);
+    }
+
+    .hero-subtitle {
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        animation: fadeInUp 1s ease-out 0.3s both;
+    }
+
+    .btn-custom {
+        background: linear-gradient(135deg, #e63946, #ff5757);
+        border: none;
+        color: white;
+        font-family: 'Rajdhani', sans-serif;
+        font-weight: 700;
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border-radius: 50px;
+        padding: 15px 40px;
+        box-shadow: 0 10px 30px rgba(230, 57, 70, 0.4);
+        transition: all 0.3s ease;
+        animation: fadeInUp 1s ease-out 0.6s both;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .btn-custom:hover::before {
+        left: 100%;
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(230, 57, 70, 0.6);
+        color: white;
+    }
+
+    .btn-text {
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-icon {
+        margin-left: 10px;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+        display: inline-block;
+    }
+
+    .btn-custom:hover .btn-icon {
+        transform: translateX(5px);
+    }
+
+    @@keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .sale-tag {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: linear-gradient(135deg, #5cb85c, #4cae4c);
+        padding: 8px 12px;
+        border-radius: 50px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transform: rotate(0deg);
+        transition: transform 0.3s ease;
+    }
+
+    .sale-tag:hover {
+        transform: rotate(-10deg) scale(1.1);
+    }
+
+    .sale-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        line-height: 1;
+    }
+
+    .percent-off {
+        color: white;
+        font-weight: bold;
+        font-size: 1.1em;
+        margin-bottom: 2px;
+    }
+
+    .off-label {
+        color: rgba(255,255,255,0.9);
+        font-size: 0.7em;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .filter-area {
@@ -255,10 +367,10 @@
     }
 
     .btn-search, .btn-filter, #clearFilters {
-    background-color: #be3144;
-    color: white;
-    border: none;
-    padding: 0.5rem 1.5rem;
+        background-color: #be3144;
+        color: white;
+        border: none;
+        padding: 0.5rem 1.5rem;
     }
 
     .btn-search:hover, .btn-filter:hover, #clearFilters:hover {
@@ -384,8 +496,8 @@
     }
 
     .form-check-input:checked {
-    background-color: #be3144;
-    border-color: #be3144;
+        background-color: #be3144;
+        border-color: #be3144;
     }
 
     .form-check-input:checked:hover {
@@ -489,21 +601,19 @@
 
             let initialSequence = [];
 
-            $(document).ready(function() {
-                initialSequence = $('#booksList .book-card').toArray();
+            initialSequence = $('#booksList .book-card').toArray();
 
-                $('#clearFilters').on('click', function() {
-                    $('#keywordInput').val('');
-                    $('#priceOrder').val('');
-                    $('#ratingOrder').val('');
-                    $('.dropdown-menu').removeClass('show');
-                    $('.category-check').prop('checked', false);
-                    $('.book-card').show();
-                    
-                    $('#booksList').empty();
-                    initialSequence.forEach(function(item) {
-                        $('#booksList').append(item);
-                    });
+            $('#clearFilters').on('click', function() {
+                $('#keywordInput').val('');
+                $('#priceOrder').val('');
+                $('#ratingOrder').val('');
+                $('.dropdown-menu').removeClass('show');
+                $('.category-check').prop('checked', false);
+                $('.book-card').show();
+                
+                $('#booksList').empty();
+                initialSequence.forEach(function(item) {
+                    $('#booksList').append(item);
                 });
             });
 

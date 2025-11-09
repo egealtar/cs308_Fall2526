@@ -2,7 +2,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using Microsoft.AspNetCore.Http;
 
-namespace e_commerce.Models
+namespace CS308Main.Models
 {
     public class Product
     {

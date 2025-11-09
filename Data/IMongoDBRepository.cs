@@ -1,4 +1,4 @@
-namespace e_commerce.Data
+namespace CS308Main.Data
 {
     public interface IMongoDBRepository<T> where T : class
     {

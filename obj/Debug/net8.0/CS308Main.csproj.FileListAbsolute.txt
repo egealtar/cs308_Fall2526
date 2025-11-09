@@ -29,3 +29,11 @@ C:\Users\aaa\Desktop\cs308main\CS308Main\obj\Debug\net8.0\CS308Main.pdb
 C:\Users\aaa\Desktop\cs308main\CS308Main\obj\Debug\net8.0\CS308Main.genruntimeconfig.cache
 C:\Users\aaa\Desktop\cs308main\CS308Main\obj\Debug\net8.0\ref\CS308Main.dll
 C:\Users\aaa\Desktop\cs308main\CS308Main\obj\Debug\net8.0\CS308Main.csproj.AssemblyReference.cache
+C:\Users\aaa\Desktop\cs308main\CS308Main\obj\Debug\net8.0\CS308Main.sourcelink.json
+C:\Users\aaa\Desktop\cs308main\CS308Main\bin\Debug\net8.0\DnsClient.dll
+C:\Users\aaa\Desktop\cs308main\CS308Main\bin\Debug\net8.0\MongoDB.Bson.dll
+C:\Users\aaa\Desktop\cs308main\CS308Main\bin\Debug\net8.0\MongoDB.Driver.dll
+C:\Users\aaa\Desktop\cs308main\CS308Main\bin\Debug\net8.0\SharpCompress.dll
+C:\Users\aaa\Desktop\cs308main\CS308Main\bin\Debug\net8.0\Snappier.dll
+C:\Users\aaa\Desktop\cs308main\CS308Main\bin\Debug\net8.0\ZstdSharp.dll
+C:\Users\aaa\Desktop\cs308main\CS308Main\obj\Debug\net8.0\CS308Main.csproj.Up2Date

@@ -1,5 +1,5 @@
-using e_commerce.Data;
-using e_commerce.Models;
+using CS308Main.Data;
+using CS308Main.Models;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,7 +1,7 @@
 using MongoDB.Driver;
 using MongoDB.Bson;
 
-namespace e_commerce.Data
+namespace CS308Main.Data
 {
     public class MongoDBRepository<T> : IMongoDBRepository<T> where T : class
     {

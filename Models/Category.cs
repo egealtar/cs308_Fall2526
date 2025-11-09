@@ -1,7 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace e_commerce.Models
+namespace CS308Main.Models
 {
     public class Category
     {
