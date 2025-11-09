@@ -1,0 +1,526 @@
+﻿@model IEnumerable<e_commerce.Models.Product>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="banner-area">
+    <img src="~/images/hero-image.jpeg" alt="Bookery Banner" class="banner-img">
+    <div class="banner-shade"></div>
+    <div class="container">
+        <div class="banner-text text-center">
+            <h1 class="display-4 fw-bold text-white">Bookery'ye Hoşgeldiniz</h1>
+            <p class="lead text-white mb-4">Bir sonraki favori kitabınızı keşfedin</p>
+            <a href="#booksList" class="btn btn-light btn-lg px-4 smooth-scroll">Kitapları İncele</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="mt-4 mb-5">
+        <div class="filter-area">
+            <div class="filter-controls">
+                <div class="search-wrapper">
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="main-search">
+                            <div class="input-group">
+                                <input type="text" id="keywordInput" class="form-control" placeholder="Kitap Adı, Yazar veya Açıklama ile Ara">
+                                <button id="searchBtn" class="btn btn-search">
+                                    Ara
+                                </button>
+                            </div>
+                        </div>
+
+                        <select id="priceOrder" class="form-select">
+                            <option value="">Fiyata Göre Sırala</option>
+                            <option value="asc">Düşükten Yükseğe</option>
+                            <option value="desc">Yüksekten Düşüğe</option>
+                        </select>
+
+                        <select id="ratingOrder" class="form-select">
+                            <option value="">Popülerliğe Göre</option>
+                            <option value="asc">Az Popülerden Çok Popülere</option>
+                            <option value="desc">Çok Popülerden Az Popülere</option>
+                        </select>
+
+                        <div class="dropdown">
+                            <button class="btn btn-filter dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Kategori Seç
+                            </button>
+                            <div class="dropdown-menu category-menu" aria-labelledby="categoryDropdown">
+                                <div class="category-list">
+                                    @foreach (var genre in ViewBag.Genres)
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input category-check" type="checkbox" 
+                                                id="cat-@genre.Replace(" ", "-")" value="@genre">
+                                            <label class="form-check-label" for="cat-@genre.Replace(" ", "-")">
+                                                @genre
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <div class="action-buttons">
+                                    <button id="confirmFilters" class="btn btn-primary btn-sm">Filtreleri Uygula</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="clearFilters" class="btn btn-outline-secondary">
+                            Sıfırla
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="booksList" class="row">
+        @foreach (var product in Model)
+        {
+            @if (product.Price > 0)
+            {
+                <div class="col-md-4 mb-4 book-card" 
+                    data-title="@product.Name" 
+                    data-writer="@product.Author" 
+                    data-cost="@product.Price"
+                    data-category="@product.Genre"
+                    data-info="@product.Description"
+                    data-rating="@(ViewBag.ProductPopularity != null && 
+                                ViewBag.ProductPopularity.ContainsKey(product.Id) ? 
+                                ViewBag.ProductPopularity[product.Id] : 0)">
+                    <a href="@Url.Action("ProductDetails", "Product", new { id = product.Id })" 
+                    class="text-decoration-none text-dark">
+                        <div class="card h-100">
+                        @{
+                        string imgPath = !string.IsNullOrEmpty(product.ImagePath) 
+                        ? product.ImagePath 
+                        : "/images/default-book.jpg";
+                        }
+                            @if (product.QuantityInStock > 0)
+                            {
+                                
+                            }
+                            else
+                            {
+                                <span class="availability-tag unavailable">Stokta Yok</span>
+                            }
+                            <img src="@imgPath" class="card-img-top" alt="@product.Name">
+                            <div class="card-body">
+                                <h5 class="card-title">@product.Name</h5>
+                                <p class="text-muted">@product.Author tarafından</p>
+                                <span class="category-tag">@product.Genre</span>
+                                <p class="card-text mt-3">@product.Description</p>
+                                <span class="cost-label">$@product.Price.ToString("F2")</span>
+                            </div>
+                            @if (product.DiscountedPrice.HasValue)
+                            {
+                            var discountPercent = Math.Round((1 - (product.DiscountedPrice.Value / product.OriginalPrice)) * 100);
+                            <div class="sale-tag">
+                                <div class="sale-info">
+                                    <span class="percent-off">-@discountPercent%</span>
+                                    <span class="off-label">İNDİRİM</span>
+                                </div>
+                            </div>
+                            }
+
+                            <style>
+                            .sale-tag {
+                            position: absolute;
+                            top: 10px;
+                            right: 10px;
+                            background: #5cb85c;
+                            background: linear-gradient(135deg, #5cb85c, #4cae4c);
+                            padding: 8px 12px;
+                            border-radius: 50px;
+                            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                            transform: rotate(0deg);
+                            transition: transform 0.3s ease;
+                            }
+
+                            .sale-tag:hover {
+                            transform: rotate(-10deg) scale(1.1);
+                            }
+
+                            .sale-info {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            line-height: 1;
+                            }
+
+                            .percent-off {
+                            color: white;
+                            font-weight: bold;
+                            font-size: 1.1em;
+                            margin-bottom: 2px;
+                            }
+
+                            .off-label {
+                            color: rgba(255,255,255,0.9);
+                            font-size: 0.7em;
+                            text-transform: uppercase;
+                            letter-spacing: 1px;
+                            }
+                            </style>
+                        </div>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<style>
+    .banner-area {
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        height: 400px;
+        overflow: hidden;
+    }
+
+    .banner-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.7);
+    }
+
+    .banner-shade {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.3);
+    }
+
+    .banner-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        z-index: 2;
+    }
+
+    .filter-area {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .search-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .main-search {
+        width: 250%;
+    }
+
+    .form-select {
+        min-width: 150px;
+        height: 40px;
+    }
+
+    .category-menu {
+        padding: 1rem;
+        min-width: 200px;
+    }
+
+    .category-list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .action-buttons {
+        padding-top: 0.5rem;
+    }
+
+    #confirmFilters {
+        width: 100%;
+        background-color: #be3144;
+        border: none;
+    }
+
+    #confirmFilters:hover {
+        background-color: #952735;
+    }
+
+    .btn-search, .btn-filter, #clearFilters {
+    background-color: #be3144;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    }
+
+    .btn-search:hover, .btn-filter:hover, #clearFilters:hover {
+        background-color: #952735;
+        color: white;
+    }
+
+    .btn-search:focus, .btn-filter:focus, #clearFilters:focus,
+    .btn-search.focus, .btn-filter.focus, #clearFilters.focus {
+        outline: none;
+        box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25) !important;
+        background-color: #be3144;
+    }
+
+    .btn:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .btn-search:active, .btn-filter:active, #clearFilters:active {
+        background-color: #be3144;
+        border-color: #be3144;
+        box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25);
+    }
+
+    .btn-filter {
+        background-color: #be3144 !important;
+        color: white !important;
+    }
+
+    #clearFilters {
+        background-color: #be3144;
+        color: white;
+        border: none;
+    }
+
+    .card {
+        border: none;
+        border-radius: 15px;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    
+    .card:hover .card-img-top {
+        transform: scale(1.05);
+        transition: transform 0.4s ease;
+    }
+    
+    .card-img-top {
+        height: 300px;
+        object-fit: contain;
+        padding: 1rem;
+        transition: transform 0.4s ease;
+    }
+    
+    .availability-tag {
+        position: absolute;
+        background: #c7001b; 
+        top: 10px;
+        right: 10px;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        z-index: 1;
+    }
+    
+    .available {
+        background-color: #4CAF50;
+        color: white;
+    }
+    
+    .unavailable {
+        background-color: #c7001b;
+        color: white;
+    }
+    
+    .cost-label {
+        background: #be3144;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 25px;
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    
+    .category-tag {
+        background-color: #f8f9fa;
+        color: #be3144;
+        border: 1px solid #be3144;
+        padding: 4px 10px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        margin-right: 5px;
+        display: inline-block;
+    }
+    
+    .card::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .card:hover::after {
+        opacity: 1;
+    }
+
+    .form-check-input:checked {
+    background-color: #be3144;
+    border-color: #be3144;
+    }
+
+    .form-check-input:checked:hover {
+        background-color: #be3144;
+        border-color: #be3144;
+    }
+
+    .form-check-input:focus {
+        border-color: #be3144;
+        box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25);
+    }
+
+    .form-control:focus {
+        border-color: #be3144;
+        box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25);
+    }
+
+    .form-select:focus {
+        border-color: #be3144;
+        box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25);
+    }
+</style>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.smooth-scroll').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            function sanitizeString(text) {
+                return text.toLocaleLowerCase('tr-TR')
+                    .replace(/ı/g, 'i')
+                    .replace(/ş/g, 's')
+                    .replace(/ç/g, 'c')
+                    .replace(/ğ/g, 'g')
+                    .replace(/ü/g, 'u')
+                    .replace(/ö/g, 'o')
+                    .replace(/[^a-z0-9\s]/gi, '')
+                    .trim();
+            }
+            
+            function applyFiltersAndSort() {
+                var keyword = sanitizeString($('#keywordInput').val()).toLowerCase();
+                var priceSort = $('#priceOrder').val();
+                var ratingSort = $('#ratingOrder').val();
+                var chosenCategories = $('.category-check:checked').map(function() {
+                    return sanitizeString($(this).val().toLowerCase());
+                }).get();
+
+                var keywords = keyword.split(/\s+/);
+
+                $('.book-card').each(function() {
+                    var $element = $(this);
+                    var bookTitle = sanitizeString(($element.data('title') || '').toLowerCase());
+                    var bookWriter = sanitizeString(($element.data('writer') || '').toLowerCase());
+                    var bookCategory = ($element.data('category') || '').toLowerCase();
+                    var bookInfo = sanitizeString(($element.data('info') || '').toLowerCase());
+                    var bookRating = parseInt($element.data('rating')) || 0;
+                    
+                    var categoryMatch = chosenCategories.length === 0 || 
+                        (bookCategory && chosenCategories.includes(bookCategory));
+                    
+                    var titleMatch = keywords.every(term => 
+                        bookTitle.includes(term) || bookWriter.includes(term) || bookInfo.includes(term)
+                    );
+                    
+                    $element.toggle(titleMatch && categoryMatch);
+                });
+
+                if (priceSort) {
+                    var items = $('.book-card:visible').get();
+                    items.sort(function(a, b) {
+                        var costA = parseFloat($(a).data('cost'));
+                        var costB = parseFloat($(b).data('cost'));
+                        return priceSort === 'asc' ? costA - costB : costB - costA;
+                    });
+                    $('#booksList').html(items);
+                } 
+                else if (ratingSort) {
+                    var items = $('.book-card:visible').get();
+                    items.sort(function(a, b) {
+                        var ratingA = parseInt($(a).data('rating')) || 0;
+                        var ratingB = parseInt($(b).data('rating')) || 0;
+                        return ratingSort === 'asc' ? ratingA - ratingB : ratingB - ratingA;
+                    });
+                    $('#booksList').empty().append(items);
+                }
+            }
+
+            let initialSequence = [];
+
+            $(document).ready(function() {
+                initialSequence = $('#booksList .book-card').toArray();
+
+                $('#clearFilters').on('click', function() {
+                    $('#keywordInput').val('');
+                    $('#priceOrder').val('');
+                    $('#ratingOrder').val('');
+                    $('.dropdown-menu').removeClass('show');
+                    $('.category-check').prop('checked', false);
+                    $('.book-card').show();
+                    
+                    $('#booksList').empty();
+                    initialSequence.forEach(function(item) {
+                        $('#booksList').append(item);
+                    });
+                });
+            });
+
+            $('#confirmFilters').on('click', function() {
+                applyFiltersAndSort();
+                $('.dropdown-menu').removeClass('show');
+            });
+            
+            $('#searchBtn').on('click', applyFiltersAndSort);
+            $('#priceOrder').on('change', applyFiltersAndSort);
+            $('#ratingOrder').on('change', applyFiltersAndSort);
+            
+            $('#keywordInput').on('keypress', function(e) {
+                if (e.which === 13) {
+                    applyFiltersAndSort();
+                }
+            });
+        });
+    </script>
+}
