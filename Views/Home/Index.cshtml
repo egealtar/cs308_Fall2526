@@ -4,7 +4,7 @@
 }
 
 <div class="banner-area">
-    <img src="~/images/maxresdefault.jpg" alt="" class="banner-img">
+    <img src="~/images/maxresdefault.jpg" alt="MotorMatch Banner" class="banner-img">
     <div class="banner-shade"></div>
     <div class="container">
         <div class="banner-text text-center">
@@ -12,10 +12,10 @@
                 <span class="welcome-text">Welcome to</span>
                 <span class="brand-highlight">MotorMatch</span>
             </h1>
-            <p class="lead text-white mb-4 hero-subtitle">Choose your car for the best price</p>
-            <a href="#booksList" class="btn btn-custom btn-lg px-5 smooth-scroll">
-                <span class="btn-text">Your Next Ride Awaits</span>
-                <span class="btn-icon">→</span>
+            <p class="lead text-white mb-4 hero-subtitle">Quality Auto Parts at Unbeatable Prices</p>
+            <a href="#partsList" class="btn btn-custom btn-lg px-5 smooth-scroll">
+                <span class="btn-text">Shop Parts Now</span>
+                <span class="btn-icon">🔧</span>
             </a>
         </div>
     </div>
@@ -29,28 +29,28 @@
                     <div class="d-flex gap-3 align-items-center">
                         <div class="main-search">
                             <div class="input-group">
-                                <input type="text" id="keywordInput" class="form-control" placeholder="Search for brand and model">
+                                <input type="text" id="keywordInput" class="form-control" placeholder="Search by part name, brand, or model">
                                 <button id="searchBtn" class="btn btn-search">
-                                    Search
+                                    <i class="bi bi-search"></i> Search
                                 </button>
                             </div>
                         </div>
 
                         <select id="priceOrder" class="form-select">
-                            <option value="">Sort by price</option>
-                            <option value="asc">Lower to higher</option>
-                            <option value="desc">Higher to lower</option>
+                            <option value="">Sort by Price</option>
+                            <option value="asc">Price: Low to High</option>
+                            <option value="desc">Price: High to Low</option>
                         </select>
 
                         <select id="ratingOrder" class="form-select">
-                            <option value="">Sort by popularity</option>
-                            <option value="asc">Less popular to more popular</option>
-                            <option value="desc">More popular to less popular</option>
+                            <option value="">Sort by Popularity</option>
+                            <option value="desc">Most Popular</option>
+                            <option value="asc">Least Popular</option>
                         </select>
 
                         <div class="dropdown">
                             <button class="btn btn-filter dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                Choose category
+                                <i class="bi bi-filter"></i> Filter by Category
                             </button>
                             <div class="dropdown-menu category-menu" aria-labelledby="categoryDropdown">
                                 <div class="category-list">
@@ -67,13 +67,13 @@
                                 </div>
                                 <div class="dropdown-divider"></div>
                                 <div class="action-buttons">
-                                    <button id="confirmFilters" class="btn btn-primary btn-sm">Apply Filters</button>
+                                    <button id="confirmFilters" class="btn btn-primary btn-sm w-100">Apply Filters</button>
                                 </div>
                             </div>
                         </div>
 
                         <button id="clearFilters" class="btn btn-outline-secondary">
-                            Reset
+                            <i class="bi bi-arrow-clockwise"></i> Reset
                         </button>
                     </div>
                 </div>
@@ -81,58 +81,81 @@
         </div>
     </div>
     
-    <div id="booksList" class="row">
-        @foreach (var product in Model)
+    <div id="partsList" class="row">
+        @if (Model != null && Model.Any())
         {
-            @if (product.Price > 0)
+            @foreach (var product in Model)
             {
-                <div class="col-md-4 mb-4 book-card" 
-                    data-title="@product.Name" 
-                    data-writer="@product.Author" 
-                    data-cost="@product.Price"
-                    data-category="@product.Genre"
-                    data-info="@product.Description"
-                    data-rating="@(ViewBag.ProductPopularity != null && 
-                                ViewBag.ProductPopularity.ContainsKey(product.Id) ? 
-                                ViewBag.ProductPopularity[product.Id] : 0)">
-                    <a href="@Url.Action("ProductDetails", "Product", new { id = product.Id })" 
-                    class="text-decoration-none text-dark">
-                        <div class="card h-100">
-                        @{
-                        string imgPath = !string.IsNullOrEmpty(product.ImagePath) 
-                        ? product.ImagePath 
-                        : "/images/default-book.jpg";
-                        }
-                            @if (product.QuantityInStock > 0)
-                            {
+                @if (product.Price > 0)
+                {
+                    <div class="col-md-4 mb-4 part-card" 
+                        data-title="@product.Name" 
+                        data-manufacturer="@product.Author" 
+                        data-cost="@product.Price"
+                        data-category="@product.Genre"
+                        data-info="@product.Description"
+                        data-rating="@(ViewBag.ProductPopularity != null && 
+                                    ViewBag.ProductPopularity.ContainsKey(product.Id) ? 
+                                    ViewBag.ProductPopularity[product.Id] : 0)">
+                        <a href="@Url.Action("ProductDetails", "Product", new { id = product.Id })" 
+                        class="text-decoration-none text-dark">
+                            <div class="card h-100">
+                            @{
+                                string imgPath = !string.IsNullOrEmpty(product.ImagePath) 
+                                    ? product.ImagePath 
+                                    : "/images/default-part.jpg";
+                            }
                                 
-                            }
-                            else
-                            {
-                                <span class="availability-tag unavailable">Out of Stock</span>
-                            }
-                            <img src="@imgPath" class="card-img-top" alt="@product.Name">
-                            <div class="card-body">
-                                <h5 class="card-title">@product.Name</h5>
-                                <p class="text-muted">by @product.Author</p>
-                                <span class="category-tag">@product.Genre</span>
-                                <p class="card-text mt-3">@product.Description</p>
-                                <span class="cost-label">$@product.Price.ToString("F2")</span>
-                            </div>
-                            @if (product.DiscountedPrice.HasValue)
-                            {
-                            var discountPercent = Math.Round((1 - (product.DiscountedPrice.Value / product.OriginalPrice)) * 100);
-                            <div class="sale-tag">
-                                <div class="sale-info">
-                                    <span class="percent-off">-@discountPercent%</span>
-                                    <span class="off-label">SALE</span>
+                                @if (product.QuantityInStock > 0)
+                                {
+                                    <span class="stock-badge in-stock">
+                                        <i class="bi bi-check-circle-fill"></i> In Stock
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="stock-badge out-of-stock">
+                                        <i class="bi bi-x-circle-fill"></i> Out of Stock
+                                    </span>
+                                }
+                                
+                                <img src="@imgPath" class="card-img-top" alt="@product.Name">
+                                
+                                <div class="card-body">
+                                    <h5 class="card-title">@product.Name</h5>
+                                    <p class="text-muted manufacturer">
+                                        <i class="bi bi-building"></i> @product.Author
+                                    </p>
+                                    <span class="category-badge">
+                                        <i class="bi bi-tag-fill"></i> @product.Genre
+                                    </span>
+                                    <p class="card-text mt-3 description-text">@product.Description</p>
+                                    <span class="price-badge">$@product.Price.ToString("F2")</span>
                                 </div>
+                                
+                                @if (product.DiscountedPrice.HasValue && product.DiscountedPrice.Value > 0)
+                                {
+                                    var discountPercent = Math.Round((1 - (product.DiscountedPrice.Value / product.OriginalPrice)) * 100);
+                                    <div class="discount-badge">
+                                        <div class="discount-info">
+                                            <span class="discount-percent">-@discountPercent%</span>
+                                            <span class="discount-label">OFF</span>
+                                        </div>
+                                    </div>
+                                }
                             </div>
-                            }
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                }
             }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
+                <h3 class="mt-3 text-muted">No parts available at the moment</h3>
+                <p class="text-muted">Please check back later</p>
+            </div>
         }
     </div>
 </div>
@@ -178,7 +201,7 @@
         font-family: 'Orbitron', sans-serif;
         letter-spacing: 3px;
         margin-bottom: 1rem;
-        animation: fadeInDown 1s ease-out;
+        animation: slideInFromTop 1s ease-out;
     }
 
     .welcome-text {
@@ -203,7 +226,7 @@
         font-size: 1.5rem;
         font-weight: 600;
         letter-spacing: 1px;
-        animation: fadeInUp 1s ease-out 0.3s both;
+        animation: slideInFromBottom 1s ease-out 0.3s both;
     }
 
     .btn-custom {
@@ -219,7 +242,7 @@
         padding: 15px 40px;
         box-shadow: 0 10px 30px rgba(230, 57, 70, 0.4);
         transition: all 0.3s ease;
-        animation: fadeInUp 1s ease-out 0.6s both;
+        animation: slideInFromBottom 1s ease-out 0.6s both;
         position: relative;
         overflow: hidden;
     }
@@ -252,16 +275,16 @@
 
     .btn-icon {
         margin-left: 10px;
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         transition: transform 0.3s ease;
         display: inline-block;
     }
 
     .btn-custom:hover .btn-icon {
-        transform: translateX(5px);
+        transform: rotate(15deg) scale(1.1);
     }
 
-    @@keyframes fadeInDown {
+    @@keyframes slideInFromTop {
         from {
             opacity: 0;
             transform: translateY(-30px);
@@ -272,7 +295,7 @@
         }
     }
 
-    @@keyframes fadeInUp {
+    @@keyframes slideInFromBottom {
         from {
             opacity: 0;
             transform: translateY(30px);
@@ -283,37 +306,37 @@
         }
     }
 
-    .sale-tag {
+    .discount-badge {
         position: absolute;
         top: 10px;
-        right: 10px;
+        left: 10px;
         background: linear-gradient(135deg, #5cb85c, #4cae4c);
         padding: 8px 12px;
         border-radius: 50px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        transform: rotate(0deg);
+        z-index: 10;
         transition: transform 0.3s ease;
     }
 
-    .sale-tag:hover {
-        transform: rotate(-10deg) scale(1.1);
+    .discount-badge:hover {
+        transform: rotate(-5deg) scale(1.05);
     }
 
-    .sale-info {
+    .discount-info {
         display: flex;
         flex-direction: column;
         align-items: center;
         line-height: 1;
     }
 
-    .percent-off {
+    .discount-percent {
         color: white;
         font-weight: bold;
         font-size: 1.1em;
         margin-bottom: 2px;
     }
 
-    .off-label {
+    .discount-label {
         color: rgba(255,255,255,0.9);
         font-size: 0.7em;
         text-transform: uppercase;
@@ -334,7 +357,8 @@
     }
 
     .main-search {
-        width: 250%;
+        flex: 1;
+        min-width: 300px;
     }
 
     .form-select {
@@ -344,11 +368,13 @@
 
     .category-menu {
         padding: 1rem;
-        min-width: 200px;
+        min-width: 220px;
+        max-height: 400px;
+        overflow-y: auto;
     }
 
     .category-list {
-        max-height: 200px;
+        max-height: 250px;
         overflow-y: auto;
     }
 
@@ -357,7 +383,6 @@
     }
 
     #confirmFilters {
-        width: 100%;
         background-color: #be3144;
         border: none;
     }
@@ -378,33 +403,15 @@
         color: white;
     }
 
-    .btn-search:focus, .btn-filter:focus, #clearFilters:focus,
-    .btn-search.focus, .btn-filter.focus, #clearFilters.focus {
+    .btn-search:focus, .btn-filter:focus, #clearFilters:focus {
         outline: none;
         box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25) !important;
         background-color: #be3144;
     }
 
-    .btn:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
     .btn-search:active, .btn-filter:active, #clearFilters:active {
         background-color: #be3144;
         border-color: #be3144;
-        box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25);
-    }
-
-    .btn-filter {
-        background-color: #be3144 !important;
-        color: white !important;
-    }
-
-    #clearFilters {
-        background-color: #be3144;
-        color: white;
-        border: none;
     }
 
     .card {
@@ -423,59 +430,72 @@
     
     .card:hover .card-img-top {
         transform: scale(1.05);
-        transition: transform 0.4s ease;
     }
     
     .card-img-top {
-        height: 300px;
+        height: 280px;
         object-fit: contain;
-        padding: 1rem;
+        padding: 1.5rem;
         transition: transform 0.4s ease;
+        background: #f8f9fa;
     }
     
-    .availability-tag {
+    .stock-badge {
         position: absolute;
-        background: #c7001b; 
         top: 10px;
         right: 10px;
-        padding: 5px 12px;
+        padding: 6px 12px;
         border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: bold;
-        z-index: 1;
+        font-size: 0.75rem;
+        font-weight: 600;
+        z-index: 10;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
-    .available {
-        background-color: #4CAF50;
+    .in-stock {
+        background-color: #28a745;
         color: white;
     }
     
-    .unavailable {
-        background-color: #c7001b;
+    .out-of-stock {
+        background-color: #dc3545;
         color: white;
     }
     
-    .cost-label {
-        background: #be3144;
+    .price-badge {
+        background: linear-gradient(135deg, #be3144, #952735);
         color: white;
-        padding: 8px 15px;
+        padding: 10px 18px;
         border-radius: 25px;
         position: absolute;
         bottom: 15px;
         right: 15px;
         font-weight: bold;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 8px rgba(190, 49, 68, 0.3);
     }
     
-    .category-tag {
+    .category-badge {
         background-color: #f8f9fa;
         color: #be3144;
         border: 1px solid #be3144;
-        padding: 4px 10px;
+        padding: 5px 12px;
         border-radius: 15px;
         font-size: 0.8rem;
         margin-right: 5px;
         display: inline-block;
+        font-weight: 600;
+    }
+
+    .manufacturer {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .description-text {
+        font-size: 0.9rem;
+        color: #6c757d;
+        line-height: 1.5;
     }
     
     .card::after {
@@ -496,11 +516,6 @@
     }
 
     .form-check-input:checked {
-        background-color: #be3144;
-        border-color: #be3144;
-    }
-
-    .form-check-input:checked:hover {
         background-color: #be3144;
         border-color: #be3144;
     }
@@ -539,7 +554,7 @@
         });
 
         $(document).ready(function() {
-            function sanitizeString(text) {
+            function normalizeText(text) {
                 return text.toLocaleLowerCase('tr-TR')
                     .replace(/ı/g, 'i')
                     .replace(/ş/g, 's')
@@ -551,57 +566,55 @@
                     .trim();
             }
             
-            function applyFiltersAndSort() {
-                var keyword = sanitizeString($('#keywordInput').val()).toLowerCase();
-                var priceSort = $('#priceOrder').val();
-                var ratingSort = $('#ratingOrder').val();
-                var chosenCategories = $('.category-check:checked').map(function() {
-                    return sanitizeString($(this).val().toLowerCase());
+            function executeFiltersAndSort() {
+                var searchTerm = normalizeText($('#keywordInput').val()).toLowerCase();
+                var priceDirection = $('#priceOrder').val();
+                var ratingDirection = $('#ratingOrder').val();
+                var selectedCategories = $('.category-check:checked').map(function() {
+                    return normalizeText($(this).val().toLowerCase());
                 }).get();
 
-                var keywords = keyword.split(/\s+/);
+                var searchWords = searchTerm.split(/\s+/);
 
-                $('.book-card').each(function() {
-                    var $element = $(this);
-                    var bookTitle = sanitizeString(($element.data('title') || '').toLowerCase());
-                    var bookWriter = sanitizeString(($element.data('writer') || '').toLowerCase());
-                    var bookCategory = ($element.data('category') || '').toLowerCase();
-                    var bookInfo = sanitizeString(($element.data('info') || '').toLowerCase());
-                    var bookRating = parseInt($element.data('rating')) || 0;
+                $('.part-card').each(function() {
+                    var $card = $(this);
+                    var partName = normalizeText(($card.data('title') || '').toLowerCase());
+                    var partManufacturer = normalizeText(($card.data('manufacturer') || '').toLowerCase());
+                    var partCategory = ($card.data('category') || '').toLowerCase();
+                    var partDescription = normalizeText(($card.data('info') || '').toLowerCase());
+                    var partRating = parseInt($card.data('rating')) || 0;
                     
-                    var categoryMatch = chosenCategories.length === 0 || 
-                        (bookCategory && chosenCategories.includes(bookCategory));
+                    var categoryMatches = selectedCategories.length === 0 || 
+                        (partCategory && selectedCategories.includes(partCategory));
                     
-                    var titleMatch = keywords.every(term => 
-                        bookTitle.includes(term) || bookWriter.includes(term) || bookInfo.includes(term)
+                    var searchMatches = searchWords.every(word => 
+                        partName.includes(word) || partManufacturer.includes(word) || partDescription.includes(word)
                     );
                     
-                    $element.toggle(titleMatch && categoryMatch);
+                    $card.toggle(searchMatches && categoryMatches);
                 });
 
-                if (priceSort) {
-                    var items = $('.book-card:visible').get();
-                    items.sort(function(a, b) {
-                        var costA = parseFloat($(a).data('cost'));
-                        var costB = parseFloat($(b).data('cost'));
-                        return priceSort === 'asc' ? costA - costB : costB - costA;
+                if (priceDirection) {
+                    var visibleCards = $('.part-card:visible').get();
+                    visibleCards.sort(function(cardA, cardB) {
+                        var priceA = parseFloat($(cardA).data('cost'));
+                        var priceB = parseFloat($(cardB).data('cost'));
+                        return priceDirection === 'asc' ? priceA - priceB : priceB - priceA;
                     });
-                    $('#booksList').html(items);
+                    $('#partsList').html(visibleCards);
                 } 
-                else if (ratingSort) {
-                    var items = $('.book-card:visible').get();
-                    items.sort(function(a, b) {
-                        var ratingA = parseInt($(a).data('rating')) || 0;
-                        var ratingB = parseInt($(b).data('rating')) || 0;
-                        return ratingSort === 'asc' ? ratingA - ratingB : ratingB - ratingA;
+                else if (ratingDirection) {
+                    var visibleCards = $('.part-card:visible').get();
+                    visibleCards.sort(function(cardA, cardB) {
+                        var ratingA = parseInt($(cardA).data('rating')) || 0;
+                        var ratingB = parseInt($(cardB).data('rating')) || 0;
+                        return ratingDirection === 'asc' ? ratingA - ratingB : ratingB - ratingA;
                     });
-                    $('#booksList').empty().append(items);
+                    $('#partsList').empty().append(visibleCards);
                 }
             }
 
-            let initialSequence = [];
-
-            initialSequence = $('#booksList .book-card').toArray();
+            let originalCardOrder = $('#partsList .part-card').toArray();
 
             $('#clearFilters').on('click', function() {
                 $('#keywordInput').val('');
@@ -609,26 +622,26 @@
                 $('#ratingOrder').val('');
                 $('.dropdown-menu').removeClass('show');
                 $('.category-check').prop('checked', false);
-                $('.book-card').show();
+                $('.part-card').show();
                 
-                $('#booksList').empty();
-                initialSequence.forEach(function(item) {
-                    $('#booksList').append(item);
+                $('#partsList').empty();
+                originalCardOrder.forEach(function(card) {
+                    $('#partsList').append(card);
                 });
             });
 
             $('#confirmFilters').on('click', function() {
-                applyFiltersAndSort();
+                executeFiltersAndSort();
                 $('.dropdown-menu').removeClass('show');
             });
             
-            $('#searchBtn').on('click', applyFiltersAndSort);
-            $('#priceOrder').on('change', applyFiltersAndSort);
-            $('#ratingOrder').on('change', applyFiltersAndSort);
+            $('#searchBtn').on('click', executeFiltersAndSort);
+            $('#priceOrder').on('change', executeFiltersAndSort);
+            $('#ratingOrder').on('change', executeFiltersAndSort);
             
             $('#keywordInput').on('keypress', function(e) {
                 if (e.which === 13) {
-                    applyFiltersAndSort();
+                    executeFiltersAndSort();
                 }
             });
         });

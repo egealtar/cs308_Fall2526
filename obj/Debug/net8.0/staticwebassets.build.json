@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "zcmkqOMPLpLK+kL2C4wLyhtNCbpFByRZdgBSuzw5dF4=",
+  "Hash": "FQ+UbJtyzRiTyfeu5sSQKeG1q3Cdfh1rtctxpytQdWY=",
   "Source": "CS308Main",
   "BasePath": "_content/CS308Main",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\images\\maxresdefault.jpg",
+      "SourceId": "CS308Main",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\",
+      "BasePath": "_content/CS308Main",
+      "RelativePath": "images/maxresdefault.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\maxresdefault.jpg"
     },
     {
       "Identity": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\js\\site.js",

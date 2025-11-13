@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\images\\maxresdefault.jpg",
+      "PackagePath": "staticwebassets\\images\\maxresdefault.jpg"
+    },
+    {
       "Id": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
