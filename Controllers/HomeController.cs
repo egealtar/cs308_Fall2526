@@ -27,39 +27,64 @@ namespace CS308Main.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var currentUserRole = User.FindFirstValue(ClaimTypes.Role);
-            ViewBag.UserRole = currentUserRole;
-
-            var bookItems = await _bookRepository.GetAllAsync();
-            var purchaseRecords = await _purchaseRepository.GetAllAsync();
-
-            var bookRatings = purchaseRecords
-                .SelectMany(order => order.Items)
-                .GroupBy(item => item.ProductId)
-                .Select(group => new { 
-                    BookId = group.Key, 
-                    TotalAmount = group.Sum(item => item.Quantity) 
-                })
-                .ToDictionary(item => item.BookId, item => item.TotalAmount);
-
-            ViewBag.ProductPopularity = bookRatings;
-
-            var genreList = await _genreRepository.GetAllAsync();
-            ViewBag.Genres = genreList
-                .Select(genre => genre.Name)
-                .Distinct()
-                .OrderBy(name => name)
-                .ToList();
-
-            foreach (var book in bookItems)
+            try
             {
-                if (string.IsNullOrEmpty(book.Author))
-                {
-                    book.Author = "Unknown Author";
-                }
-            }
+                var currentUserRole = User.FindFirstValue(ClaimTypes.Role);
+                ViewBag.UserRole = currentUserRole;
 
-            return View(bookItems);
+                var bookItems = await _bookRepository.GetAllAsync();
+                
+                // Eğer order yoksa boş dictionary
+                var purchaseRecords = await _purchaseRepository.GetAllAsync();
+                var bookRatings = new Dictionary<string, int>();
+                
+                if (purchaseRecords != null && purchaseRecords.Any())
+                {
+                    bookRatings = purchaseRecords
+                        .SelectMany(order => order.Items)
+                        .GroupBy(item => item.ProductId)
+                        .Select(group => new { 
+                            BookId = group.Key, 
+                            TotalAmount = group.Sum(item => item.Quantity) 
+                        })
+                        .ToDictionary(item => item.BookId, item => item.TotalAmount);
+                }
+
+                ViewBag.ProductPopularity = bookRatings;
+
+                // Categories - boş olsa bile hata vermesin
+                var genreList = await _genreRepository.GetAllAsync();
+                if (genreList != null && genreList.Any())
+                {
+                    ViewBag.Genres = genreList
+                        .Select(genre => genre.Name)
+                        .Distinct()
+                        .OrderBy(name => name)
+                        .ToList();
+                }
+                else
+                {
+                    ViewBag.Genres = new List<string>();
+                }
+
+                foreach (var book in bookItems)
+                {
+                    if (string.IsNullOrEmpty(book.Author))
+                    {
+                        book.Author = "Unknown Manufacturer";
+                    }
+                }
+
+                return View(bookItems);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, "Error loading home page");
+                // Boş liste dön, hata verme
+                ViewBag.Genres = new List<string>();
+                ViewBag.ProductPopularity = new Dictionary<string, int>();
+                return View(new List<Product>());
+            }
         }
 
         public IActionResult Privacy()

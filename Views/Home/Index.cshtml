@@ -3,77 +3,139 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="banner-area">
-    <img src="~/images/maxresdefault.jpg" alt="MotorMatch Banner" class="banner-img">
-    <div class="banner-shade"></div>
+<div class="hero-banner">
+    <div class="hero-overlay"></div>
+    <img src="~/images/maxresdefault.jpg" alt="MotorMatch Banner" class="hero-image">
     <div class="container">
-        <div class="banner-text text-center">
-            <h1 class="display-2 fw-bold text-white hero-title">
-                <span class="welcome-text">Welcome to</span>
-                <span class="brand-highlight">MotorMatch</span>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="bi bi-award-fill"></i>
+                <span>Premium Quality Parts</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="hero-welcome">Welcome to</span>
+                <span class="hero-brand">
+                    <span class="brand-motor">Motor</span><span class="brand-match">Match</span>
+                </span>
             </h1>
-            <p class="lead text-white mb-4 hero-subtitle">Quality Auto Parts at Unbeatable Prices</p>
-            <a href="#partsList" class="btn btn-custom btn-lg px-5 smooth-scroll">
-                <span class="btn-text">Shop Parts Now</span>
-                <span class="btn-icon">🔧</span>
+            <p class="hero-subtitle">
+                <i class="bi bi-tools"></i>
+                Quality Auto Parts at Unbeatable Prices
+            </p>
+            <div class="hero-features">
+                <div class="feature-item">
+                    <i class="bi bi-shield-check"></i>
+                    <span>Warranty</span>
+                </div>
+                <div class="feature-item">
+                    <i class="bi bi-truck"></i>
+                    <span>Fast Shipping</span>
+                </div>
+                <div class="feature-item">
+                    <i class="bi bi-headset"></i>
+                    <span>24/7 Support</span>
+                </div>
+            </div>
+            <a href="#partsList" class="hero-cta smooth-scroll">
+                <span class="cta-text">Explore Parts</span>
+                <i class="bi bi-arrow-right-circle-fill cta-icon"></i>
             </a>
         </div>
     </div>
 </div>
 
 <div class="container">
-    <div class="mt-4 mb-5">
-        <div class="filter-area">
-            <div class="filter-controls">
-                <div class="search-wrapper">
-                    <div class="d-flex gap-3 align-items-center">
-                        <div class="main-search">
-                            <div class="input-group">
-                                <input type="text" id="keywordInput" class="form-control" placeholder="Search by part name, brand, or model">
-                                <button id="searchBtn" class="btn btn-search">
-                                    <i class="bi bi-search"></i> Search
-                                </button>
-                            </div>
-                        </div>
+    <div class="filter-section">
+        <div class="filter-card">
+            <div class="filter-header">
+                <h3 class="filter-title">
+                    <i class="bi bi-funnel-fill"></i>
+                    Find Your Perfect Part
+                </h3>
+                <p class="filter-subtitle">Use our advanced filters to find exactly what you need</p>
+            </div>
+            
+            <div class="filter-body">
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" 
+                               id="keywordInput" 
+                               class="search-input" 
+                               placeholder="Search by part name, brand, or model...">
+                        <button id="searchBtn" class="search-button">
+                            <span>Search</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
 
-                        <select id="priceOrder" class="form-select">
-                            <option value="">Sort by Price</option>
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="bi bi-sort-numeric-down"></i>
+                            Price Range
+                        </label>
+                        <select id="priceOrder" class="filter-select">
+                            <option value="">All Prices</option>
                             <option value="asc">Price: Low to High</option>
                             <option value="desc">Price: High to Low</option>
                         </select>
+                    </div>
 
-                        <select id="ratingOrder" class="form-select">
-                            <option value="">Sort by Popularity</option>
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="bi bi-star-fill"></i>
+                            Popularity
+                        </label>
+                        <select id="ratingOrder" class="filter-select">
+                            <option value="">All Items</option>
                             <option value="desc">Most Popular</option>
-                            <option value="asc">Least Popular</option>
+                            <option value="asc">Newest First</option>
                         </select>
+                    </div>
 
+                    <div class="filter-group">
+                        <label class="filter-label">
+                            <i class="bi bi-grid-3x3-gap-fill"></i>
+                            Category
+                        </label>
                         <div class="dropdown">
-                            <button class="btn btn-filter dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-filter"></i> Filter by Category
+                            <button class="filter-dropdown" type="button" id="categoryDropdown" data-bs-toggle="dropdown">
+                                <span>Choose Category</span>
+                                <i class="bi bi-chevron-down"></i>
                             </button>
-                            <div class="dropdown-menu category-menu" aria-labelledby="categoryDropdown">
+                            <div class="dropdown-menu category-dropdown" aria-labelledby="categoryDropdown">
+                                <div class="dropdown-header">
+                                    <i class="bi bi-collection"></i>
+                                    <span>Select Categories</span>
+                                </div>
                                 <div class="category-list">
                                     @foreach (var genre in ViewBag.Genres)
                                     {
-                                        <div class="form-check">
-                                            <input class="form-check-input category-check" type="checkbox" 
-                                                id="cat-@genre.Replace(" ", "-")" value="@genre">
-                                            <label class="form-check-label" for="cat-@genre.Replace(" ", "-")">
-                                                @genre
-                                            </label>
-                                        </div>
+                                        <label class="category-item">
+                                            <input class="category-checkbox" type="checkbox" 
+                                                   id="cat-@genre.Replace(" ", "-")" value="@genre">
+                                            <span class="category-name">@genre</span>
+                                            <i class="bi bi-check-circle-fill category-check-icon"></i>
+                                        </label>
                                     }
                                 </div>
-                                <div class="dropdown-divider"></div>
-                                <div class="action-buttons">
-                                    <button id="confirmFilters" class="btn btn-primary btn-sm w-100">Apply Filters</button>
+                                <div class="dropdown-footer">
+                                    <button id="confirmFilters" class="btn-apply-filters">
+                                        <i class="bi bi-check-lg"></i>
+                                        Apply Filters
+                                    </button>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <button id="clearFilters" class="btn btn-outline-secondary">
-                            <i class="bi bi-arrow-clockwise"></i> Reset
+                    <div class="filter-group">
+                        <label class="filter-label" style="visibility: hidden;">Reset</label>
+                        <button id="clearFilters" class="btn-reset">
+                            <i class="bi bi-arrow-clockwise"></i>
+                            <span>Reset All</span>
                         </button>
                     </div>
                 </div>
@@ -81,14 +143,27 @@
         </div>
     </div>
     
-    <div id="partsList" class="row">
+    <div class="products-header">
+        <h2 class="products-title">
+            <i class="bi bi-grid-fill"></i>
+            Available Parts
+        </h2>
+        <div class="products-count">
+            <span class="count-badge">
+                <i class="bi bi-bag-check-fill"></i>
+                <span id="productCount">@Model.Count()</span> Products
+            </span>
+        </div>
+    </div>
+
+    <div id="partsList" class="products-grid">
         @if (Model != null && Model.Any())
         {
             @foreach (var product in Model)
             {
                 @if (product.Price > 0)
                 {
-                    <div class="col-md-4 mb-4 part-card" 
+                    <div class="product-card part-card" 
                         data-title="@product.Name" 
                         data-manufacturer="@product.Author" 
                         data-cost="@product.Price"
@@ -98,51 +173,77 @@
                                     ViewBag.ProductPopularity.ContainsKey(product.Id) ? 
                                     ViewBag.ProductPopularity[product.Id] : 0)">
                         <a href="@Url.Action("ProductDetails", "Product", new { id = product.Id })" 
-                        class="text-decoration-none text-dark">
-                            <div class="card h-100">
-                            @{
-                                string imgPath = !string.IsNullOrEmpty(product.ImagePath) 
-                                    ? product.ImagePath 
-                                    : "/images/default-part.jpg";
-                            }
-                                
-                                @if (product.QuantityInStock > 0)
-                                {
-                                    <span class="stock-badge in-stock">
-                                        <i class="bi bi-check-circle-fill"></i> In Stock
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="stock-badge out-of-stock">
-                                        <i class="bi bi-x-circle-fill"></i> Out of Stock
-                                    </span>
+                           class="product-link">
+                            
+                            <div class="product-image-wrapper">
+                                @{
+                                    string imgPath = !string.IsNullOrEmpty(product.ImagePath) 
+                                        ? product.ImagePath 
+                                        : "/images/default-part.jpg";
                                 }
                                 
-                                <img src="@imgPath" class="card-img-top" alt="@product.Name">
+                                <img src="@imgPath" class="product-image" alt="@product.Name">
                                 
-                                <div class="card-body">
-                                    <h5 class="card-title">@product.Name</h5>
-                                    <p class="text-muted manufacturer">
-                                        <i class="bi bi-building"></i> @product.Author
-                                    </p>
-                                    <span class="category-badge">
-                                        <i class="bi bi-tag-fill"></i> @product.Genre
-                                    </span>
-                                    <p class="card-text mt-3 description-text">@product.Description</p>
-                                    <span class="price-badge">$@product.Price.ToString("F2")</span>
+                                <div class="product-badges">
+                                    @if (product.DiscountedPrice.HasValue && product.DiscountedPrice.Value > 0)
+                                    {
+                                        var discountPercent = Math.Round((1 - (product.DiscountedPrice.Value / product.OriginalPrice)) * 100);
+                                        <span class="badge-discount">
+                                            <i class="bi bi-percent"></i>
+                                            -@discountPercent% OFF
+                                        </span>
+                                    }
+                                    
+                                    @if (product.QuantityInStock > 0)
+                                    {
+                                        <span class="badge-stock in-stock">
+                                            <i class="bi bi-check-circle-fill"></i>
+                                            In Stock
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-stock out-of-stock">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                            Out of Stock
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                            
+                            <div class="product-content">
+                                <div class="product-category">
+                                    <i class="bi bi-tag-fill"></i>
+                                    @product.Genre
                                 </div>
                                 
-                                @if (product.DiscountedPrice.HasValue && product.DiscountedPrice.Value > 0)
-                                {
-                                    var discountPercent = Math.Round((1 - (product.DiscountedPrice.Value / product.OriginalPrice)) * 100);
-                                    <div class="discount-badge">
-                                        <div class="discount-info">
-                                            <span class="discount-percent">-@discountPercent%</span>
-                                            <span class="discount-label">OFF</span>
-                                        </div>
+                                <h3 class="product-name">@product.Name</h3>
+                                
+                                <div class="product-manufacturer">
+                                    <i class="bi bi-building"></i>
+                                    <span>@product.Author</span>
+                                </div>
+                                
+                                <p class="product-description">@product.Description</p>
+                                
+                                <div class="product-footer">
+                                    <div class="product-price">
+                                        @if (product.DiscountedPrice.HasValue && product.DiscountedPrice.Value > 0)
+                                        {
+                                            <span class="price-original">${product.OriginalPrice.ToString("F2")}</span>
+                                            <span class="price-current">${product.DiscountedPrice.Value.ToString("F2")}</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="price-current">${product.Price.ToString("F2")}</span>
+                                        }
                                     </div>
-                                }
+                                    
+                                    <button class="btn-view-details">
+                                        <span>View Details</span>
+                                        <i class="bi bi-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
                         </a>
                     </div>
@@ -151,103 +252,170 @@
         }
         else
         {
-            <div class="col-12 text-center py-5">
-                <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
-                <h3 class="mt-3 text-muted">No parts available at the moment</h3>
-                <p class="text-muted">Please check back later</p>
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="bi bi-inbox"></i>
+                </div>
+                <h3 class="empty-title">No Parts Available</h3>
+                <p class="empty-text">Please check back later for new products</p>
             </div>
         }
     </div>
 </div>
 
 <style>
-    .banner-area {
-        width: 100vw;
+    /* ===== HERO SECTION ===== */
+    .hero-banner {
         position: relative;
+        width: 100vw;
         left: 50%;
         right: 50%;
         margin-left: -50vw;
         margin-right: -50vw;
-        height: 500px;
+        height: 600px;
         overflow: hidden;
+        margin-bottom: 4rem;
     }
 
-    .banner-img {
+    .hero-image {
+        position: absolute;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: brightness(0.5);
+        filter: brightness(0.4);
     }
 
-    .banner-shade {
+    .hero-overlay {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba(230, 57, 70, 0.3), rgba(26, 26, 26, 0.5));
+        background: linear-gradient(135deg, 
+            rgba(230, 57, 70, 0.4) 0%, 
+            rgba(26, 26, 26, 0.7) 100%);
+        z-index: 1;
     }
 
-    .banner-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100%;
+    .hero-content {
+        position: relative;
         z-index: 2;
+        height: 600px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 20px;
+        border-radius: 50px;
+        color: white;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        animation: fadeIn 1s ease-out 0.2s both;
     }
 
     .hero-title {
-        font-family: 'Orbitron', sans-serif;
-        letter-spacing: 3px;
-        margin-bottom: 1rem;
-        animation: slideInFromTop 1s ease-out;
+        margin-bottom: 1.5rem;
     }
 
-    .welcome-text {
+    .hero-welcome {
         display: block;
         font-size: 1.5rem;
         font-weight: 600;
-        letter-spacing: 2px;
-        margin-bottom: 0.5rem;
+        letter-spacing: 4px;
         text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 1rem;
+        animation: fadeIn 1s ease-out 0.4s both;
     }
 
-    .brand-highlight {
+    .hero-brand {
         display: block;
-        font-size: 4rem;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 5rem;
         font-weight: 900;
-        color: #fff;
-        text-shadow: 0 0 30px rgba(230, 57, 70, 0.8), 0 0 60px rgba(230, 57, 70, 0.4);
+        letter-spacing: 2px;
+        animation: fadeIn 1s ease-out 0.6s both;
+    }
+
+    .brand-motor {
+        color: #ffffff;
+        text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+    }
+
+    .brand-match {
+        color: #e63946;
+        text-shadow: 0 0 40px rgba(230, 57, 70, 0.8);
     }
 
     .hero-subtitle {
         font-family: 'Rajdhani', sans-serif;
         font-size: 1.5rem;
         font-weight: 600;
-        letter-spacing: 1px;
-        animation: slideInFromBottom 1s ease-out 0.3s both;
+        color: rgba(255, 255, 255, 0.95);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: fadeIn 1s ease-out 0.8s both;
     }
 
-    .btn-custom {
-        background: linear-gradient(135deg, #e63946, #ff5757);
-        border: none;
+    .hero-features {
+        display: flex;
+        gap: 3rem;
+        margin-bottom: 2.5rem;
+        animation: fadeIn 1s ease-out 1s both;
+    }
+
+    .feature-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
         color: white;
-        font-family: 'Rajdhani', sans-serif;
-        font-weight: 700;
-        font-size: 1.2rem;
-        letter-spacing: 2px;
-        text-transform: uppercase;
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .feature-item i {
+        font-size: 2rem;
+        color: #e63946;
+        filter: drop-shadow(0 0 10px rgba(230, 57, 70, 0.6));
+    }
+
+    .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        background: linear-gradient(135deg, #e63946 0%, #c7001b 100%);
+        color: white;
+        padding: 18px 40px;
         border-radius: 50px;
-        padding: 15px 40px;
-        box-shadow: 0 10px 30px rgba(230, 57, 70, 0.4);
+        font-family: 'Rajdhani', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-decoration: none;
+        text-transform: uppercase;
+        box-shadow: 0 10px 40px rgba(230, 57, 70, 0.4);
         transition: all 0.3s ease;
-        animation: slideInFromBottom 1s ease-out 0.6s both;
+        animation: fadeIn 1s ease-out 1.2s both;
         position: relative;
         overflow: hidden;
     }
 
-    .btn-custom::before {
+    .hero-cta::before {
         content: '';
         position: absolute;
         top: 0;
@@ -255,47 +423,34 @@
         width: 100%;
         height: 100%;
         background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s ease;
+        transition: left 0.6s ease;
     }
 
-    .btn-custom:hover::before {
+    .hero-cta:hover::before {
         left: 100%;
     }
 
-    .btn-custom:hover {
+    .hero-cta:hover {
         transform: translateY(-3px);
-        box-shadow: 0 15px 40px rgba(230, 57, 70, 0.6);
+        box-shadow: 0 15px 50px rgba(230, 57, 70, 0.6);
         color: white;
     }
 
-    .btn-text {
-        position: relative;
-        z-index: 1;
-    }
-
-    .btn-icon {
-        margin-left: 10px;
-        font-size: 1.3rem;
+    .cta-icon {
+        font-size: 1.5rem;
         transition: transform 0.3s ease;
-        display: inline-block;
     }
 
-    .btn-custom:hover .btn-icon {
-        transform: rotate(15deg) scale(1.1);
+    .hero-cta:hover .cta-icon {
+        transform: translateX(5px);
     }
 
-    @@keyframes slideInFromTop {
-        from {
-            opacity: 0;
-            transform: translateY(-30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    @@keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 
-    @@keyframes slideInFromBottom {
+    @@keyframes fadeInUp {
         from {
             opacity: 0;
             transform: translateY(30px);
@@ -306,233 +461,611 @@
         }
     }
 
-    .discount-badge {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        background: linear-gradient(135deg, #5cb85c, #4cae4c);
-        padding: 8px 12px;
-        border-radius: 50px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        z-index: 10;
-        transition: transform 0.3s ease;
+    /* ===== FILTER SECTION ===== */
+    .filter-section {
+        margin-bottom: 3rem;
     }
 
-    .discount-badge:hover {
-        transform: rotate(-5deg) scale(1.05);
+    .filter-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
     }
 
-    .discount-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        line-height: 1;
-    }
-
-    .discount-percent {
-        color: white;
-        font-weight: bold;
-        font-size: 1.1em;
-        margin-bottom: 2px;
-    }
-
-    .discount-label {
-        color: rgba(255,255,255,0.9);
-        font-size: 0.7em;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-
-    .filter-area {
-        background-color: white;
+    .filter-header {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         padding: 2rem;
-        border-radius: 15px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border-bottom: 1px solid #dee2e6;
     }
 
-    .search-wrapper {
+    .filter-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .filter-title i {
+        color: #e63946;
+    }
+
+    .filter-subtitle {
+        color: #6c757d;
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    .filter-body {
+        padding: 2rem;
+    }
+
+    .search-container {
+        margin-bottom: 2rem;
+    }
+
+    .search-box {
+        display: flex;
+        align-items: center;
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 50px;
+        padding: 8px 8px 8px 24px;
+        transition: all 0.3s ease;
+    }
+
+    .search-box:focus-within {
+        border-color: #e63946;
+        box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.1);
+        background: white;
+    }
+
+    .search-icon {
+        color: #6c757d;
+        font-size: 1.2rem;
+        margin-right: 12px;
+    }
+
+    .search-input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 1rem;
+        padding: 8px;
+        outline: none;
+        color: #1a1a1a;
+    }
+
+    .search-input::placeholder {
+        color: #adb5bd;
+    }
+
+    .search-button {
+        background: linear-gradient(135deg, #e63946 0%, #c7001b 100%);
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .search-button:hover {
+        transform: translateX(2px);
+        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+    }
+
+    .filters-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .filter-group {
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 8px;
     }
 
-    .main-search {
-        flex: 1;
-        min-width: 300px;
+    .filter-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #495057;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 
-    .form-select {
-        min-width: 150px;
-        height: 40px;
+    .filter-label i {
+        color: #e63946;
+        font-size: 1rem;
     }
 
-    .category-menu {
-        padding: 1rem;
-        min-width: 220px;
-        max-height: 400px;
-        overflow-y: auto;
+    .filter-select {
+        padding: 12px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        background: white;
+        color: #495057;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .filter-select:hover {
+        border-color: #ced4da;
+    }
+
+    .filter-select:focus {
+        outline: none;
+        border-color: #e63946;
+        box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.1);
+    }
+
+    .filter-dropdown {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        background: white;
+        font-size: 0.95rem;
+        color: #495057;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .filter-dropdown:hover {
+        border-color: #ced4da;
+    }
+
+    .category-dropdown {
+        width: 100%;
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        padding: 0;
+        margin-top: 8px;
+    }
+
+    .dropdown-header {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid #e9ecef;
+        font-weight: 600;
+        color: #495057;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #f8f9fa;
+    }
+
+    .dropdown-header i {
+        color: #e63946;
     }
 
     .category-list {
-        max-height: 250px;
+        max-height: 300px;
         overflow-y: auto;
+        padding: 0.5rem;
     }
 
-    .action-buttons {
-        padding-top: 0.5rem;
+    .category-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        margin-bottom: 4px;
     }
 
-    #confirmFilters {
-        background-color: #be3144;
-        border: none;
-    }
-
-    #confirmFilters:hover {
-        background-color: #952735;
-    }
-
-    .btn-search, .btn-filter, #clearFilters {
-        background-color: #be3144;
-        color: white;
-        border: none;
-        padding: 0.5rem 1.5rem;
-    }
-
-    .btn-search:hover, .btn-filter:hover, #clearFilters:hover {
-        background-color: #952735;
-        color: white;
-    }
-
-    .btn-search:focus, .btn-filter:focus, #clearFilters:focus {
-        outline: none;
-        box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25) !important;
-        background-color: #be3144;
-    }
-
-    .btn-search:active, .btn-filter:active, #clearFilters:active {
-        background-color: #be3144;
-        border-color: #be3144;
-    }
-
-    .card {
-        border: none;
-        border-radius: 15px;
-        transition: all 0.4s ease;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
-    
-    .card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-    }
-    
-    .card:hover .card-img-top {
-        transform: scale(1.05);
-    }
-    
-    .card-img-top {
-        height: 280px;
-        object-fit: contain;
-        padding: 1.5rem;
-        transition: transform 0.4s ease;
+    .category-item:hover {
         background: #f8f9fa;
     }
-    
-    .stock-badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        z-index: 10;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    .in-stock {
-        background-color: #28a745;
-        color: white;
-    }
-    
-    .out-of-stock {
-        background-color: #dc3545;
-        color: white;
-    }
-    
-    .price-badge {
-        background: linear-gradient(135deg, #be3144, #952735);
-        color: white;
-        padding: 10px 18px;
-        border-radius: 25px;
-        position: absolute;
-        bottom: 15px;
-        right: 15px;
-        font-weight: bold;
-        font-size: 1.2rem;
-        box-shadow: 0 4px 8px rgba(190, 49, 68, 0.3);
-    }
-    
-    .category-badge {
-        background-color: #f8f9fa;
-        color: #be3144;
-        border: 1px solid #be3144;
-        padding: 5px 12px;
-        border-radius: 15px;
-        font-size: 0.8rem;
-        margin-right: 5px;
-        display: inline-block;
-        font-weight: 600;
+
+    .category-checkbox {
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        cursor: pointer;
+        accent-color: #e63946;
     }
 
-    .manufacturer {
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
+    .category-name {
+        flex: 1;
+        font-size: 0.95rem;
+        color: #495057;
     }
 
-    .description-text {
-        font-size: 0.9rem;
-        color: #6c757d;
-        line-height: 1.5;
-    }
-    
-    .card::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 50%;
-        background: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
-        pointer-events: none;
+    .category-check-icon {
+        color: #e63946;
         opacity: 0;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.2s ease;
     }
-    
-    .card:hover::after {
+
+    .category-checkbox:checked ~ .category-check-icon {
         opacity: 1;
     }
 
-    .form-check-input:checked {
-        background-color: #be3144;
-        border-color: #be3144;
+    .dropdown-footer {
+        padding: 1rem 1.25rem;
+        border-top: 1px solid #e9ecef;
+        background: #f8f9fa;
     }
 
-    .form-check-input:focus {
-        border-color: #be3144;
-        box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25);
+    .btn-apply-filters {
+        width: 100%;
+        background: linear-gradient(135deg, #e63946 0%, #c7001b 100%);
+        color: white;
+        border: none;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
     }
 
-    .form-control:focus {
-        border-color: #be3144;
-        box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25);
+    .btn-apply-filters:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
     }
 
-    .form-select:focus {
-        border-color: #be3144;
-        box-shadow: 0 0 0 0.25rem rgba(190, 49, 68, 0.25);
+    .btn-reset {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        background: white;
+        color: #6c757d;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-reset:hover {
+        border-color: #e63946;
+        color: #e63946;
+        background: #fff5f5;
+    }
+
+    /* ===== PRODUCTS SECTION ===== */
+    .products-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #e9ecef;
+    }
+
+    .products-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 0;
+    }
+
+    .products-title i {
+        color: #e63946;
+    }
+
+    .count-badge {
+        background: linear-gradient(135deg, #e63946 0%, #c7001b 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+        margin-bottom: 4rem;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    .product-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+
+    .product-image-wrapper {
+        position: relative;
+        height: 240px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        overflow: hidden;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        padding: 1.5rem;
+        transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.1);
+    }
+
+    .product-badges {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        z-index: 2;
+    }
+
+    .badge-discount {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        animation: pulse 2s infinite;
+    }
+
+    @@keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .badge-stock {
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .in-stock {
+        background: #28a745;
+        color: white;
+    }
+
+    .out-of-stock {
+        background: #dc3545;
+        color: white;
+    }
+
+    .product-content {
+        padding: 1.5rem;
+    }
+
+    .product-category {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: #fff5f5;
+        color: #e63946;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        border: 1px solid rgba(230, 57, 70, 0.2);
+    }
+
+    .product-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .product-manufacturer {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .product-manufacturer i {
+        color: #adb5bd;
+    }
+
+    .product-description {
+        font-size: 0.9rem;
+        color: #6c757d;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .product-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .product-price {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .price-original {
+        color: #adb5bd;
+        font-size: 0.9rem;
+        text-decoration: line-through;
+    }
+
+    .price-current {
+        color: #e63946;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .btn-view-details {
+        background: linear-gradient(135deg, #e63946 0%, #c7001b 100%);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-view-details:hover {
+        transform: translateX(3px);
+        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
+    }
+
+    .btn-view-details i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-view-details:hover i {
+        transform: translateX(3px);
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+    }
+
+    .empty-icon {
+        font-size: 5rem;
+        color: #dee2e6;
+        margin-bottom: 1rem;
+    }
+
+    .empty-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #6c757d;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-text {
+        color: #adb5bd;
+        font-size: 1rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @@media (max-width: 992px) {
+        .hero-brand {
+            font-size: 3.5rem;
+        }
+
+        .hero-features {
+            gap: 2rem;
+        }
+
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .hero-banner {
+            height: 500px;
+        }
+
+        .hero-content {
+            height: 500px;
+        }
+
+        .hero-brand {
+            font-size: 2.5rem;
+        }
+
+        .hero-welcome {
+            font-size: 1.2rem;
+        }
+
+        .hero-features {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .filters-row {
+            grid-template-columns: 1fr;
+        }
+
+        .products-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .products-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 
@@ -565,16 +1098,21 @@
                     .replace(/[^a-z0-9\s]/gi, '')
                     .trim();
             }
+
+            function updateProductCount() {
+                const visibleCount = $('.part-card:visible').length;
+                $('#productCount').text(visibleCount);
+            }
             
             function executeFiltersAndSort() {
                 var searchTerm = normalizeText($('#keywordInput').val()).toLowerCase();
                 var priceDirection = $('#priceOrder').val();
                 var ratingDirection = $('#ratingOrder').val();
-                var selectedCategories = $('.category-check:checked').map(function() {
+                var selectedCategories = $('.category-checkbox:checked').map(function() {
                     return normalizeText($(this).val().toLowerCase());
                 }).get();
 
-                var searchWords = searchTerm.split(/\s+/);
+                var searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
 
                 $('.part-card').each(function() {
                     var $card = $(this);
@@ -582,12 +1120,11 @@
                     var partManufacturer = normalizeText(($card.data('manufacturer') || '').toLowerCase());
                     var partCategory = ($card.data('category') || '').toLowerCase();
                     var partDescription = normalizeText(($card.data('info') || '').toLowerCase());
-                    var partRating = parseInt($card.data('rating')) || 0;
                     
                     var categoryMatches = selectedCategories.length === 0 || 
                         (partCategory && selectedCategories.includes(partCategory));
                     
-                    var searchMatches = searchWords.every(word => 
+                    var searchMatches = searchWords.length === 0 || searchWords.every(word => 
                         partName.includes(word) || partManufacturer.includes(word) || partDescription.includes(word)
                     );
                     
@@ -612,6 +1149,8 @@
                     });
                     $('#partsList').empty().append(visibleCards);
                 }
+
+                updateProductCount();
             }
 
             let originalCardOrder = $('#partsList .part-card').toArray();
@@ -621,13 +1160,15 @@
                 $('#priceOrder').val('');
                 $('#ratingOrder').val('');
                 $('.dropdown-menu').removeClass('show');
-                $('.category-check').prop('checked', false);
+                $('.category-checkbox').prop('checked', false);
                 $('.part-card').show();
                 
                 $('#partsList').empty();
                 originalCardOrder.forEach(function(card) {
                     $('#partsList').append(card);
                 });
+                
+                updateProductCount();
             });
 
             $('#confirmFilters').on('click', function() {
@@ -644,6 +1185,8 @@
                     executeFiltersAndSort();
                 }
             });
+
+            updateProductCount();
         });
     </script>
 }

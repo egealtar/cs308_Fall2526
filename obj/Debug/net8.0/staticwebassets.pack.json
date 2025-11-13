@@ -13,6 +13,18 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\images\\Parts\\air-filter.jpg",
+      "PackagePath": "staticwebassets\\images\\Parts\\air-filter.jpg"
+    },
+    {
+      "Id": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\images\\Parts\\brake-disc.jpg",
+      "PackagePath": "staticwebassets\\images\\Parts\\brake-disc.jpg"
+    },
+    {
+      "Id": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\images\\Parts\\shock-absorber.jpg",
+      "PackagePath": "staticwebassets\\images\\Parts\\shock-absorber.jpg"
+    },
+    {
       "Id": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\images\\maxresdefault.jpg",
       "PackagePath": "staticwebassets\\images\\maxresdefault.jpg"
     },
