@@ -39,11 +39,11 @@ namespace CS308Main.Controllers
 
                 if (string.Equals(stockLevel, "LowStock", StringComparison.OrdinalIgnoreCase))
                 {
-                    filtered = allProducts.Where(p => p.StockQuantity > 0 && p.StockQuantity <= lowStockThreshold);
+                    filtered = allProducts.Where(p => p.QuantityInStock > 0 && p.QuantityInStock <= lowStockThreshold);
                 }
                 else if (string.Equals(stockLevel, "OutOfStock", StringComparison.OrdinalIgnoreCase))
                 {
-                    filtered = allProducts.Where(p => p.StockQuantity == 0);
+                    filtered = allProducts.Where(p => p.QuantityInStock == 0);
                 }
 
                 var finalList = filtered
@@ -90,8 +90,8 @@ namespace CS308Main.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                var oldQuantity = product.StockQuantity;
-                product.StockQuantity = newQuantity; 
+                var oldQuantity = product.QuantityInStock;
+                product.QuantityInStock = newQuantity; 
 
                 await _productRepository.UpdateAsync(productId, product);
                 
