@@ -33,7 +33,7 @@ namespace CS308Main.Controllers
                 var filtered = allOrders
                     .Where(o =>
                         status == "All" ||
-                        string.Equals(o.OrderStatus, status, StringComparison.OrdinalIgnoreCase))
+                        string.Equals(o.Status, status, StringComparison.OrdinalIgnoreCase))
                     .OrderByDescending(o => o.OrderDate)
                     .ToList();
 
@@ -58,14 +58,17 @@ namespace CS308Main.Controllers
 
             try
             {
-                var order = await _orderRepository.FindByIdAsync(orderId);
+                // FindByIdAsync yerine GetAllAsync kullan
+                var allOrders = await _orderRepository.GetAllAsync();
+                var order = allOrders.FirstOrDefault(o => o.Id == orderId);
+                
                 if (order == null)
                 {
                     TempData["ErrorMessage"] = "Order not found.";
                     return RedirectToAction(nameof(Index));
                 }
 
-                var oldStatus = order.OrderStatus;
+                var oldStatus = order.Status;
                 newStatus = newStatus.Trim();
 
                 if (!IsValidTransition(oldStatus, newStatus))
@@ -74,29 +77,18 @@ namespace CS308Main.Controllers
                     return RedirectToAction(nameof(Index));
                 }
 
-                order.OrderStatus = newStatus;
+                order.Status = newStatus;
+                //order.UpdatedAt = DateTime.UtcNow;
 
-                var now = DateTime.Now;
-
-                switch (newStatus)
-                {
-                    case "Preparing":
-                        order.PreparingDate ??= now;
-                        break;
-                    case "Shipped":
-                        order.ShippedDate ??= now;
-                        break;
-                    case "Delivered":
-                        order.DeliveredDate ??= now;
-                        break;
-                }
-
-                await _orderRepository.ReplaceOneAsync(order);
+                // ReplaceOneAsync yerine UpdateAsync kullan
+                await _orderRepository.UpdateAsync(orderId, order);
+                
                 TempData["SuccessMessage"] = $"Order status updated: {oldStatus} → {newStatus}";
                 return RedirectToAction(nameof(Index), new { status = newStatus });
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Error updating order status");
                 TempData["ErrorMessage"] = "Error updating order status.";
                 return RedirectToAction(nameof(Index));
             }
