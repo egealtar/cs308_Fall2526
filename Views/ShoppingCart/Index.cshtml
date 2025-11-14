@@ -1,0 +1,76 @@
+@model CS308.Models.ShoppingCart
+
+<div class="main-container">
+    <div class="cart-detail">
+        <h2>Cart Details</h2>
+        @if (Model.Items.Any())
+        {
+            <table class="cart-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        string imageUrl = !string.IsNullOrEmpty(item.ImagePath) 
+                            ? item.ImagePath 
+                            : "/images/default-product.jpg";
+
+                        <tr>
+                            <td><img src="@imageUrl" class="cart-item-img" alt="@item.ProductName"></td>
+                            <td>@item.ProductName</td>
+                            <td>$@item.UnitPrice</td>
+                            <td class="quantity-cell">
+                                <form asp-controller="ShoppingCart" asp-action="UpdateQuantity" method="post">
+                                    <input type="hidden" name="cartItemId" value="@item.Id" />
+                                    <div class="quantity-controls">
+                                        <button type="submit" name="change" value="-1" class="quantity-btn" 
+                                                @(item.QuantityInCart <= 1 ? "disabled" : "")>-</button>
+                                        <input type="text" readonly value="@item.QuantityInCart" class="quantity-input" />
+                                        <button type="submit" name="change" value="1" class="quantity-btn"
+                                                @(item.QuantityInCart >= item.AvailableQuantity ? "disabled" : "")>+</button>
+                                    </div>
+                                    <div class="stock-info">Available stock: @item.AvailableQuantity</div>
+                                    @if (TempData[$"QuantityError_{item.Id}"] != null)
+                                    {
+                                        <div class="stock-warning">
+                                            Maximum available stock is @item.AvailableQuantity
+                                        </div>
+                                    }
+                                </form>
+                            </td>
+                            <td>$@(item.QuantityInCart * item.UnitPrice)</td>
+                            <td>
+                                <form asp-controller="ShoppingCart" asp-action="RemoveFromCart" method="post">
+                                    <input type="hidden" name="cartItemId" value="@item.Id" />
+                                    <button type="submit" class="btn-remove">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>Your cart is empty.</p>
+        }
+    </div>
+
+    <div class="cart-summary">
+        <h2>Cart Summary</h2>
+        <p>Total: $@Model.Items.Sum(i => i.QuantityInCart * i.UnitPrice)</p>
+        <button class="btn-checkout" 
+                onclick="location.href='/Checkout/Address'"
+                @(Model.Items.Sum(i => i.QuantityInCart * i.UnitPrice) == 0 ? "disabled" : "")>
+            Proceed to Checkout
+        </button>
+    </div>
+</div>
