@@ -1,0 +1,51 @@
+public static List<Product> GetSampleProducts()
+{
+    return new List<Product>
+    {
+        // SAĞLIKLI STOKLAR (11+)
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Fren Balata Seti (Ön)", Sku = "BRK-PAD-001", StockQuantity = 50, Price = 350.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Fren Diski (Ön, 2 adet)", Sku = "BRK-DSK-001", StockQuantity = 25, Price = 800.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Yağ Filtresi", Sku = "FLT-OIL-001", StockQuantity = 150, Price = 90.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Hava Filtresi", Sku = "FLT-AIR-001", StockQuantity = 120, Price = 110.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Buji (4'lü Set)", Sku = "ENG-SPK-001", StockQuantity = 75, Price = 250.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Amortisör (Sol Ön)", Sku = "SUS-SHK-001", StockQuantity = 15, Price = 600.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Amortisör (Sağ Ön)", Sku = "SUS-SHK-002", StockQuantity = 15, Price = 600.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Silecek Seti", Sku = "EXT-WPR-001", StockQuantity = 200, Price = 180.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "V Kayışı", Sku = "ENG-BEL-001", StockQuantity = 40, Price = 220.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Polen Filtresi", Sku = "FLT-CAB-001", StockQuantity = 80, Price = 130.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Aks Körüğü", Sku = "SUS-CVJ-001", StockQuantity = 30, Price = 160.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Rot Başı (Sol)", Sku = "SUS-TIE-001", StockQuantity = 22, Price = 210.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Rot Başı (Sağ)", Sku = "SUS-TIE-002", StockQuantity = 22, Price = 210.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Termostat", Sku = "ENG-TRM-001", StockQuantity = 60, Price = 300.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Fren Balata Seti (Arka)", Sku = "BRK-PAD-002", StockQuantity = 45, Price = 300.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Fren Diski (Arka, 2 adet)", Sku = "BRK-DSK-002", StockQuantity = 20, Price = 700.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Yakıt Filtresi (Dizel)", Sku = "FLT-FUL-001", StockQuantity = 55, Price = 150.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Yakıt Filtresi (Benzin)", Sku = "FLT-FUL-002", StockQuantity = 65, Price = 140.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Amortisör (Sol Arka)", Sku = "SUS-SHK-003", StockQuantity = 12, Price = 550.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Amortisör (Sağ Arka)", Sku = "SUS-SHK-004", StockQuantity = 12, Price = 550.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Sis Farı (Sağ)", Sku = "LGT-FOG-001", StockQuantity = 18, Price = 450.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Sis Farı (Sol)", Sku = "LGT-FOG-002", StockQuantity = 18, Price = 450.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Lastik Basınç Sensörü", Sku = "EXT-TPM-001", StockQuantity = 40, Price = 200.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Motor Yağı (5W-30, 4L)", Sku = "OIL-MOT-001", StockQuantity = 110, Price = 450.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Şanzıman Yağı (1L)", Sku = "OIL-TRN-001", StockQuantity = 30, Price = 180.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Antifriz (Kırmızı, 3L)", Sku = "OIL-ANT-001", StockQuantity = 70, Price = 190.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Egzoz Susturucu (Arka)", Sku = "EXT-EXH-001", StockQuantity = 14, Price = 1300.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Oksijen Sensörü", Sku = "ENG-O2S-001", StockQuantity = 25, Price = 700.00m },
+
+        // AZ KALAN STOKLAR (1-10)
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Far (Sağ)", Sku = "LGT-HDL-001", StockQuantity = 8, Price = 1500.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Stop Lambası (Sol)", Sku = "LGT-TAL-001", StockQuantity = 9, Price = 750.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Ateşleme Bobini", Sku = "ENG-COI-001", StockQuantity = 5, Price = 450.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Radyatör", Sku = "ENG-RAD-001", StockQuantity = 7, Price = 2200.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Far (Sol)", Sku = "LGT-HDL-002", StockQuantity = 8, Price = 1500.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Stop Lambası (Sağ)", Sku = "LGT-TAL-002", StockQuantity = 9, Price = 750.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Triger Seti", Sku = "ENG-TIM-001", StockQuantity = 3, Price = 1800.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Debriyaj Seti", Sku = "ENG-CLT-001", StockQuantity = 10, Price = 2500.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Jant (16 inch, Tek)", Sku = "EXT-WHL-001", StockQuantity = 4, Price = 1600.00m },
+        
+        // TÜKENEN STOKLAR (0)
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Yakıt Pompası", Sku = "ENG-FUP-001", StockQuantity = 0, Price = 1100.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Devirdaim Pompası", Sku = "ENG-WTP-001", StockQuantity = 0, Price = 950.00m },
+        new Product { Id = ObjectId.GenerateNewId().ToString(), Name = "Katalitik Konvertör", Sku = "EXT-CAT-001", StockQuantity = 0, Price = 4500.00m }
+    };
+}
