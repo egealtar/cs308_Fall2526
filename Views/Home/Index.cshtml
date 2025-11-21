@@ -161,93 +161,94 @@
         {
             @foreach (var product in Model)
             {
-                @if (product.Price > 0)
-                {
-                    <div class="product-card part-card" 
-                        data-title="@product.Name" 
-                        data-manufacturer="@product.Author" 
-                        data-cost="@product.Price"
-                        data-category="@product.Genre"
-                        data-info="@product.Description"
-                        data-rating="@(ViewBag.ProductPopularity != null && 
-                                    ViewBag.ProductPopularity.ContainsKey(product.Id) ? 
-                                    ViewBag.ProductPopularity[product.Id] : 0)">
-                        <a href="@Url.Action("ProductDetails", "Product", new { id = product.Id })" 
-                           class="product-link">
+                <div class="product-card part-card" 
+                    data-title="@product.Name" 
+                    data-manufacturer="@product.Author" 
+                    data-cost="@product.Price"
+                    data-category="@product.Genre"
+                    data-info="@product.Description"
+                    data-rating="@(ViewBag.ProductPopularity != null && 
+                                ViewBag.ProductPopularity.ContainsKey(product.Id) ? 
+                                ViewBag.ProductPopularity[product.Id] : 0)">
+                    <a href="@Url.Action("ProductDetails", "Product", new { id = product.Id })" 
+                       class="product-link">
+                        
+                        <div class="product-image-wrapper">
+                            @{
+                                string imgPath = !string.IsNullOrEmpty(product.ImagePath) 
+                                    ? product.ImagePath 
+                                    : "/images/default-part.jpg";
+                            }
                             
-                            <div class="product-image-wrapper">
-                                @{
-                                    string imgPath = !string.IsNullOrEmpty(product.ImagePath) 
-                                        ? product.ImagePath 
-                                        : "/images/default-part.jpg";
+                            <img src="@imgPath" class="product-image" alt="@product.Name">
+                            
+                            <div class="product-badges">
+                                @if (product.DiscountedPrice.HasValue && product.DiscountedPrice.Value > 0 && product.OriginalPrice > 0)
+                                {
+                                    var discountPercent = Math.Round((1 - (product.DiscountedPrice.Value / product.OriginalPrice)) * 100);
+                                    <span class="badge-discount">
+                                        <i class="bi bi-percent"></i>
+                                        -@discountPercent% OFF
+                                    </span>
                                 }
                                 
-                                <img src="@imgPath" class="product-image" alt="@product.Name">
-                                
-                                <div class="product-badges">
+                                @if (product.QuantityInStock > 0)
+                                {
+                                    <span class="badge-stock in-stock">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        @product.QuantityInStock in Stock
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge-stock out-of-stock">
+                                        <i class="bi bi-x-circle-fill"></i>
+                                        Out of Stock
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        
+                        <div class="product-content">
+                            <div class="product-category">
+                                <i class="bi bi-tag-fill"></i>
+                                @product.Genre
+                            </div>
+                            
+                            <h3 class="product-name">@product.Name</h3>
+                            
+                            <div class="product-manufacturer">
+                                <i class="bi bi-building"></i>
+                                <span>@product.Author</span>
+                            </div>
+                            
+                            <p class="product-description">@product.Description</p>
+                            
+                            <div class="product-footer">
+                                <div class="product-price">
                                     @if (product.DiscountedPrice.HasValue && product.DiscountedPrice.Value > 0)
                                     {
-                                        var discountPercent = Math.Round((1 - (product.DiscountedPrice.Value / product.OriginalPrice)) * 100);
-                                        <span class="badge-discount">
-                                            <i class="bi bi-percent"></i>
-                                            -@discountPercent% OFF
-                                        </span>
+                                        <span class="price-original">$@product.OriginalPrice.ToString("F2")</span>
+                                        <span class="price-current">$@product.DiscountedPrice.Value.ToString("F2")</span>
                                     }
-                                    
-                                    @if (product.QuantityInStock > 0)
+                                    else if (product.Price > 0)
                                     {
-                                        <span class="badge-stock in-stock">
-                                            <i class="bi bi-check-circle-fill"></i>
-                                            In Stock
-                                        </span>
+                                        <span class="price-current">$@product.Price.ToString("F2")</span>
                                     }
                                     else
                                     {
-                                        <span class="badge-stock out-of-stock">
-                                            <i class="bi bi-x-circle-fill"></i>
-                                            Out of Stock
-                                        </span>
+                                        <span class="price-current text-muted">Contact for Price</span>
                                     }
                                 </div>
+                                
+                                <button class="btn-view-details">
+                                    <span>View Details</span>
+                                    <i class="bi bi-arrow-right"></i>
+                                </button>
                             </div>
-                            
-                            <div class="product-content">
-                                <div class="product-category">
-                                    <i class="bi bi-tag-fill"></i>
-                                    @product.Genre
-                                </div>
-                                
-                                <h3 class="product-name">@product.Name</h3>
-                                
-                                <div class="product-manufacturer">
-                                    <i class="bi bi-building"></i>
-                                    <span>@product.Author</span>
-                                </div>
-                                
-                                <p class="product-description">@product.Description</p>
-                                
-                                <div class="product-footer">
-                                    <div class="product-price">
-                                        @if (product.DiscountedPrice.HasValue && product.DiscountedPrice.Value > 0)
-                                        {
-                                            <span class="price-original">${product.OriginalPrice.ToString("F2")}</span>
-                                            <span class="price-current">${product.DiscountedPrice.Value.ToString("F2")}</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="price-current">${product.Price.ToString("F2")}</span>
-                                        }
-                                    </div>
-                                    
-                                    <button class="btn-view-details">
-                                        <span>View Details</span>
-                                        <i class="bi bi-arrow-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                }
+                        </div>
+                    </a>
+                </div>
             }
         }
         else
@@ -840,6 +841,8 @@
         justify-content: space-between;
         align-items: flex-start;
         z-index: 2;
+        flex-wrap: wrap;
+        gap: 8px;
     }
 
     .badge-discount {
@@ -960,6 +963,12 @@
         color: #e63946;
         font-size: 1.5rem;
         font-weight: 700;
+    }
+
+    .price-current.text-muted {
+        color: #6c757d;
+        font-size: 0.9rem;
+        font-weight: 600;
     }
 
     .btn-view-details {
@@ -1134,8 +1143,8 @@
                 if (priceDirection) {
                     var visibleCards = $('.part-card:visible').get();
                     visibleCards.sort(function(cardA, cardB) {
-                        var priceA = parseFloat($(cardA).data('cost'));
-                        var priceB = parseFloat($(cardB).data('cost'));
+                        var priceA = parseFloat($(cardA).data('cost')) || 0;
+                        var priceB = parseFloat($(cardB).data('cost')) || 0;
                         return priceDirection === 'asc' ? priceA - priceB : priceB - priceA;
                     });
                     $('#partsList').html(visibleCards);
