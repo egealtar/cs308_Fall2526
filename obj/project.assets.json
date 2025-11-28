@@ -600,19 +600,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Efe\\.nuget\\packages\\": {}
+    "/Users/ayca.aydogdu/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\EFE\\CS308-Project\\cs308_Fall2526\\CS308Main.csproj",
+      "projectUniqueName": "/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj",
       "projectName": "CS308Main",
-      "projectPath": "C:\\EFE\\CS308-Project\\cs308_Fall2526\\CS308Main.csproj",
-      "packagesPath": "C:\\Users\\Efe\\.nuget\\packages\\",
-      "outputPath": "C:\\EFE\\CS308-Project\\cs308_Fall2526\\obj\\",
+      "projectPath": "/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj",
+      "packagesPath": "/Users/ayca.aydogdu/.nuget/packages/",
+      "outputPath": "/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Efe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/ayca.aydogdu/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -668,15 +668,11 @@
             "version": "[8.0.21, 8.0.21]"
           },
           {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "name": "Microsoft.NETCore.App.Host.osx-arm64",
             "version": "[8.0.21, 8.0.21]"
           },
           {
             "name": "Microsoft.NETCore.App.Ref",
-            "version": "[8.0.21, 8.0.21]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
             "version": "[8.0.21, 8.0.21]"
           }
         ],
@@ -688,7 +684,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.306/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

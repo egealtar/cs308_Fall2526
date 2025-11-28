@@ -74,3 +74,134 @@
         </button>
     </div>
 </div>
+
+<style>
+    .main-container {
+        display: flex;
+        gap: 30px;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        color: #B00000; /* koyu kırmızı metin */
+    }
+
+    .cart-detail, .cart-summary {
+        background: #fff;
+        border: 2px solid #B00000;
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .cart-detail {
+        width: 70%;
+    }
+
+    .cart-summary {
+        width: 30%;
+        background: #ffe6e6; /* açık kırmızı */
+    }
+
+    h2 {
+        color: #B00000;
+        margin-bottom: 15px;
+    }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .cart-table th {
+        background: #B00000;
+        color: white;
+        padding: 10px;
+    }
+
+    .cart-table td {
+        padding: 10px;
+        border-bottom: 1px solid #ffcccc;
+    }
+
+    .cart-item-img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border: 2px solid #B00000;
+        border-radius: 5px;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .quantity-btn {
+        background: #B00000;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .quantity-btn:disabled {
+        background: #ffcccc;
+        cursor: not-allowed;
+    }
+
+    .quantity-input {
+        width: 40px;
+        text-align: center;
+        border: 2px solid #B00000;
+        border-radius: 5px;
+        background: white;
+        color: #B00000;
+        font-weight: bold;
+    }
+
+    .btn-remove {
+        background: #B00000;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-remove:hover {
+        background: #800000;
+    }
+
+    .btn-checkout {
+        width: 100%;
+        background: #B00000;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+    .btn-checkout:disabled {
+        background: #ffcccc;
+        cursor: not-allowed;
+    }
+
+    .stock-info {
+        font-size: 12px;
+        color: #800000;
+        margin-top: 5px;
+    }
+
+    .stock-warning {
+        color: white;
+        background: #B00000;
+        padding: 6px;
+        border-radius: 5px;
+        margin-top: 6px;
+        font-size: 13px;
+    }
+</style>
