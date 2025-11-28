@@ -1,6 +1,7 @@
 using CS308Main.Data;
 using CS308Main.Models;
 using MongoDB.Driver;
+using CS308Main.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +40,8 @@ builder.Services.AddScoped<IMongoDBRepository<Category>>(s =>
 });
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IMockPaymentService, MockPaymentService>();
 
 var app = builder.Build();
 
