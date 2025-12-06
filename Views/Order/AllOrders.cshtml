@@ -1,0 +1,104 @@
+@model List<CS308Main.Models.Order>
+
+@{
+    ViewData["Title"] = "All Orders - Management";
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h3 class="mb-0">All Orders Management</h3>
+        </div>
+        <div class="card-body">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> No orders found.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <small>@order.Id.Substring(0, 8)...</small>
+                                    </td>
+                                    <td>@order.UserId.Substring(0, 8)...</td>
+                                    <td>
+                                        <small>@order.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                    </td>
+                                    <td>@order.Items.Count</td>
+                                    <td><strong>$@order.TotalPrice.ToString("F2")</strong></td>
+                                    <td>
+                                        @if (order.Status == "Processing")
+                                        {
+                                            <span class="badge bg-warning text-dark">@order.Status</span>
+                                        }
+                                        else if (order.Status == "In-Transit")
+                                        {
+                                            <span class="badge bg-info">@order.Status</span>
+                                        }
+                                        else if (order.Status == "Delivered")
+                                        {
+                                            <span class="badge bg-success">@order.Status</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            @if (order.Status == "Processing")
+                                            {
+                                                <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                                    <input type="hidden" name="status" value="In-Transit" />
+                                                    <button type="submit" class="btn btn-sm btn-info" title="Ship Order">
+                                                        <i class="bi bi-truck"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                            @if (order.Status == "In-Transit")
+                                            {
+                                                <form asp-action="UpdateStatus" method="post" class="d-inline">
+                                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                                    <input type="hidden" name="status" value="Delivered" />
+                                                    <button type="submit" class="btn btn-sm btn-success" title="Mark as Delivered">
+                                                        <i class="bi bi-check-circle"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                            <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-primary">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,76 +1,166 @@
 @model CS308Main.Models.ShoppingCart
 
-<div class="main-container">
-    <div class="cart-detail">
-        <h2>Cart Details</h2>
-        @if (Model.Items.Any())
-        {
-            <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Items)
-                    {
-                        string imageUrl = !string.IsNullOrEmpty(item.ImagePath) 
-                            ? item.ImagePath 
-                            : "/images/default-product.jpg";
+@{
+    ViewData["Title"] = "Shopping Cart";
+    var cartItems = ViewBag.CartItems as List<CS308Main.Controllers.CartItemViewModel>;
+    var total = ViewBag.Total as decimal?;
+}
 
-                        <tr>
-                            <td><img src="@imageUrl" class="cart-item-img" alt="@item.ProductName"></td>
-                            <td>@item.ProductName</td>
-                            <td>$@item.UnitPrice</td>
-                            <td class="quantity-cell">
-                                <form asp-controller="ShoppingCart" asp-action="UpdateQuantity" method="post">
-                                    <input type="hidden" name="cartItemId" value="@item.Id" />
-                                    <div class="quantity-controls">
-                                        <button type="submit" name="change" value="-1" class="quantity-btn" 
-                                                @(item.QuantityInCart <= 1 ? "disabled" : "")>-</button>
-                                        <input type="text" readonly value="@item.QuantityInCart" class="quantity-input" />
-                                        <button type="submit" name="change" value="1" class="quantity-btn"
-                                                @(item.QuantityInCart >= item.AvailableQuantity ? "disabled" : "")>+</button>
-                                    </div>
-                                    <div class="stock-info">Available stock: @item.AvailableQuantity</div>
-                                    @if (TempData[$"QuantityError_{item.Id}"] != null)
+<div class="container mt-5">
+    <h2 class="mb-4">
+        <i class="bi bi-cart"></i> Shopping Cart
+    </h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (Model == null || cartItems == null || !cartItems.Any())
+    {
+        <div class="alert alert-info text-center">
+            <i class="bi bi-cart-x" style="font-size: 3rem;"></i>
+            <h4 class="mt-3">Your cart is empty</h4>
+            <p>Start shopping to add items to your cart!</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-2">
+                <i class="bi bi-shop"></i> Start Shopping
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-body">
+                        @foreach (var item in cartItems)
+                        {
+                            <div class="row mb-3 pb-3 border-bottom">
+                                <div class="col-md-2">
+                                    @if (!string.IsNullOrEmpty(item.ImageUrl))
                                     {
-                                        <div class="stock-warning">
-                                            Maximum available stock is @item.AvailableQuantity
+                                        <img src="@item.ImageUrl" alt="@item.ProductName" class="img-fluid rounded" />
+                                    }
+                                    else
+                                    {
+                                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 80px;">
+                                            <i class="bi bi-image"></i>
                                         </div>
                                     }
-                                </form>
-                            </td>
-                            <td>$@(item.QuantityInCart * item.UnitPrice)</td>
-                            <td>
-                                <form asp-controller="ShoppingCart" asp-action="RemoveFromCart" method="post">
-                                    <input type="hidden" name="cartItemId" value="@item.Id" />
-                                    <button type="submit" class="btn-remove">Remove</button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <p>Your cart is empty.</p>
-        }
-    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>@item.ProductName</h5>
+                                    <p class="text-success mb-0">$@item.Price.ToString("F2")</p>
+                                    @if (!item.IsAvailable || item.QuantityInStock == 0)
+                                    {
+                                        <span class="badge bg-danger">Out of Stock</span>
+                                    }
+                                    else if (item.QuantityInStock < item.Quantity)
+                                    {
+                                        <span class="badge bg-warning text-dark">Only @item.QuantityInStock left</span>
+                                    }
+                                </div>
+                                <div class="col-md-3">
+                                    <form asp-action="UpdateQuantity" method="post" class="d-inline">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <div class="input-group">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="this.parentElement.querySelector('input[type=number]').stepDown(); this.form.submit();">
+                                                <i class="bi bi-dash"></i>
+                                            </button>
+                                            <input type="number" name="quantity" value="@item.Quantity" min="1" max="@item.QuantityInStock" class="form-control text-center" style="max-width: 60px;" onchange="this.form.submit();" />
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="this.parentElement.querySelector('input[type=number]').stepUp(); this.form.submit();">
+                                                <i class="bi bi-plus"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <p class="fw-bold">$@((item.Price * item.Quantity).ToString("F2"))</p>
+                                </div>
+                                <div class="col-md-1 text-end">
+                                    <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Remove">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
 
-    <div class="cart-summary">
-        <h2>Cart Summary</h2>
-        <p>Total: $@Model.Items.Sum(i => i.QuantityInCart * i.UnitPrice)</p>
-        <button class="btn-checkout" 
-                onclick="location.href='/Checkout/Address'"
-                @(Model.Items.Sum(i => i.QuantityInCart * i.UnitPrice) == 0 ? "disabled" : "")>
-            Proceed to Checkout
-        </button>
-    </div>
+                <div class="mt-3">
+                    <form asp-action="Clear" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to clear your cart?')">
+                            <i class="bi bi-trash"></i> Clear Cart
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal:</span>
+                            <span>$@total?.ToString("F2")</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping:</span>
+                            <span class="text-success">FREE</span>
+                        </div>
+                        <hr />
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Total:</strong>
+                            <strong class="text-success">$@total?.ToString("F2")</strong>
+                        </div>
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <div class="d-grid gap-2">
+                                <a asp-controller="Checkout" asp-action="Index" class="btn btn-success btn-lg">
+                                    <i class="bi bi-credit-card"></i> Proceed to Checkout
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning mb-3">
+                                <i class="bi bi-info-circle"></i> Please login to checkout
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Url.Action("Index", "Checkout")" class="btn btn-primary">
+                                    <i class="bi bi-box-arrow-in-right"></i> Login
+                                </a>
+                                <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary">
+                                    <i class="bi bi-person-plus"></i> Register
+                                </a>
+                            </div>
+                        }
+
+                        <div class="mt-3 text-center">
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-link">
+                                <i class="bi bi-arrow-left"></i> Continue Shopping
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>

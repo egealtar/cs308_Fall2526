@@ -7,27 +7,23 @@ namespace CS308Main.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         public string UserId { get; set; } = string.Empty;
-
         public List<OrderItem> Items { get; set; } = new List<OrderItem>();
-
-        public decimal TotalAmount { get; set; }
-
-        public DateTime OrderDate { get; set; } = DateTime.Now;
-
-        public string Status { get; set; } = "Pending";
+        public decimal TotalPrice { get; set; }
+        public string Status { get; set; } = "Processing";
+        public string ShippingAddress { get; set; } = string.Empty;
+        public string PaymentMethod { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }
 
     public class OrderItem
     {
         public string ProductId { get; set; } = string.Empty;
-
         public string ProductName { get; set; } = string.Empty;
-
         public int Quantity { get; set; }
-
         public decimal Price { get; set; }
     }
 }

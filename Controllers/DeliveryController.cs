@@ -1,133 +1,68 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CS308Main.Data;
+using Microsoft.AspNetCore.Authorization;
+using MongoDB.Driver;
 using CS308Main.Models;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CS308Main.Controllers
 {
     [Authorize(Roles = "SalesManager")]
     public class DeliveryController : Controller
     {
-        private readonly IMongoDBRepository<Order> _orderRepository;
+        private readonly IMongoCollection<Order> _orders;
         private readonly ILogger<DeliveryController> _logger;
 
-        public DeliveryController(
-            IMongoDBRepository<Order> orderRepository,
-            ILogger<DeliveryController> logger)
+        public DeliveryController(IMongoDatabase database, ILogger<DeliveryController> logger)
         {
-            _orderRepository = orderRepository;
+            _orders = database.GetCollection<Order>("Orders");
             _logger = logger;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string status = "All")
+        public async Task<IActionResult> Index()
         {
-            try
-            {
-                var allOrders = await _orderRepository.GetAllAsync();
+            var orders = await _orders
+                .Find(_ => true)
+                .SortByDescending(o => o.CreatedAt)  // CreatedAt kullan, OrderDate değil!
+                .ToListAsync();
 
-                var filtered = allOrders
-                    .Where(o =>
-                        status == "All" ||
-                        string.Equals(o.Status, status, StringComparison.OrdinalIgnoreCase))
-                    .OrderByDescending(o => o.OrderDate)
-                    .ToList();
-
-                ViewBag.SelectedStatus = status;
-                return View(filtered);
-            }
-            catch
-            {
-                return View(Enumerable.Empty<Order>());
-            }
+            return View(orders);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateStatus(string orderId, string newStatus)
+        public async Task<IActionResult> UpdateStatus(string orderId, string status)
         {
-            if (string.IsNullOrEmpty(orderId) || string.IsNullOrEmpty(newStatus))
+            var validStatuses = new[] { "Processing", "In-Transit", "Delivered" };
+
+            if (!validStatuses.Contains(status))
             {
-                TempData["ErrorMessage"] = "Order id or status is missing.";
-                return RedirectToAction(nameof(Index));
+                TempData["Error"] = "Invalid status";
+                return RedirectToAction("Index");
             }
 
-            try
+            var update = Builders<Order>.Update
+                .Set(o => o.Status, status)
+                .Set(o => o.UpdatedAt, DateTime.UtcNow);
+
+            await _orders.UpdateOneAsync(o => o.Id == orderId, update);
+
+            _logger.LogInformation($"Order {orderId} status updated to {status}");
+            TempData["Success"] = $"Order status updated to {status}";
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            var order = await _orders.Find(o => o.Id == id).FirstOrDefaultAsync();
+
+            if (order == null)
             {
-                // FindByIdAsync yerine GetAllAsync kullan
-                var allOrders = await _orderRepository.GetAllAsync();
-                var order = allOrders.FirstOrDefault(o => o.Id == orderId);
-                
-                if (order == null)
-                {
-                    TempData["ErrorMessage"] = "Order not found.";
-                    return RedirectToAction(nameof(Index));
-                }
-
-                var oldStatus = order.Status;
-                newStatus = newStatus.Trim();
-
-                if (!IsValidTransition(oldStatus, newStatus))
-                {
-                    TempData["ErrorMessage"] = $"Invalid status change: {oldStatus} → {newStatus}.";
-                    return RedirectToAction(nameof(Index));
-                }
-
-                order.Status = newStatus;
-                //order.UpdatedAt = DateTime.UtcNow;
-
-                // ReplaceOneAsync yerine UpdateAsync kullan
-                await _orderRepository.UpdateAsync(orderId, order);
-                
-                TempData["SuccessMessage"] = $"Order status updated: {oldStatus} → {newStatus}";
-                return RedirectToAction(nameof(Index), new { status = newStatus });
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error updating order status");
-                TempData["ErrorMessage"] = "Error updating order status.";
-                return RedirectToAction(nameof(Index));
-            }
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MarkAsPreparing(string orderId)
-        {
-            return await UpdateStatus(orderId, "Preparing");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MarkAsShipped(string orderId)
-        {
-            return await UpdateStatus(orderId, "Shipped");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> MarkAsDelivered(string orderId)
-        {
-            return await UpdateStatus(orderId, "Delivered");
-        }
-
-        private bool IsValidTransition(string oldStatus, string newStatus)
-        {
-            oldStatus ??= "Pending";
-            if (oldStatus == newStatus) return false;
-
-            return oldStatus switch
-            {
-                "Pending"   => newStatus == "Preparing",
-                "Preparing" => newStatus == "Shipped",
-                "Shipped"   => newStatus == "Delivered",
-                "Delivered" => false,
-                _           => false
-            };
+            return View(order);
         }
     }
 }

@@ -1,0 +1,30 @@
+[33m3b2bb50[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Update _Layout.cshtml
+[33m64778c5[m Update Details.cshtml
+[33m600b2bb[m Create Details.cshtml
+[33m54887b2[m Update Index.cshtml
+[33m6899767[m Create Index.cshtml
+[33m84aef27[m Delete Views/Product
+[33m1f932e1[m Delete Views/abc
+[33m9e3e9e5[m Create abc
+[33m76de53b[m Create Product
+[33m34b7705[m Create ProductController.cs
+[33m13d25ee[m Update Product.cs
+[33mdf52e4c[m implemented mongoDB to shopping cart files
+[33m072038e[m added shopping cart UI and routing
+[33m77981b5[m Mock payment system added
+[33m890a9e0[m Fix home page: add stock quantity display and price handling
+[33md85b169[m Add ShoppingCart model and fix property name errors
+[33m0fb713b[m Implement Shopping Cart view
+[33ma0da522[m Create Index.cshtml
+[33m9d66658[m Update OrderHistoryController.cs
+[33mc03fd71[m Create OrderHistoryController.cs
+[33m72a08df[m Create stock_seed_ex
+[33md7d602b[m Update StockController.cs
+[33m7bc6610[m Update StockController.cs
+[33mbfe8510[m Create StockController.cs
+[33m8067c47[m Fix DeliveryController to use existing Order model properties
+[33m2a82402[m Add DeliveryController
+[33mdc5967b[m Redesign home page with professional UI
+[33m31b66cd[m Refactor: Update home page for auto parts theme
+[33mb7012aa[m Add styled hero section and update brand identity
+[33me2aeaa1[m Prepare HomePage structure

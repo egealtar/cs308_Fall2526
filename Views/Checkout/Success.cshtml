@@ -1,0 +1,56 @@
+@model CS308Main.Models.Order
+
+@{
+    ViewData["Title"] = "Order Successful";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow text-center">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                    </div>
+                    <h2 class="text-success mb-3">Order Placed Successfully!</h2>
+                    <p class="lead mb-4">Thank you for your purchase!</p>
+
+                    <div class="bg-light p-4 rounded mb-4">
+                        <div class="row mb-2">
+                            <div class="col-6 text-end fw-bold">Order ID:</div>
+                            <div class="col-6 text-start">@Model.Id</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6 text-end fw-bold">Total Amount:</div>
+                            <div class="col-6 text-start text-success">$@Model.TotalPrice.ToString("F2")</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-6 text-end fw-bold">Status:</div>
+                            <div class="col-6 text-start">
+                                <span class="badge bg-warning text-dark">@Model.Status</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 text-end fw-bold">Order Date:</div>
+                            <div class="col-6 text-start">@Model.CreatedAt.ToString("MMMM dd, yyyy HH:mm")</div>
+                        </div>
+                    </div>
+
+                    <p class="text-muted mb-4">
+                        <i class="bi bi-envelope"></i> A confirmation email has been sent to your registered email address.
+                    </p>
+
+                    <div class="d-grid gap-2 d-md-block">
+                        <a asp-controller="Order" asp-action="Details" asp-route-id="@Model.Id" 
+                           class="btn btn-primary btn-lg me-2">
+                            <i class="bi bi-eye"></i> View Order Details
+                        </a>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                            <i class="bi bi-house"></i> Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

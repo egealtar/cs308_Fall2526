@@ -1,0 +1,236 @@
+@model CS308Main.Models.Product
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow" />
+            }
+            else
+            {
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 400px;">
+                    <h3>No Image</h3>
+                </div>
+            }
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-md-6">
+            <h1 class="mb-3">@Model.Name</h1>
+            
+            <!-- Rating Display -->
+            <div class="mb-3" id="ratingDisplay">
+                <div class="d-flex align-items-center">
+                    <div class="stars me-2" id="averageStars">
+                        <i class="bi bi-star"></i>
+                        <i class="bi bi-star"></i>
+                        <i class="bi bi-star"></i>
+                        <i class="bi bi-star"></i>
+                        <i class="bi bi-star"></i>
+                    </div>
+                    <span id="ratingText" class="text-muted">(Loading...)</span>
+                </div>
+            </div>
+
+            <h3 class="text-success mb-3">$@Model.Price.ToString("F2")</h3>
+
+            <div class="mb-3">
+                <p><strong>Model:</strong> @Model.Model</p>
+                <p><strong>Serial Number:</strong> @Model.SerialNumber</p>
+                <p><strong>Category:</strong> @Model.Category</p>
+                <p><strong>Warranty:</strong> 
+                    @if (Model.WarrantyStatus)
+                    {
+                        <span class="badge bg-success">Available</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Not Available</span>
+                    }
+                </p>
+                <p><strong>Stock Status:</strong> 
+                    @if (Model.QuantityInStock > 0)
+                    {
+                        <span class="badge bg-success">In Stock (@Model.QuantityInStock available)</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-danger">Out of Stock</span>
+                    }
+                </p>
+            </div>
+
+            <div class="mb-4">
+                <h5>Description</h5>
+                <p>@Model.Description</p>
+            </div>
+
+            <div class="mb-3">
+                <h5>Distributor Information</h5>
+                <p>@Model.DistributorInformation</p>
+            </div>
+
+            @if (Model.QuantityInStock > 0)
+            {
+                <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <div class="input-group mb-3" style="max-width: 200px;">
+                        <span class="input-group-text">Quantity</span>
+                        <input type="number" name="quantity" class="form-control" value="1" min="1" max="@Model.QuantityInStock" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="bi bi-cart-plus"></i> Add to Cart
+                    </button>
+                </form>
+            }
+            else
+            {
+                <button class="btn btn-secondary btn-lg" disabled>Out of Stock</button>
+            }
+        </div>
+    </div>
+
+    <hr class="my-5" />
+
+    <!-- RATING & COMMENT SECTION -->
+    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+    {
+        <!-- Check if user has delivered orders for this product -->
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Rate & Review This Product</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">
+                            <i class="bi bi-info-circle"></i> You can only rate and review products from your delivered orders.
+                        </p>
+
+                        <!-- Rating Form -->
+                        <form asp-controller="Comment" asp-action="AddRating" method="post" class="mb-4">
+                            <input type="hidden" name="productId" value="@Model.Id" />
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Your Rating</label>
+                                <div class="rating-input">
+                                    <input type="radio" name="score" value="5" id="star5" />
+                                    <label for="star5" title="5 stars">★</label>
+                                    <input type="radio" name="score" value="4" id="star4" />
+                                    <label for="star4" title="4 stars">★</label>
+                                    <input type="radio" name="score" value="3" id="star3" />
+                                    <label for="star3" title="3 stars">★</label>
+                                    <input type="radio" name="score" value="2" id="star2" />
+                                    <label for="star2" title="2 stars">★</label>
+                                    <input type="radio" name="score" value="1" id="star1" />
+                                    <label for="star1" title="1 star">★</label>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Order ID</label>
+                                <input type="text" name="orderId" class="form-control" placeholder="Enter your delivered order ID" required />
+                                <small class="text-muted">Find this in your order history</small>
+                            </div>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-star-fill"></i> Submit Rating
+                            </button>
+                        </form>
+
+                        <hr />
+
+                        <!-- Comment Form -->
+                        <form asp-controller="Comment" asp-action="AddComment" method="post">
+                            <input type="hidden" name="productId" value="@Model.Id" />
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Your Review</label>
+                                <textarea name="text" class="form-control" rows="4" placeholder="Share your experience with this product..." required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Order ID</label>
+                                <input type="text" name="orderId" class="form-control" placeholder="Enter your delivered order ID" required />
+                                <small class="text-muted">Find this in your order history</small>
+                            </div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-chat-square-text"></i> Submit Review
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- COMMENTS DISPLAY -->
+    <div class="row">
+        <div class="col-md-12">
+            <div id="commentsContainer">
+                <!-- Comments will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .rating-input {
+            direction: rtl;
+            display: inline-flex;
+            font-size: 2rem;
+        }
+        .rating-input input[type="radio"] {
+            display: none;
+        }
+        .rating-input label {
+            color: #ddd;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+        .rating-input label:hover,
+        .rating-input label:hover ~ label,
+        .rating-input input[type="radio"]:checked ~ label {
+            color: #ffd700;
+        }
+        .stars i {
+            color: #ffd700;
+        }
+        .stars i.bi-star {
+            color: #ddd;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Load average rating
+            $.get('/Comment/GetAverageRating?productId=@Model.Id', function(data) {
+                var average = data.average;
+                var count = data.count;
+                
+                // Update rating display
+                var starsHtml = '';
+                for (var i = 1; i <= 5; i++) {
+                    if (i <= Math.floor(average)) {
+                        starsHtml += '<i class="bi bi-star-fill text-warning"></i>';
+                    } else if (i - average < 1 && i - average > 0) {
+                        starsHtml += '<i class="bi bi-star-half text-warning"></i>';
+                    } else {
+                        starsHtml += '<i class="bi bi-star text-warning"></i>';
+                    }
+                }
+                $('#averageStars').html(starsHtml);
+                $('#ratingText').text(average.toFixed(1) + ' out of 5 (' + count + ' ratings)');
+            });
+
+            // Load comments
+            $.get('/Comment/GetApprovedComments?productId=@Model.Id', function(data) {
+                $('#commentsContainer').html(data);
+            });
+        });
+    </script>
+}

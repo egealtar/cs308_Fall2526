@@ -1,49 +1,54 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CS308Main.Data;
+using Microsoft.AspNetCore.Authorization;
+using MongoDB.Driver;
 using CS308Main.Models;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace CS308Main.Controllers
 {
-    //Rol kısıtı yok şuan için genel
-    [Authorize]
+    [Authorize(Roles = "Customer")]
     public class OrderHistoryController : Controller
     {
-        private readonly IMongoDBRepository<Order> _orderRepository;
+        private readonly IMongoCollection<Order> _orders;
         private readonly ILogger<OrderHistoryController> _logger;
 
-        public OrderHistoryController(
-            IMongoDBRepository<Order> orderRepository,
-            ILogger<OrderHistoryController> logger)
+        public OrderHistoryController(IMongoDatabase database, ILogger<OrderHistoryController> logger)
         {
-            _orderRepository = orderRepository;
+            _orders = database.GetCollection<Order>("Orders");
             _logger = logger;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            try
-            {
-                //TÜm siparişler çekiliyor daha sonra login olanlara göre filtre
-                var allOrders = await _orderRepository.GetAllAsync();
-                //TODO: kullanıcı filtremesi
-                var userOrders = allOrders
-                    .OrderByDescending(o => o.OrderDate)
-                    .ToList();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-                return View(userOrders);
-            }
-            catch (Exception ex)
+            if (string.IsNullOrEmpty(userId))
             {
-                _logger.LogError(ex, "Error while loading order history.");
-                return View(Enumerable.Empty<Order>());
+                return RedirectToAction("Login", "Account");
             }
+
+            var orders = await _orders
+                .Find(o => o.UserId == userId)
+                .SortByDescending(o => o.CreatedAt)  // CreatedAt kullan, OrderDate değil!
+                .ToListAsync();
+
+            return View(orders);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(string id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var order = await _orders.Find(o => o.Id == id && o.UserId == userId).FirstOrDefaultAsync();
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
         }
     }
 }

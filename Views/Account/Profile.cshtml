@@ -1,0 +1,83 @@
+@model CS308Main.Models.User
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">My Profile</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Name:</div>
+                        <div class="col-md-8">@Model.Name</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Email:</div>
+                        <div class="col-md-8">@Model.Email</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Role:</div>
+                        <div class="col-md-8">
+                            <span class="badge bg-primary">@Model.Role</span>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.TaxId))
+                    {
+                        <div class="row mb-3">
+                            <div class="col-md-4 fw-bold">Tax ID:</div>
+                            <div class="col-md-8">@Model.TaxId</div>
+                        </div>
+                    }
+
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Home Address:</div>
+                        <div class="col-md-8">@Model.HomeAddress</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Account Status:</div>
+                        <div class="col-md-8">
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Member Since:</div>
+                        <div class="col-md-8">@Model.CreatedAt.ToString("MMMM dd, yyyy")</div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="Order" asp-action="MyOrders" class="btn btn-primary">
+                            <i class="bi bi-box-seam"></i> My Orders
+                        </a>
+                        <a asp-controller="Invoice" asp-action="MyInvoices" class="btn btn-info">
+                            <i class="bi bi-file-earmark-text"></i> My Invoices
+                        </a>
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

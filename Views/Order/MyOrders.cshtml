@@ -1,0 +1,102 @@
+@model List<CS308Main.Models.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">My Orders</h3>
+        </div>
+        <div class="card-body">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> You don't have any orders yet.
+                    <a asp-controller="Home" asp-action="Index" class="alert-link">Start shopping!</a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Date</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@order.Id.Substring(0, 8)...</strong>
+                                    </td>
+                                    <td>@order.CreatedAt.ToString("MMM dd, yyyy HH:mm")</td>
+                                    <td>@order.Items.Count item(s)</td>
+                                    <td><strong class="text-success">$@order.TotalPrice.ToString("F2")</strong></td>
+                                    <td>
+                                        @if (order.Status == "Processing")
+                                        {
+                                            <span class="badge bg-warning text-dark">@order.Status</span>
+                                        }
+                                        else if (order.Status == "In-Transit")
+                                        {
+                                            <span class="badge bg-info">@order.Status</span>
+                                        }
+                                        else if (order.Status == "Delivered")
+                                        {
+                                            <span class="badge bg-success">@order.Status</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-eye"></i> View
+                                        </a>
+                                        @if (order.Status == "Delivered")
+                                        {
+                                            <a asp-controller="Invoice" asp-action="Generate" asp-route-orderId="@order.Id" 
+                                               class="btn btn-sm btn-success">
+                                                <i class="bi bi-file-earmark-text"></i> Invoice
+                                            </a>
+                                        }
+                                        @if (order.Status == "Processing")
+                                        {
+                                            <form asp-action="Cancel" asp-route-id="@order.Id" method="post" class="d-inline">
+                                                <button type="submit" class="btn btn-sm btn-danger" 
+                                                        onclick="return confirm('Are you sure you want to cancel this order?')">
+                                                    <i class="bi bi-x-circle"></i> Cancel
+                                                </button>
+                                            </form>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

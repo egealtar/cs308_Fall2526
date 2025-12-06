@@ -1,90 +1,75 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using CS308Main.Models;
-using System.Security.Claims;
-using CS308Main.Data;
+using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using System.Diagnostics;
 
 namespace CS308Main.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logService;
-        private readonly IMongoDBRepository<Product> _bookRepository;
-        private readonly IMongoDBRepository<Order> _purchaseRepository;
-        private readonly IMongoDBRepository<Category> _genreRepository;
+        private readonly ILogger<HomeController> _logger;
+        private readonly IMongoCollection<Product> _products;
 
-        public HomeController(
-            ILogger<HomeController> logService, 
-            IMongoDBRepository<Product> bookRepository, 
-            IMongoDBRepository<Order> purchaseRepository, 
-            IMongoDBRepository<Category> genreRepository)
+        public HomeController(ILogger<HomeController> logger, IMongoDatabase database)
         {
-            _logService = logService;
-            _bookRepository = bookRepository;
-            _purchaseRepository = purchaseRepository;
-            _genreRepository = genreRepository;
+            _logger = logger;
+            _products = database.GetCollection<Product>("Products");
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? genre = null, string? search = null, string? sort = null)
         {
-            try
+            var filterBuilder = Builders<Product>.Filter;
+            var filter = filterBuilder.Empty;
+
+            // Genre filter (URL'de genre parametresi kullan)
+            if (!string.IsNullOrEmpty(genre))
             {
-                var currentUserRole = User.FindFirstValue(ClaimTypes.Role);
-                ViewBag.UserRole = currentUserRole;
-
-                var bookItems = await _bookRepository.GetAllAsync();
-                
-                // Eğer order yoksa boş dictionary
-                var purchaseRecords = await _purchaseRepository.GetAllAsync();
-                var bookRatings = new Dictionary<string, int>();
-                
-                if (purchaseRecords != null && purchaseRecords.Any())
-                {
-                    bookRatings = purchaseRecords
-                        .SelectMany(order => order.Items)
-                        .GroupBy(item => item.ProductId)
-                        .Select(group => new { 
-                            BookId = group.Key, 
-                            TotalAmount = group.Sum(item => item.Quantity) 
-                        })
-                        .ToDictionary(item => item.BookId, item => item.TotalAmount);
-                }
-
-                ViewBag.ProductPopularity = bookRatings;
-
-                // Categories - boş olsa bile hata vermesin
-                var genreList = await _genreRepository.GetAllAsync();
-                if (genreList != null && genreList.Any())
-                {
-                    ViewBag.Genres = genreList
-                        .Select(genre => genre.Name)
-                        .Distinct()
-                        .OrderBy(name => name)
-                        .ToList();
-                }
-                else
-                {
-                    ViewBag.Genres = new List<string>();
-                }
-
-                foreach (var book in bookItems)
-                {
-                    if (string.IsNullOrEmpty(book.Author))
-                    {
-                        book.Author = "Unknown Manufacturer";
-                    }
-                }
-
-                return View(bookItems);
+                filter = filter & filterBuilder.Eq(p => p.Genre, genre);
             }
-            catch (Exception ex)
+
+            // Search filter
+            if (!string.IsNullOrEmpty(search))
             {
-                _logService.LogError(ex, "Error loading home page");
-                // Boş liste dön, hata verme
-                ViewBag.Genres = new List<string>();
-                ViewBag.ProductPopularity = new Dictionary<string, int>();
-                return View(new List<Product>());
+                var searchFilter = filterBuilder.Or(
+                    filterBuilder.Regex(p => p.Name, new BsonRegularExpression(search, "i")),
+                    filterBuilder.Regex(p => p.Description, new BsonRegularExpression(search, "i")),
+                    filterBuilder.Regex(p => p.Author, new BsonRegularExpression(search, "i"))
+                );
+                filter = filter & searchFilter;
             }
+
+            // Get products
+            var query = _products.Find(filter);
+
+            // Sorting
+            query = sort switch
+            {
+                "price_asc" => query.SortBy(p => p.Price),
+                "price_desc" => query.SortByDescending(p => p.Price),
+                "name_asc" => query.SortBy(p => p.Name),
+                "name_desc" => query.SortByDescending(p => p.Name),
+                _ => query.SortBy(p => p.Name)
+            };
+
+            var products = await query.ToListAsync();
+
+            // Get all genres (categories)
+            var allProducts = await _products.Find(filterBuilder.Empty).ToListAsync();
+            ViewBag.Categories = allProducts
+                .Select(p => p.Genre)
+                .Distinct()
+                .Where(g => !string.IsNullOrEmpty(g))
+                .OrderBy(g => g)
+                .ToList();
+
+            ViewBag.CurrentGenre = genre;  // genre parametresini gönder
+            ViewBag.CurrentSearch = search;
+            ViewBag.CurrentSort = sort;
+
+            _logger.LogInformation($"Loaded {products.Count} products");
+
+            return View(products);
         }
 
         public IActionResult Privacy()
@@ -95,9 +80,7 @@ namespace CS308Main.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { 
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier 
-            });
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

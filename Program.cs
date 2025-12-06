@@ -1,47 +1,67 @@
-using CS308Main.Data;
-using CS308Main.Models;
 using MongoDB.Driver;
+using CS308Main.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Net;
+using System.Net.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// MongoDB bağlantısı
-builder.Services.AddSingleton<IMongoClient>(s =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("MongoDB") 
-        ?? "mongodb://localhost:27017";
-    return new MongoClient(connectionString);
-});
-
-builder.Services.AddScoped(s =>
-{
-    var client = s.GetRequiredService<IMongoClient>();
-    var databaseName = builder.Configuration["MongoDB:DatabaseName"] ?? "BookeryDB";
-    return client.GetDatabase(databaseName);
-});
-
-// Repository'leri ekle
-builder.Services.AddScoped<IMongoDBRepository<Product>>(s =>
-{
-    var database = s.GetRequiredService<IMongoDatabase>();
-    return new MongoDBRepository<Product>(database, "Products");
-});
-
-builder.Services.AddScoped<IMongoDBRepository<Order>>(s =>
-{
-    var database = s.GetRequiredService<IMongoDatabase>();
-    return new MongoDBRepository<Order>(database, "Orders");
-});
-
-builder.Services.AddScoped<IMongoDBRepository<Category>>(s =>
-{
-    var database = s.GetRequiredService<IMongoDatabase>();
-    return new MongoDBRepository<Category>(database, "Categories");
-});
-
+// Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// MongoDB Configuration
+var mongoConnectionString = builder.Configuration.GetConnectionString("MongoDB");
+var mongoDatabaseName = builder.Configuration["MongoDB:DatabaseName"];
+
+var mongoClientSettings = MongoClientSettings.FromConnectionString(mongoConnectionString);
+mongoClientSettings.SslSettings = new SslSettings
+{
+    EnabledSslProtocols = System.Security.Authentication.SslProtocols.Tls12,
+    CheckCertificateRevocation = false
+};
+mongoClientSettings.ServerApi = new ServerApi(ServerApiVersion.V1);
+
+var mongoClient = new MongoClient(mongoClientSettings);
+var mongoDatabase = mongoClient.GetDatabase(mongoDatabaseName);
+
+builder.Services.AddSingleton<IMongoClient>(mongoClient);
+builder.Services.AddSingleton<IMongoDatabase>(mongoDatabase);
+
+// Register Services
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IPdfService, PdfService>();
+builder.Services.AddScoped<ShoppingCartService>();
+builder.Services.AddScoped<MockPaymentService>();
+
+// Authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+        options.SlidingExpiration = true;
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+    });
+
+builder.Services.AddAuthorization();
+
+// Session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -53,7 +73,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

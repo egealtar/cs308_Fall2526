@@ -1,1201 +1,548 @@
-﻿@model IEnumerable<CS308Main.Models.Product>
+﻿@model List<CS308Main.Models.Product>
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
+    var categories = ViewBag.Categories as List<string>;
+    var currentGenre = ViewBag.CurrentGenre as string;
+    var currentSearch = ViewBag.CurrentSearch as string;
+    var currentSort = ViewBag.CurrentSort as string;
 }
 
-<div class="hero-banner">
+<div class="hero-section">
     <div class="hero-overlay"></div>
-    <img src="~/images/maxresdefault.jpg" alt="MotorMatch Banner" class="hero-image">
-    <div class="container">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <i class="bi bi-award-fill"></i>
-                <span>Premium Quality Parts</span>
+    <div class="hero-content">
+        <div class="container">
+            <div class="row align-items-center" style="min-height: 500px;">
+                <div class="col-lg-6 text-white hero-text">
+                    <h1 class="display-3 fw-bold mb-4 animate-fade-in">
+                        Welcome to <span class="text-warning">MotorMatch</span>
+                    </h1>
+                    <p class="lead mb-4 animate-fade-in-delay-1">
+                        Your ultimate destination for premium auto parts and accessories. 
+                        Quality guaranteed, performance delivered.
+                    </p>
+                    <div class="animate-fade-in-delay-2">
+                        <a href="#products" class="btn btn-warning btn-lg me-3 pulse-button">
+                            <i class="bi bi-shop"></i> Shop Now
+                        </a>
+                        <a href="#categories" class="btn btn-outline-light btn-lg">
+                            <i class="bi bi-grid"></i> Browse Categories
+                        </a>
+                    </div>
+                    <div class="mt-4 animate-fade-in-delay-3">
+                        <div class="d-flex gap-4">
+                            <div>
+                                <h3 class="text-warning mb-0">500+</h3>
+                                <small>Products</small>
+                            </div>
+                            <div>
+                                <h3 class="text-warning mb-0">50K+</h3>
+                                <small>Happy Customers</small>
+                            </div>
+                            <div>
+                                <h3 class="text-warning mb-0">24/7</h3>
+                                <small>Support</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h1 class="hero-title">
-                <span class="hero-welcome">Welcome to</span>
-                <span class="hero-brand">
-                    <span class="brand-motor">Motor</span><span class="brand-match">Match</span>
-                </span>
-            </h1>
-            <p class="hero-subtitle">
-                <i class="bi bi-tools"></i>
-                Quality Auto Parts at Unbeatable Prices
-            </p>
-            <div class="hero-features">
-                <div class="feature-item">
-                    <i class="bi bi-shield-check"></i>
-                    <span>Warranty</span>
-                </div>
-                <div class="feature-item">
-                    <i class="bi bi-truck"></i>
-                    <span>Fast Shipping</span>
-                </div>
-                <div class="feature-item">
-                    <i class="bi bi-headset"></i>
-                    <span>24/7 Support</span>
-                </div>
-            </div>
-            <a href="#partsList" class="hero-cta smooth-scroll">
-                <span class="cta-text">Explore Parts</span>
-                <i class="bi bi-arrow-right-circle-fill cta-icon"></i>
-            </a>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div class="filter-section">
-        <div class="filter-card">
-            <div class="filter-header">
-                <h3 class="filter-title">
-                    <i class="bi bi-funnel-fill"></i>
-                    Find Your Perfect Part
-                </h3>
-                <p class="filter-subtitle">Use our advanced filters to find exactly what you need</p>
-            </div>
-            
-            <div class="filter-body">
-                <div class="search-container">
-                    <div class="search-box">
-                        <i class="bi bi-search search-icon"></i>
-                        <input type="text" 
-                               id="keywordInput" 
-                               class="search-input" 
-                               placeholder="Search by part name, brand, or model...">
-                        <button id="searchBtn" class="search-button">
-                            <span>Search</span>
-                            <i class="bi bi-arrow-right"></i>
-                        </button>
-                    </div>
+<!-- Features Section -->
+<div class="container my-5">
+    <div class="row text-center g-4">
+        <div class="col-md-3">
+            <div class="feature-box">
+                <div class="feature-icon bg-primary">
+                    <i class="bi bi-truck"></i>
                 </div>
+                <h5 class="mt-3">Free Shipping</h5>
+                <p class="text-muted">On orders over $100</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="feature-box">
+                <div class="feature-icon bg-success">
+                    <i class="bi bi-shield-check"></i>
+                </div>
+                <h5 class="mt-3">Warranty</h5>
+                <p class="text-muted">Quality guaranteed</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="feature-box">
+                <div class="feature-icon bg-warning">
+                    <i class="bi bi-headset"></i>
+                </div>
+                <h5 class="mt-3">24/7 Support</h5>
+                <p class="text-muted">Expert assistance</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="feature-box">
+                <div class="feature-icon bg-danger">
+                    <i class="bi bi-percent"></i>
+                </div>
+                <h5 class="mt-3">Best Deals</h5>
+                <p class="text-muted">Amazing discounts</p>
+            </div>
+        </div>
+    </div>
+</div>
 
-                <div class="filters-row">
-                    <div class="filter-group">
-                        <label class="filter-label">
-                            <i class="bi bi-sort-numeric-down"></i>
-                            Price Range
-                        </label>
-                        <select id="priceOrder" class="filter-select">
-                            <option value="">All Prices</option>
-                            <option value="asc">Price: Low to High</option>
-                            <option value="desc">Price: High to Low</option>
-                        </select>
-                    </div>
-
-                    <div class="filter-group">
-                        <label class="filter-label">
-                            <i class="bi bi-star-fill"></i>
-                            Popularity
-                        </label>
-                        <select id="ratingOrder" class="filter-select">
-                            <option value="">All Items</option>
-                            <option value="desc">Most Popular</option>
-                            <option value="asc">Newest First</option>
-                        </select>
-                    </div>
-
-                    <div class="filter-group">
-                        <label class="filter-label">
-                            <i class="bi bi-grid-3x3-gap-fill"></i>
-                            Category
-                        </label>
-                        <div class="dropdown">
-                            <button class="filter-dropdown" type="button" id="categoryDropdown" data-bs-toggle="dropdown">
-                                <span>Choose Category</span>
-                                <i class="bi bi-chevron-down"></i>
+<!-- Search and Filter Section -->
+<div class="container" id="products">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+                    <form method="get" asp-action="Index" class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-search"></i> Search Products
+                            </label>
+                            <input type="text" name="search" class="form-control form-control-lg" 
+                                   placeholder="Search by name, author, description..." value="@currentSearch" />
+                        </div>
+                        <div class="col-md-3" id="categories">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-tag"></i> Category
+                            </label>
+                            <select name="genre" class="form-select form-select-lg">
+                                <option value="">All Categories</option>
+                                @if (categories != null)
+                                {
+                                    foreach (var cat in categories)
+                                    {
+                                        <option value="@cat" selected="@(cat == currentGenre)">@cat</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-sort-down"></i> Sort By
+                            </label>
+                            <select name="sort" class="form-select form-select-lg">
+                                <option value="">Default</option>
+                                <option value="price_asc" selected="@(currentSort == "price_asc")">Price: Low to High</option>
+                                <option value="price_desc" selected="@(currentSort == "price_desc")">Price: High to Low</option>
+                                <option value="name_asc" selected="@(currentSort == "name_asc")">Name: A-Z</option>
+                                <option value="name_desc" selected="@(currentSort == "name_desc")">Name: Z-A</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <i class="bi bi-funnel"></i> Filter
                             </button>
-                            <div class="dropdown-menu category-dropdown" aria-labelledby="categoryDropdown">
-                                <div class="dropdown-header">
-                                    <i class="bi bi-collection"></i>
-                                    <span>Select Categories</span>
-                                </div>
-                                <div class="category-list">
-                                    @foreach (var genre in ViewBag.Genres)
-                                    {
-                                        <label class="category-item">
-                                            <input class="category-checkbox" type="checkbox" 
-                                                   id="cat-@genre.Replace(" ", "-")" value="@genre">
-                                            <span class="category-name">@genre</span>
-                                            <i class="bi bi-check-circle-fill category-check-icon"></i>
-                                        </label>
-                                    }
-                                </div>
-                                <div class="dropdown-footer">
-                                    <button id="confirmFilters" class="btn-apply-filters">
-                                        <i class="bi bi-check-lg"></i>
-                                        Apply Filters
-                                    </button>
-                                </div>
-                            </div>
                         </div>
-                    </div>
-
-                    <div class="filter-group">
-                        <label class="filter-label" style="visibility: hidden;">Reset</label>
-                        <button id="clearFilters" class="btn-reset">
-                            <i class="bi bi-arrow-clockwise"></i>
-                            <span>Reset All</span>
-                        </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="products-header">
-        <h2 class="products-title">
-            <i class="bi bi-grid-fill"></i>
-            Available Parts
-        </h2>
-        <div class="products-count">
-            <span class="count-badge">
-                <i class="bi bi-bag-check-fill"></i>
-                <span id="productCount">@Model.Count()</span> Products
-            </span>
-        </div>
-    </div>
 
-    <div id="partsList" class="products-grid">
-        @if (Model != null && Model.Any())
+    <!-- Products Grid -->
+    <div class="row">
+        @if (Model == null || !Model.Any())
         {
-            @foreach (var product in Model)
-            {
-                <div class="product-card part-card" 
-                    data-title="@product.Name" 
-                    data-manufacturer="@product.Author" 
-                    data-cost="@product.Price"
-                    data-category="@product.Genre"
-                    data-info="@product.Description"
-                    data-rating="@(ViewBag.ProductPopularity != null && 
-                                ViewBag.ProductPopularity.ContainsKey(product.Id) ? 
-                                ViewBag.ProductPopularity[product.Id] : 0)">
-                    <a href="@Url.Action("ProductDetails", "Product", new { id = product.Id })" 
-                       class="product-link">
-                        
-                        <div class="product-image-wrapper">
-                            @{
-                                string imgPath = !string.IsNullOrEmpty(product.ImagePath) 
-                                    ? product.ImagePath 
-                                    : "/images/default-part.jpg";
-                            }
-                            
-                            <img src="@imgPath" class="product-image" alt="@product.Name">
-                            
-                            <div class="product-badges">
-                                @if (product.DiscountedPrice.HasValue && product.DiscountedPrice.Value > 0 && product.OriginalPrice > 0)
-                                {
-                                    var discountPercent = Math.Round((1 - (product.DiscountedPrice.Value / product.OriginalPrice)) * 100);
-                                    <span class="badge-discount">
-                                        <i class="bi bi-percent"></i>
-                                        -@discountPercent% OFF
-                                    </span>
-                                }
-                                
-                                @if (product.QuantityInStock > 0)
-                                {
-                                    <span class="badge-stock in-stock">
-                                        <i class="bi bi-check-circle-fill"></i>
-                                        @product.QuantityInStock in Stock
-                                    </span>
-                                }
-                                else
-                                {
-                                    <span class="badge-stock out-of-stock">
-                                        <i class="bi bi-x-circle-fill"></i>
-                                        Out of Stock
-                                    </span>
-                                }
-                            </div>
-                        </div>
-                        
-                        <div class="product-content">
-                            <div class="product-category">
-                                <i class="bi bi-tag-fill"></i>
-                                @product.Genre
-                            </div>
-                            
-                            <h3 class="product-name">@product.Name</h3>
-                            
-                            <div class="product-manufacturer">
-                                <i class="bi bi-building"></i>
-                                <span>@product.Author</span>
-                            </div>
-                            
-                            <p class="product-description">@product.Description</p>
-                            
-                            <div class="product-footer">
-                                <div class="product-price">
-                                    @if (product.DiscountedPrice.HasValue && product.DiscountedPrice.Value > 0)
-                                    {
-                                        <span class="price-original">$@product.OriginalPrice.ToString("F2")</span>
-                                        <span class="price-current">$@product.DiscountedPrice.Value.ToString("F2")</span>
-                                    }
-                                    else if (product.Price > 0)
-                                    {
-                                        <span class="price-current">$@product.Price.ToString("F2")</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="price-current text-muted">Contact for Price</span>
-                                    }
-                                </div>
-                                
-                                <button class="btn-view-details">
-                                    <span>View Details</span>
-                                    <i class="bi bi-arrow-right"></i>
-                                </button>
-                            </div>
-                        </div>
+            <div class="col-12">
+                <div class="alert alert-info text-center py-5">
+                    <i class="bi bi-info-circle" style="font-size: 4rem;"></i>
+                    <h3 class="mt-3">No products found</h3>
+                    <p class="lead">Try adjusting your search or filters</p>
+                    <a asp-action="Index" class="btn btn-primary mt-3">
+                        <i class="bi bi-arrow-clockwise"></i> Reset Filters
                     </a>
                 </div>
-            }
+            </div>
         }
         else
         {
-            <div class="empty-state">
-                <div class="empty-icon">
-                    <i class="bi bi-inbox"></i>
+            foreach (var product in Model)
+            {
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="product-card">
+                        @if (product.HasDiscount)
+                        {
+                            <div class="discount-badge">
+                                <span>-@product.DiscountPercentage%</span>
+                            </div>
+                        }
+
+                        <div class="product-image">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl" alt="@product.Name" />
+                            }
+                            else
+                            {
+                                <div class="no-image">
+                                    <i class="bi bi-image"></i>
+                                </div>
+                            }
+                            <div class="product-overlay">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" 
+                                   class="btn btn-light btn-sm">
+                                    <i class="bi bi-eye"></i> Quick View
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="product-body">
+                            <div class="product-category">
+                                <span class="badge bg-secondary">@product.Category</span>
+                                @if (product.WarrantyStatus)
+                                {
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-shield-check"></i> Warranty
+                                    </span>
+                                }
+                            </div>
+
+                            <h5 class="product-title">@product.Name</h5>
+                            
+                            @if (!string.IsNullOrEmpty(product.Author))
+                            {
+                                <p class="product-author">by @product.Author</p>
+                            }
+
+                            <p class="product-description">
+                                @{
+                                    var description = product.Description ?? "No description available";
+                                    if (description.Length > 60)
+                                    {
+                                        @description.Substring(0, 60)<text>...</text>
+                                    }
+                                    else
+                                    {
+                                        @description
+                                    }
+                                }
+                            </p>
+
+                            <div class="product-footer">
+                                <div class="product-price">
+                                    @if (product.HasDiscount)
+                                    {
+                                        <div>
+                                            <span class="old-price">$@product.Price.ToString("F2")</span>
+                                            <span class="new-price">$@product.FinalPrice.ToString("F2")</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="new-price">$@product.Price.ToString("F2")</span>
+                                    }
+                                </div>
+
+                                <div class="product-stock">
+                                    @if (product.QuantityInStock > 0)
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle"></i> In Stock
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-x-circle"></i> Out of Stock
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="product-actions">
+                                @if (product.QuantityInStock > 0)
+                                {
+                                    <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post" class="w-100">
+                                        <input type="hidden" name="productId" value="@product.Id" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="bi bi-cart-plus"></i> Add to Cart
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-secondary w-100" disabled>
+                                        <i class="bi bi-x-circle"></i> Out of Stock
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="empty-title">No Parts Available</h3>
-                <p class="empty-text">Please check back later for new products</p>
-            </div>
+            }
         }
     </div>
 </div>
 
-<style>
-    /* ===== HERO SECTION ===== */
-    .hero-banner {
-        position: relative;
-        width: 100vw;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        height: 600px;
-        overflow: hidden;
-        margin-bottom: 4rem;
-    }
-
-    .hero-image {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: brightness(0.4);
-    }
-
-    .hero-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, 
-            rgba(230, 57, 70, 0.4) 0%, 
-            rgba(26, 26, 26, 0.7) 100%);
-        z-index: 1;
-    }
-
-    .hero-content {
-        position: relative;
-        z-index: 2;
-        height: 600px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        animation: fadeInUp 1s ease-out;
-    }
-
-    .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        padding: 8px 20px;
-        border-radius: 50px;
-        color: white;
-        font-size: 0.9rem;
-        font-weight: 600;
-        margin-bottom: 1.5rem;
-        animation: fadeIn 1s ease-out 0.2s both;
-    }
-
-    .hero-title {
-        margin-bottom: 1.5rem;
-    }
-
-    .hero-welcome {
-        display: block;
-        font-size: 1.5rem;
-        font-weight: 600;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 1rem;
-        animation: fadeIn 1s ease-out 0.4s both;
-    }
-
-    .hero-brand {
-        display: block;
-        font-family: 'Orbitron', sans-serif;
-        font-size: 5rem;
-        font-weight: 900;
-        letter-spacing: 2px;
-        animation: fadeIn 1s ease-out 0.6s both;
-    }
-
-    .brand-motor {
-        color: #ffffff;
-        text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
-    }
-
-    .brand-match {
-        color: #e63946;
-        text-shadow: 0 0 40px rgba(230, 57, 70, 0.8);
-    }
-
-    .hero-subtitle {
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: rgba(255, 255, 255, 0.95);
-        margin-bottom: 2rem;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        animation: fadeIn 1s ease-out 0.8s both;
-    }
-
-    .hero-features {
-        display: flex;
-        gap: 3rem;
-        margin-bottom: 2.5rem;
-        animation: fadeIn 1s ease-out 1s both;
-    }
-
-    .feature-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        color: white;
-        font-weight: 600;
-        font-size: 0.95rem;
-    }
-
-    .feature-item i {
-        font-size: 2rem;
-        color: #e63946;
-        filter: drop-shadow(0 0 10px rgba(230, 57, 70, 0.6));
-    }
-
-    .hero-cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        background: linear-gradient(135deg, #e63946 0%, #c7001b 100%);
-        color: white;
-        padding: 18px 40px;
-        border-radius: 50px;
-        font-family: 'Rajdhani', sans-serif;
-        font-size: 1.3rem;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-decoration: none;
-        text-transform: uppercase;
-        box-shadow: 0 10px 40px rgba(230, 57, 70, 0.4);
-        transition: all 0.3s ease;
-        animation: fadeIn 1s ease-out 1.2s both;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .hero-cta::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.6s ease;
-    }
-
-    .hero-cta:hover::before {
-        left: 100%;
-    }
-
-    .hero-cta:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 50px rgba(230, 57, 70, 0.6);
-        color: white;
-    }
-
-    .cta-icon {
-        font-size: 1.5rem;
-        transition: transform 0.3s ease;
-    }
-
-    .hero-cta:hover .cta-icon {
-        transform: translateX(5px);
-    }
-
-    @@keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    @@keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* ===== FILTER SECTION ===== */
-    .filter-section {
-        margin-bottom: 3rem;
-    }
-
-    .filter-card {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-    }
-
-    .filter-header {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        padding: 2rem;
-        border-bottom: 1px solid #dee2e6;
-    }
-
-    .filter-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .filter-title i {
-        color: #e63946;
-    }
-
-    .filter-subtitle {
-        color: #6c757d;
-        margin: 0;
-        font-size: 0.95rem;
-    }
-
-    .filter-body {
-        padding: 2rem;
-    }
-
-    .search-container {
-        margin-bottom: 2rem;
-    }
-
-    .search-box {
-        display: flex;
-        align-items: center;
-        background: #f8f9fa;
-        border: 2px solid #e9ecef;
-        border-radius: 50px;
-        padding: 8px 8px 8px 24px;
-        transition: all 0.3s ease;
-    }
-
-    .search-box:focus-within {
-        border-color: #e63946;
-        box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.1);
-        background: white;
-    }
-
-    .search-icon {
-        color: #6c757d;
-        font-size: 1.2rem;
-        margin-right: 12px;
-    }
-
-    .search-input {
-        flex: 1;
-        border: none;
-        background: transparent;
-        font-size: 1rem;
-        padding: 8px;
-        outline: none;
-        color: #1a1a1a;
-    }
-
-    .search-input::placeholder {
-        color: #adb5bd;
-    }
-
-    .search-button {
-        background: linear-gradient(135deg, #e63946 0%, #c7001b 100%);
-        color: white;
-        border: none;
-        padding: 12px 28px;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .search-button:hover {
-        transform: translateX(2px);
-        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
-    }
-
-    .filters-row {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .filter-label {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #495057;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .filter-label i {
-        color: #e63946;
-        font-size: 1rem;
-    }
-
-    .filter-select {
-        padding: 12px 16px;
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        font-size: 0.95rem;
-        background: white;
-        color: #495057;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .filter-select:hover {
-        border-color: #ced4da;
-    }
-
-    .filter-select:focus {
-        outline: none;
-        border-color: #e63946;
-        box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.1);
-    }
-
-    .filter-dropdown {
-        width: 100%;
-        padding: 12px 16px;
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        background: white;
-        font-size: 0.95rem;
-        color: #495057;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
-
-    .filter-dropdown:hover {
-        border-color: #ced4da;
-    }
-
-    .category-dropdown {
-        width: 100%;
-        border: none;
-        border-radius: 12px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-        padding: 0;
-        margin-top: 8px;
-    }
-
-    .dropdown-header {
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid #e9ecef;
-        font-weight: 600;
-        color: #495057;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: #f8f9fa;
-    }
-
-    .dropdown-header i {
-        color: #e63946;
-    }
-
-    .category-list {
-        max-height: 300px;
-        overflow-y: auto;
-        padding: 0.5rem;
-    }
-
-    .category-item {
-        display: flex;
-        align-items: center;
-        padding: 12px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        margin-bottom: 4px;
-    }
-
-    .category-item:hover {
-        background: #f8f9fa;
-    }
-
-    .category-checkbox {
-        width: 20px;
-        height: 20px;
-        margin-right: 12px;
-        cursor: pointer;
-        accent-color: #e63946;
-    }
-
-    .category-name {
-        flex: 1;
-        font-size: 0.95rem;
-        color: #495057;
-    }
-
-    .category-check-icon {
-        color: #e63946;
-        opacity: 0;
-        transition: opacity 0.2s ease;
-    }
-
-    .category-checkbox:checked ~ .category-check-icon {
-        opacity: 1;
-    }
-
-    .dropdown-footer {
-        padding: 1rem 1.25rem;
-        border-top: 1px solid #e9ecef;
-        background: #f8f9fa;
-    }
-
-    .btn-apply-filters {
-        width: 100%;
-        background: linear-gradient(135deg, #e63946 0%, #c7001b 100%);
-        color: white;
-        border: none;
-        padding: 12px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.95rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-apply-filters:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
-    }
-
-    .btn-reset {
-        width: 100%;
-        padding: 12px 16px;
-        border: 2px solid #e9ecef;
-        border-radius: 12px;
-        background: white;
-        color: #6c757d;
-        font-size: 0.95rem;
-        font-weight: 600;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-reset:hover {
-        border-color: #e63946;
-        color: #e63946;
-        background: #fff5f5;
-    }
-
-    /* ===== PRODUCTS SECTION ===== */
-    .products-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid #e9ecef;
-    }
-
-    .products-title {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin: 0;
-    }
-
-    .products-title i {
-        color: #e63946;
-    }
-
-    .count-badge {
-        background: linear-gradient(135deg, #e63946 0%, #c7001b 100%);
-        color: white;
-        padding: 8px 20px;
-        border-radius: 50px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
-    }
-
-    .products-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 2rem;
-        margin-bottom: 4rem;
-    }
-
-    .product-card {
-        background: white;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-    }
-
-    .product-card:hover {
-        transform: translateY(-12px);
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    }
-
-    .product-link {
-        text-decoration: none;
-        color: inherit;
-        display: block;
-    }
-
-    .product-image-wrapper {
-        position: relative;
-        height: 240px;
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        overflow: hidden;
-    }
-
-    .product-image {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        padding: 1.5rem;
-        transition: transform 0.4s ease;
-    }
-
-    .product-card:hover .product-image {
-        transform: scale(1.1);
-    }
-
-    .product-badges {
-        position: absolute;
-        top: 12px;
-        left: 12px;
-        right: 12px;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        z-index: 2;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .badge-discount {
-        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-        color: white;
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-weight: 700;
-        font-size: 0.8rem;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-        animation: pulse 2s infinite;
-    }
-
-    @@keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-    }
-
-    .badge-stock {
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .in-stock {
-        background: #28a745;
-        color: white;
-    }
-
-    .out-of-stock {
-        background: #dc3545;
-        color: white;
-    }
-
-    .product-content {
-        padding: 1.5rem;
-    }
-
-    .product-category {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        background: #fff5f5;
-        color: #e63946;
-        padding: 4px 12px;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        margin-bottom: 0.75rem;
-        border: 1px solid rgba(230, 57, 70, 0.2);
-    }
-
-    .product-name {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #1a1a1a;
-        margin-bottom: 0.5rem;
-        line-height: 1.4;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .product-manufacturer {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        color: #6c757d;
-        font-size: 0.9rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .product-manufacturer i {
-        color: #adb5bd;
-    }
-
-    .product-description {
-        font-size: 0.9rem;
-        color: #6c757d;
-        line-height: 1.6;
-        margin-bottom: 1rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .product-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 1rem;
-        border-top: 1px solid #e9ecef;
-    }
-
-    .product-price {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-
-    .price-original {
-        color: #adb5bd;
-        font-size: 0.9rem;
-        text-decoration: line-through;
-    }
-
-    .price-current {
-        color: #e63946;
-        font-size: 1.5rem;
-        font-weight: 700;
-    }
-
-    .price-current.text-muted {
-        color: #6c757d;
-        font-size: 0.9rem;
-        font-weight: 600;
-    }
-
-    .btn-view-details {
-        background: linear-gradient(135deg, #e63946 0%, #c7001b 100%);
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: all 0.3s ease;
-    }
-
-    .btn-view-details:hover {
-        transform: translateX(3px);
-        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.3);
-    }
-
-    .btn-view-details i {
-        transition: transform 0.3s ease;
-    }
-
-    .btn-view-details:hover i {
-        transform: translateX(3px);
-    }
-
-    /* ===== EMPTY STATE ===== */
-    .empty-state {
-        grid-column: 1 / -1;
-        text-align: center;
-        padding: 4rem 2rem;
-    }
-
-    .empty-icon {
-        font-size: 5rem;
-        color: #dee2e6;
-        margin-bottom: 1rem;
-    }
-
-    .empty-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #6c757d;
-        margin-bottom: 0.5rem;
-    }
-
-    .empty-text {
-        color: #adb5bd;
-        font-size: 1rem;
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @@media (max-width: 992px) {
-        .hero-brand {
-            font-size: 3.5rem;
+<!-- Newsletter Section -->
+<div class="newsletter-section mt-5 py-5">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-6">
+                <h2 class="text-white mb-3">Stay Updated!</h2>
+                <p class="text-white-50 mb-4">Subscribe to our newsletter for exclusive deals and updates</p>
+                <div class="input-group input-group-lg">
+                    <input type="email" class="form-control" placeholder="Enter your email">
+                    <button class="btn btn-warning" type="button">
+                        <i class="bi bi-send"></i> Subscribe
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .hero-section {
+            position: relative;
+            background: url('/maxresdefault.jpg') center/cover no-repeat;
+            min-height: 500px;
+            margin-top: -20px;
         }
 
-        .hero-features {
-            gap: 2rem;
-        }
-
-        .products-grid {
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 1.5rem;
-        }
-    }
-
-    @@media (max-width: 768px) {
-        .hero-banner {
-            height: 500px;
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,123,255,0.6) 100%);
         }
 
         .hero-content {
-            height: 500px;
+            position: relative;
+            z-index: 2;
         }
 
-        .hero-brand {
-            font-size: 2.5rem;
+        .hero-text {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        .hero-welcome {
-            font-size: 1.2rem;
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .hero-features {
+        .animate-fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .animate-fade-in-delay-1 {
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .animate-fade-in-delay-2 {
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .animate-fade-in-delay-3 {
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        @@keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse-button {
+            animation: pulse 2s infinite;
+        }
+
+        .feature-box {
+            padding: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
             flex-direction: column;
-            gap: 1rem;
+            position: relative;
         }
 
-        .filters-row {
-            grid-template-columns: 1fr;
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
 
-        .products-header {
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc3545;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 25px;
+            font-weight: bold;
+            z-index: 10;
+            box-shadow: 0 3px 10px rgba(220,53,69,0.5);
+        }
+
+        .product-image {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .no-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            font-size: 4rem;
+            color: #dee2e6;
+        }
+
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .product-card:hover .product-overlay {
+            opacity: 1;
+        }
+
+        .product-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            gap: 1rem;
         }
 
-        .products-grid {
-            grid-template-columns: 1fr;
+        .product-category {
+            margin-bottom: 10px;
         }
-    }
-</style>
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #212529;
+            min-height: 50px;
+        }
+
+        .product-author {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+            flex-grow: 1;
+            margin-bottom: 15px;
+            min-height: 40px;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #6c757d;
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        .new-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .product-card:hover .new-price {
+            color: #dc3545;
+        }
+
+        .newsletter-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        @@media (max-width: 768px) {
+            .hero-section {
+                min-height: 400px;
+            }
+            
+            .product-card {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+}
 
 @section Scripts {
     <script>
-        document.querySelectorAll('.smooth-scroll').forEach(anchor => {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
-        });
-
-        $(document).ready(function() {
-            function normalizeText(text) {
-                return text.toLocaleLowerCase('tr-TR')
-                    .replace(/ı/g, 'i')
-                    .replace(/ş/g, 's')
-                    .replace(/ç/g, 'c')
-                    .replace(/ğ/g, 'g')
-                    .replace(/ü/g, 'u')
-                    .replace(/ö/g, 'o')
-                    .replace(/[^a-z0-9\s]/gi, '')
-                    .trim();
-            }
-
-            function updateProductCount() {
-                const visibleCount = $('.part-card:visible').length;
-                $('#productCount').text(visibleCount);
-            }
-            
-            function executeFiltersAndSort() {
-                var searchTerm = normalizeText($('#keywordInput').val()).toLowerCase();
-                var priceDirection = $('#priceOrder').val();
-                var ratingDirection = $('#ratingOrder').val();
-                var selectedCategories = $('.category-checkbox:checked').map(function() {
-                    return normalizeText($(this).val().toLowerCase());
-                }).get();
-
-                var searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
-
-                $('.part-card').each(function() {
-                    var $card = $(this);
-                    var partName = normalizeText(($card.data('title') || '').toLowerCase());
-                    var partManufacturer = normalizeText(($card.data('manufacturer') || '').toLowerCase());
-                    var partCategory = ($card.data('category') || '').toLowerCase();
-                    var partDescription = normalizeText(($card.data('info') || '').toLowerCase());
-                    
-                    var categoryMatches = selectedCategories.length === 0 || 
-                        (partCategory && selectedCategories.includes(partCategory));
-                    
-                    var searchMatches = searchWords.length === 0 || searchWords.every(word => 
-                        partName.includes(word) || partManufacturer.includes(word) || partDescription.includes(word)
-                    );
-                    
-                    $card.toggle(searchMatches && categoryMatches);
-                });
-
-                if (priceDirection) {
-                    var visibleCards = $('.part-card:visible').get();
-                    visibleCards.sort(function(cardA, cardB) {
-                        var priceA = parseFloat($(cardA).data('cost')) || 0;
-                        var priceB = parseFloat($(cardB).data('cost')) || 0;
-                        return priceDirection === 'asc' ? priceA - priceB : priceB - priceA;
-                    });
-                    $('#partsList').html(visibleCards);
-                } 
-                else if (ratingDirection) {
-                    var visibleCards = $('.part-card:visible').get();
-                    visibleCards.sort(function(cardA, cardB) {
-                        var ratingA = parseInt($(cardA).data('rating')) || 0;
-                        var ratingB = parseInt($(cardB).data('rating')) || 0;
-                        return ratingDirection === 'asc' ? ratingA - ratingB : ratingB - ratingA;
-                    });
-                    $('#partsList').empty().append(visibleCards);
-                }
-
-                updateProductCount();
-            }
-
-            let originalCardOrder = $('#partsList .part-card').toArray();
-
-            $('#clearFilters').on('click', function() {
-                $('#keywordInput').val('');
-                $('#priceOrder').val('');
-                $('#ratingOrder').val('');
-                $('.dropdown-menu').removeClass('show');
-                $('.category-checkbox').prop('checked', false);
-                $('.part-card').show();
-                
-                $('#partsList').empty();
-                originalCardOrder.forEach(function(card) {
-                    $('#partsList').append(card);
-                });
-                
-                updateProductCount();
-            });
-
-            $('#confirmFilters').on('click', function() {
-                executeFiltersAndSort();
-                $('.dropdown-menu').removeClass('show');
-            });
-            
-            $('#searchBtn').on('click', executeFiltersAndSort);
-            $('#priceOrder').on('change', executeFiltersAndSort);
-            $('#ratingOrder').on('change', executeFiltersAndSort);
-            
-            $('#keywordInput').on('keypress', function(e) {
-                if (e.which === 13) {
-                    executeFiltersAndSort();
-                }
-            });
-
-            updateProductCount();
         });
     </script>
 }

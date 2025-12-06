@@ -1,0 +1,24 @@
+@model List<CS308Main.Models.Comment>
+
+<div class="comments-section mt-4">
+    <h4>Customer Reviews</h4>
+    @if (Model == null || !Model.Any())
+    {
+        <p class="text-muted">No reviews yet. Be the first to review this product!</p>
+    }
+    else
+    {
+        @foreach (var comment in Model)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="card-subtitle mb-2">@comment.UserName</h6>
+                        <small class="text-muted">@comment.CreatedAt.ToString("MMM dd, yyyy")</small>
+                    </div>
+                    <p class="card-text">@comment.Text</p>
+                </div>
+            </div>
+        }
+    }
+</div>

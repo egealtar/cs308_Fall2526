@@ -1,6 +1,5 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using Microsoft.AspNetCore.Http;
 
 namespace CS308Main.Models
 {
@@ -8,35 +7,72 @@ namespace CS308Main.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        [BsonElement("_id")]
+        public string Id { get; set; } = string.Empty;
 
-        public string Name { get; set; }
+        [BsonElement("Name")]
+        public string Name { get; set; } = string.Empty;
 
-        public string Author { get; set; }
+        [BsonElement("Author")]
+        public string Author { get; set; } = string.Empty;
 
-        public string Model { get; set; }
+        [BsonElement("Model")]
+        public string Model { get; set; } = string.Empty;
 
-        public string SerialNumber { get; set; }
+        [BsonElement("SerialNumber")]
+        public string SerialNumber { get; set; } = string.Empty;
 
-        public string Description { get; set; }
+        [BsonElement("Description")]
+        public string Description { get; set; } = string.Empty;
 
+        [BsonElement("QuantityInStock")]
         public int QuantityInStock { get; set; }
 
+        [BsonElement("Price")]
         public decimal Price { get; set; }
 
+        [BsonElement("DiscountedPrice")]
+        public decimal? DiscountedPrice { get; set; }  // Nullable - bazı ürünlerde yok
+
+        [BsonElement("WarrantyStatus")]
         public bool WarrantyStatus { get; set; }
 
-        public string DistributorInformation { get; set; }
+        [BsonElement("DistributorInformation")]
+        public string DistributorInformation { get; set; } = string.Empty;
 
-        public string Genre { get; set; }
+        [BsonElement("Genre")]
+        public string Genre { get; set; } = string.Empty;
 
+        [BsonElement("OriginalPrice")]
         public decimal OriginalPrice { get; set; }
 
-        public decimal? DiscountedPrice { get; set; }
+        [BsonElement("ImagePath")]
+        public string ImagePath { get; set; } = string.Empty;
+
+        // COMPUTED PROPERTIES (VIEW İÇİN)
+        [BsonIgnore]
+        public string Category => Genre;
 
         [BsonIgnore]
-        public IFormFile ImageFile { get; set; }
+        public string ImageUrl => ImagePath;
 
-        public string ImagePath { get; set; }
+        [BsonIgnore]
+        public decimal FinalPrice => DiscountedPrice ?? Price;  // İndirimli fiyat varsa onu, yoksa normal fiyatı
+
+        [BsonIgnore]
+        public bool HasDiscount => DiscountedPrice.HasValue && DiscountedPrice.Value < Price;
+
+        [BsonIgnore]
+        public decimal DiscountPercentage
+        {
+            get
+            {
+                if (HasDiscount && Price > 0)
+                {
+                    return Math.Round(((Price - DiscountedPrice!.Value) / Price) * 100, 0);
+                }
+                return 0;
+            }
+        }
     }
 }
