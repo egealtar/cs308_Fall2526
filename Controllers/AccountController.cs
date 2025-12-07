@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using CS308Main.Models;
 using CS308Main.Services;
+using System.Security.Claims;
 
 namespace CS308Main.Controllers
 {
@@ -21,6 +22,10 @@ namespace CS308Main.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
@@ -33,28 +38,56 @@ namespace CS308Main.Controllers
                 return View(model);
             }
 
-            var user = await _authService.RegisterAsync(model);
-            
-            if (user == null)
+            // Check if email already exists
+            var existingUser = await _authService.GetUserByEmailAsync(model.Email);
+            if (existingUser != null)
             {
-                ModelState.AddModelError("", "Email already exists");
+                ModelState.AddModelError("Email", "This email is already registered");
                 return View(model);
             }
 
-            TempData["SuccessMessage"] = "Registration successful! Please login.";
+            // Validate role
+            var validRoles = new[] { "Customer", "DeliveryAdmin", "ProductManager", "SalesManager" };
+            if (!validRoles.Contains(model.Role))
+            {
+                ModelState.AddModelError("Role", "Invalid role selected");
+                return View(model);
+            }
+
+            // Create user with selected role
+            var user = new User
+            {
+                Name = model.Name,
+                Email = model.Email,
+                PasswordHash = _authService.HashPassword(model.Password),
+                TaxId = model.TaxId ?? "",
+                HomeAddress = model.HomeAddress,
+                Role = model.Role,
+                CreatedAt = DateTime.UtcNow,
+                IsActive = true
+            };
+
+            await _authService.RegisterAsync(user);
+
+            _logger.LogInformation($"New user registered: {user.Email} with role {user.Role}");
+
+            TempData["Success"] = "Registration successful! Please login.";
             return RedirectToAction("Login");
         }
 
         [HttpGet]
-        public IActionResult Login(string? returnUrl = null)
+        public IActionResult Login()
         {
-            ViewData["ReturnUrl"] = returnUrl;
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -62,14 +95,13 @@ namespace CS308Main.Controllers
             }
 
             var user = await _authService.LoginAsync(model.Email, model.Password);
-            
+
             if (user == null)
             {
                 ModelState.AddModelError("", "Invalid email or password");
                 return View(model);
             }
 
-            // Create claims
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
@@ -82,7 +114,7 @@ namespace CS308Main.Controllers
             var authProperties = new AuthenticationProperties
             {
                 IsPersistent = model.RememberMe,
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7)
+                ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddDays(7) : DateTimeOffset.UtcNow.AddHours(1)
             };
 
             await HttpContext.SignInAsync(
@@ -90,36 +122,38 @@ namespace CS308Main.Controllers
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
 
-            _logger.LogInformation($"User {user.Email} logged in");
+            _logger.LogInformation($"User {user.Email} logged in with role {user.Role}");
 
-            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            TempData["Success"] = $"Welcome back, {user.Name}!";
+
+            // Redirect based on role
+            return user.Role switch
             {
-                return Redirect(returnUrl);
-            }
-
-            return RedirectToAction("Index", "Home");
+                "DeliveryAdmin" => RedirectToAction("Index", "Delivery"),
+                "ProductManager" => RedirectToAction("Index", "Stock"),
+                "SalesManager" => RedirectToAction("AllOrders", "Order"),
+                _ => RedirectToAction("Index", "Home")
+            };
         }
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            _logger.LogInformation("User logged out");
+            TempData["Success"] = "You have been logged out successfully.";
             return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Profile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
-            if (string.IsNullOrEmpty(userId))
-            {
-                return RedirectToAction("Login");
-            }
+            var user = await _authService.GetUserByIdAsync(userId ?? "");
 
-            var user = await _authService.GetUserByIdAsync(userId);
-            
             if (user == null)
             {
                 return RedirectToAction("Login");

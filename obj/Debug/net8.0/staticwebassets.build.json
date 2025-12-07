@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "fVBvkdhuLmSUj6yCE89kCIQRF5WB7ZeSThYTVkJavHE=",
+  "Hash": "UXYVTgJeiGrW8OQ/1+8mN25nHt9k/SPpkpflru9xVs0=",
   "Source": "CS308Main",
   "BasePath": "_content/CS308Main",
   "Mode": "Default",
@@ -53,6 +53,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\Invoices\\Invoice_INV-20251207-8749_20251207131811.pdf",
+      "SourceId": "CS308Main",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\",
+      "BasePath": "_content/CS308Main",
+      "RelativePath": "Invoices/Invoice_INV-20251207-8749_20251207131811.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Invoices\\Invoice_INV-20251207-8749_20251207131811.pdf"
     },
     {
       "Identity": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\images\\maxresdefault.jpg",

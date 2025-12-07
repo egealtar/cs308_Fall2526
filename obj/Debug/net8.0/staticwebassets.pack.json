@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\Invoices\\Invoice_INV-20251207-8749_20251207131811.pdf",
+      "PackagePath": "staticwebassets\\Invoices\\Invoice_INV-20251207-8749_20251207131811.pdf"
+    },
+    {
       "Id": "C:\\Users\\aaa\\Desktop\\cs308main\\CS308Main\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

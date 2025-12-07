@@ -9,9 +9,19 @@
         <div class="col-md-6">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Create Account</h3>
+                    <h3 class="mb-0">
+                        <i class="bi bi-person-plus"></i> Create Account
+                    </h3>
                 </div>
                 <div class="card-body">
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["Error"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    }
+
                     <form asp-action="Register" method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
@@ -39,20 +49,25 @@
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
 
-                        <!-- YENİ: ROLE SEÇİMİ -->
                         <div class="mb-3">
-                            <label asp-for="Role" class="form-label">Register As</label>
-                            <select asp-for="Role" class="form-select">
+                            <label asp-for="Role" class="form-label">
+                                <i class="bi bi-person-badge"></i> Register As
+                            </label>
+                            <select asp-for="Role" class="form-select" required>
+                                <option value="">-- Select Account Type --</option>
                                 <option value="Customer">Customer</option>
                                 <option value="DeliveryAdmin">Delivery Admin</option>
                             </select>
                             <span asp-validation-for="Role" class="text-danger"></span>
-                            <small class="text-muted">Select "Delivery Admin" if you want to manage deliveries</small>
+                            <small class="text-muted">
+                                <strong>Customer:</strong> Shop and place orders<br />
+                                <strong>Delivery Admin:</strong> Manage and track deliveries
+                            </small>
                         </div>
 
                         <div class="mb-3">
                             <label asp-for="TaxId" class="form-label">Tax ID (Optional)</label>
-                            <input asp-for="TaxId" class="form-control" placeholder="Enter your tax ID" />
+                            <input asp-for="TaxId" class="form-control" placeholder="Enter your tax ID (optional)" />
                             <span asp-validation-for="TaxId" class="text-danger"></span>
                         </div>
 
@@ -63,11 +78,13 @@
                         </div>
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-person-plus"></i> Register
+                            </button>
                         </div>
 
                         <div class="text-center mt-3">
-                            <p>Already have an account? <a asp-action="Login">Login here</a></p>
+                            <p>Already have an account? <a asp-action="Login" class="text-decoration-none">Login here</a></p>
                         </div>
                     </form>
                 </div>
