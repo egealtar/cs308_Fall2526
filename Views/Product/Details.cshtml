@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = Model.Name;
+    var comments = ViewBag.Comments as List<CS308Main.Models.Comment>;
+    var averageRating = ViewBag.AverageRating as double?;
+    var ratingCount = ViewBag.RatingCount as int?;
+    var deliveredOrders = ViewBag.DeliveredOrders as List<CS308Main.Models.Order>;
 }
 
 <div class="container mt-5">
@@ -14,8 +18,8 @@
             }
             else
             {
-                <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 400px;">
-                    <h3>No Image</h3>
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center rounded" style="height: 400px;">
+                    <i class="bi bi-image" style="font-size: 5rem;"></i>
                 </div>
             }
         </div>
@@ -24,21 +28,50 @@
         <div class="col-md-6">
             <h1 class="mb-3">@Model.Name</h1>
             
+            @if (!string.IsNullOrEmpty(Model.Author))
+            {
+                <p class="text-muted lead">by @Model.Author</p>
+            }
+            
             <!-- Rating Display -->
-            <div class="mb-3" id="ratingDisplay">
+            <div class="mb-3">
                 <div class="d-flex align-items-center">
-                    <div class="stars me-2" id="averageStars">
-                        <i class="bi bi-star"></i>
-                        <i class="bi bi-star"></i>
-                        <i class="bi bi-star"></i>
-                        <i class="bi bi-star"></i>
-                        <i class="bi bi-star"></i>
+                    <div class="stars me-2">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= Math.Floor(averageRating ?? 0))
+                            {
+                                <i class="bi bi-star-fill text-warning"></i>
+                            }
+                            else if (i - (averageRating ?? 0) < 1 && (averageRating ?? 0) > 0)
+                            {
+                                <i class="bi bi-star-half text-warning"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-star text-warning"></i>
+                            }
+                        }
                     </div>
-                    <span id="ratingText" class="text-muted">(Loading...)</span>
+                    <span class="text-muted">@averageRating out of 5 (@ratingCount ratings)</span>
                 </div>
             </div>
 
-            <h3 class="text-success mb-3">$@Model.Price.ToString("F2")</h3>
+            <!-- Price -->
+            <div class="mb-3">
+                @if (Model.HasDiscount)
+                {
+                    <div>
+                        <span class="text-decoration-line-through text-muted h4">$@Model.Price.ToString("F2")</span>
+                        <span class="h2 text-danger ms-2">$@Model.FinalPrice.ToString("F2")</span>
+                        <span class="badge bg-danger ms-2">-@Model.DiscountPercentage% OFF</span>
+                    </div>
+                }
+                else
+                {
+                    <span class="h2 text-success">$@Model.Price.ToString("F2")</span>
+                }
+            </div>
 
             <div class="mb-3">
                 <p><strong>Model:</strong> @Model.Model</p>
@@ -99,9 +132,8 @@
     <hr class="my-5" />
 
     <!-- RATING & COMMENT SECTION -->
-    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer") && deliveredOrders != null && deliveredOrders.Any())
     {
-        <!-- Check if user has delivered orders for this product -->
         <div class="row mb-5">
             <div class="col-md-12">
                 <div class="card shadow">
@@ -110,7 +142,7 @@
                     </div>
                     <div class="card-body">
                         <p class="text-muted">
-                            <i class="bi bi-info-circle"></i> You can only rate and review products from your delivered orders.
+                            <i class="bi bi-info-circle"></i> You can rate and review products from your delivered orders.
                         </p>
 
                         <!-- Rating Form -->
@@ -132,9 +164,14 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Order ID</label>
-                                <input type="text" name="orderId" class="form-control" placeholder="Enter your delivered order ID" required />
-                                <small class="text-muted">Find this in your order history</small>
+                                <label class="form-label fw-bold">Select Order</label>
+                                <select name="orderId" class="form-select" required>
+                                    <option value="">-- Select a delivered order --</option>
+                                    @foreach (var order in deliveredOrders)
+                                    {
+                                        <option value="@order.Id">Order from @order.CreatedAt.ToString("MMM dd, yyyy") - $@order.TotalPrice.ToString("F2")</option>
+                                    }
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-warning">
                                 <i class="bi bi-star-fill"></i> Submit Rating
@@ -151,9 +188,14 @@
                                 <textarea name="text" class="form-control" rows="4" placeholder="Share your experience with this product..." required></textarea>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Order ID</label>
-                                <input type="text" name="orderId" class="form-control" placeholder="Enter your delivered order ID" required />
-                                <small class="text-muted">Find this in your order history</small>
+                                <label class="form-label fw-bold">Select Order</label>
+                                <select name="orderId" class="form-select" required>
+                                    <option value="">-- Select a delivered order --</option>
+                                    @foreach (var order in deliveredOrders)
+                                    {
+                                        <option value="@order.Id">Order from @order.CreatedAt.ToString("MMM dd, yyyy") - $@order.TotalPrice.ToString("F2")</option>
+                                    }
+                                </select>
                             </div>
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-chat-square-text"></i> Submit Review
@@ -164,13 +206,40 @@
             </div>
         </div>
     }
+    else if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+    {
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> You can rate and review this product after your order is delivered.
+        </div>
+    }
 
     <!-- COMMENTS DISPLAY -->
     <div class="row">
         <div class="col-md-12">
-            <div id="commentsContainer">
-                <!-- Comments will be loaded here -->
-            </div>
+            <h3 class="mb-4">Customer Reviews</h3>
+            @if (comments == null || !comments.Any())
+            {
+                <div class="alert alert-secondary">
+                    <i class="bi bi-chat"></i> No reviews yet. Be the first to review this product!
+                </div>
+            }
+            else
+            {
+                @foreach (var comment in comments)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="card-subtitle mb-2">
+                                    <i class="bi bi-person-circle"></i> @comment.UserName
+                                </h6>
+                                <small class="text-muted">@comment.CreatedAt.ToString("MMM dd, yyyy")</small>
+                            </div>
+                            <p class="card-text mt-2">@comment.Text</p>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>
@@ -195,42 +264,5 @@
         .rating-input input[type="radio"]:checked ~ label {
             color: #ffd700;
         }
-        .stars i {
-            color: #ffd700;
-        }
-        .stars i.bi-star {
-            color: #ddd;
-        }
     </style>
-}
-
-@section Scripts {
-    <script>
-        $(document).ready(function() {
-            // Load average rating
-            $.get('/Comment/GetAverageRating?productId=@Model.Id', function(data) {
-                var average = data.average;
-                var count = data.count;
-                
-                // Update rating display
-                var starsHtml = '';
-                for (var i = 1; i <= 5; i++) {
-                    if (i <= Math.floor(average)) {
-                        starsHtml += '<i class="bi bi-star-fill text-warning"></i>';
-                    } else if (i - average < 1 && i - average > 0) {
-                        starsHtml += '<i class="bi bi-star-half text-warning"></i>';
-                    } else {
-                        starsHtml += '<i class="bi bi-star text-warning"></i>';
-                    }
-                }
-                $('#averageStars').html(starsHtml);
-                $('#ratingText').text(average.toFixed(1) + ' out of 5 (' + count + ' ratings)');
-            });
-
-            // Load comments
-            $.get('/Comment/GetApprovedComments?productId=@Model.Id', function(data) {
-                $('#commentsContainer').html(data);
-            });
-        });
-    </script>
 }

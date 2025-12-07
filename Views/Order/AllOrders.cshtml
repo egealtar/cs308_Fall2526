@@ -7,7 +7,9 @@
 <div class="container mt-5">
     <div class="card shadow">
         <div class="card-header bg-dark text-white">
-            <h3 class="mb-0">All Orders Management</h3>
+            <h3 class="mb-0">
+                <i class="bi bi-truck"></i> All Orders Management
+            </h3>
         </div>
         <div class="card-body">
             @if (TempData["Success"] != null)
@@ -26,77 +28,50 @@
             }
             else
             {
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Date</th>
-                                <th>Items</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var order in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        <small>@order.Id.Substring(0, 8)...</small>
-                                    </td>
-                                    <td>@order.UserId.Substring(0, 8)...</td>
-                                    <td>
-                                        <small>@order.CreatedAt.ToString("MMM dd, yyyy")</small>
-                                    </td>
-                                    <td>@order.Items.Count</td>
-                                    <td><strong>$@order.TotalPrice.ToString("F2")</strong></td>
-                                    <td>
-                                        @if (order.Status == "Processing")
-                                        {
-                                            <span class="badge bg-warning text-dark">@order.Status</span>
-                                        }
-                                        else if (order.Status == "In-Transit")
-                                        {
-                                            <span class="badge bg-info">@order.Status</span>
-                                        }
-                                        else if (order.Status == "Delivered")
-                                        {
-                                            <span class="badge bg-success">@order.Status</span>
-                                        }
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            @if (order.Status == "Processing")
-                                            {
-                                                <form asp-action="UpdateStatus" method="post" class="d-inline">
-                                                    <input type="hidden" name="orderId" value="@order.Id" />
-                                                    <input type="hidden" name="status" value="In-Transit" />
-                                                    <button type="submit" class="btn btn-sm btn-info" title="Ship Order">
-                                                        <i class="bi bi-truck"></i>
-                                                    </button>
-                                                </form>
-                                            }
-                                            @if (order.Status == "In-Transit")
-                                            {
-                                                <form asp-action="UpdateStatus" method="post" class="d-inline">
-                                                    <input type="hidden" name="orderId" value="@order.Id" />
-                                                    <input type="hidden" name="status" value="Delivered" />
-                                                    <button type="submit" class="btn btn-sm btn-success" title="Mark as Delivered">
-                                                        <i class="bi bi-check-circle"></i>
-                                                    </button>
-                                                </form>
-                                            }
-                                            <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-primary">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                <!-- Filter Tabs -->
+                <ul class="nav nav-tabs mb-3" id="orderTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button">
+                            All Orders (@Model.Count)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="processing-tab" data-bs-toggle="tab" data-bs-target="#processing" type="button">
+                            Processing (@Model.Count(o => o.Status == "Processing"))
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="transit-tab" data-bs-toggle="tab" data-bs-target="#transit" type="button">
+                            In-Transit (@Model.Count(o => o.Status == "In-Transit"))
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="delivered-tab" data-bs-toggle="tab" data-bs-target="#delivered" type="button">
+                            Delivered (@Model.Count(o => o.Status == "Delivered"))
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="orderTabsContent">
+                    <!-- All Orders -->
+                    <div class="tab-pane fade show active" id="all" role="tabpanel">
+                        @await Html.PartialAsync("_OrdersTable", Model)
+                    </div>
+                    
+                    <!-- Processing Orders -->
+                    <div class="tab-pane fade" id="processing" role="tabpanel">
+                        @await Html.PartialAsync("_OrdersTable", Model.Where(o => o.Status == "Processing").ToList())
+                    </div>
+                    
+                    <!-- In-Transit Orders -->
+                    <div class="tab-pane fade" id="transit" role="tabpanel">
+                        @await Html.PartialAsync("_OrdersTable", Model.Where(o => o.Status == "In-Transit").ToList())
+                    </div>
+                    
+                    <!-- Delivered Orders -->
+                    <div class="tab-pane fade" id="delivered" role="tabpanel">
+                        @await Html.PartialAsync("_OrdersTable", Model.Where(o => o.Status == "Delivered").ToList())
+                    </div>
                 </div>
             }
         </div>

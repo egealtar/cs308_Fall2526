@@ -14,19 +14,27 @@ namespace CS308Main.Controllers
         private readonly IMongoCollection<Order> _orders;
         private readonly IMongoCollection<Product> _products;
         private readonly IMongoCollection<User> _users;
+        private readonly IMongoCollection<Invoice> _invoices;
         private readonly MockPaymentService _paymentService;
+        private readonly IPdfService _pdfService;
+        private readonly IEmailService _emailService;
         private readonly ILogger<CheckoutController> _logger;
 
         public CheckoutController(
             IMongoDatabase database,
             MockPaymentService paymentService,
+            IPdfService pdfService,
+            IEmailService emailService,
             ILogger<CheckoutController> logger)
         {
             _carts = database.GetCollection<ShoppingCart>("ShoppingCarts");
             _orders = database.GetCollection<Order>("Orders");
             _products = database.GetCollection<Product>("Products");
             _users = database.GetCollection<User>("Users");
+            _invoices = database.GetCollection<Invoice>("Invoices");
             _paymentService = paymentService;
+            _pdfService = pdfService;
+            _emailService = emailService;
             _logger = logger;
         }
 
@@ -58,7 +66,7 @@ namespace CS308Main.Controllers
                 var product = await _products.Find(p => p.Id == item.ProductId).FirstOrDefaultAsync();
                 if (product != null)
                 {
-                    total += product.Price * item.Quantity;
+                    total += product.FinalPrice * item.Quantity;
                 }
             }
 
@@ -122,10 +130,10 @@ namespace CS308Main.Controllers
                     ProductId = product.Id,
                     ProductName = product.Name,
                     Quantity = cartItem.Quantity,
-                    Price = product.Price
+                    Price = product.FinalPrice
                 });
 
-                totalPrice += product.Price * cartItem.Quantity;
+                totalPrice += product.FinalPrice * cartItem.Quantity;
             }
 
             // Process payment (mock)
@@ -166,10 +174,88 @@ namespace CS308Main.Controllers
 
             _logger.LogInformation($"Order {order.Id} created successfully for user {userId}");
 
-            TempData["Success"] = "Order placed successfully!";
+            // Generate invoice and send email
+            try
+            {
+                await GenerateAndSendInvoiceAsync(order.Id, userId ?? "");
+                TempData["Success"] = "Order placed successfully! Invoice has been sent to your email.";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to generate or send invoice");
+                TempData["Success"] = "Order placed successfully! Invoice generation failed, but you can download it from your order history.";
+            }
+
             TempData["OrderId"] = order.Id;
 
             return RedirectToAction("Success", new { orderId = order.Id });
+        }
+
+        private async Task GenerateAndSendInvoiceAsync(string orderId, string userId)
+        {
+            // Get user
+            var user = await _users.Find(u => u.Id == userId).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                _logger.LogWarning($"User {userId} not found for invoice generation");
+                return;
+            }
+
+            // Get order
+            var order = await _orders.Find(o => o.Id == orderId).FirstOrDefaultAsync();
+            if (order == null)
+            {
+                _logger.LogWarning($"Order {orderId} not found for invoice generation");
+                return;
+            }
+
+            // Check if invoice already exists
+            var existingInvoice = await _invoices.Find(i => i.OrderId == orderId).FirstOrDefaultAsync();
+            if (existingInvoice != null)
+            {
+                _logger.LogInformation($"Invoice already exists for order {orderId}");
+                return;
+            }
+
+            // Create invoice
+            var invoice = new Invoice
+            {
+                OrderId = orderId,
+                UserId = userId,
+                InvoiceNumber = $"INV-{DateTime.Now:yyyyMMdd}-{new Random().Next(1000, 9999)}",
+                TotalAmount = order.TotalPrice,
+                Items = order.Items.Select(item => new InvoiceItem
+                {
+                    ProductName = item.ProductName,
+                    Quantity = item.Quantity,
+                    Price = item.Price,
+                    Total = item.Price * item.Quantity
+                }).ToList(),
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _invoices.InsertOneAsync(invoice);
+            _logger.LogInformation($"Invoice {invoice.InvoiceNumber} created for order {orderId}");
+
+            try
+            {
+                // Generate PDF
+                var pdfPath = await _pdfService.GenerateInvoicePdfAsync(invoice, user);
+                _logger.LogInformation($"PDF generated at {pdfPath}");
+
+                // Update invoice with PDF path
+                var update = Builders<Invoice>.Update.Set(i => i.PdfPath, pdfPath);
+                await _invoices.UpdateOneAsync(i => i.Id == invoice.Id, update);
+
+                // Send email
+                await _emailService.SendInvoiceEmailAsync(user.Email, invoice.InvoiceNumber, pdfPath);
+                _logger.LogInformation($"Invoice email sent to {user.Email}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Failed to generate PDF or send email for invoice {invoice.InvoiceNumber}");
+                throw;
+            }
         }
 
         [HttpGet]
