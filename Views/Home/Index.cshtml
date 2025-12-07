@@ -105,7 +105,7 @@
                                 <i class="bi bi-search"></i> Search Products
                             </label>
                             <input type="text" name="search" class="form-control form-control-lg" 
-                                   placeholder="Search by name or description..." value="@currentSearch" />
+                                   placeholder="Search by name, author, description..." value="@currentSearch" />
                         </div>
                         <div class="col-md-3" id="categories">
                             <label class="form-label fw-bold">
@@ -130,7 +130,6 @@
                                 <option value="">Default</option>
                                 <option value="price_asc" selected="@(currentSort == "price_asc")">Price: Low to High</option>
                                 <option value="price_desc" selected="@(currentSort == "price_desc")">Price: High to Low</option>
-                                <option value="popularity" selected="@(currentSort == "popularity")">Popularity</option>
                                 <option value="name_asc" selected="@(currentSort == "name_asc")">Name: A-Z</option>
                                 <option value="name_desc" selected="@(currentSort == "name_desc")">Name: Z-A</option>
                             </select>

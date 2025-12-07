@@ -270,6 +270,24 @@ namespace CS308Main.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            // Get invoice for this order
+            var invoice = await _invoices.Find(i => i.OrderId == orderId).FirstOrDefaultAsync();
+            
+            // If invoice doesn't exist yet, try to generate it
+            if (invoice == null)
+            {
+                try
+                {
+                    await GenerateAndSendInvoiceAsync(orderId, userId ?? "");
+                    invoice = await _invoices.Find(i => i.OrderId == orderId).FirstOrDefaultAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"Failed to generate invoice for order {orderId}");
+                }
+            }
+
+            ViewBag.Invoice = invoice;
             return View(order);
         }
     }
