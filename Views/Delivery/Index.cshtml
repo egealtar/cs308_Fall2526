@@ -1,0 +1,273 @@
+@model List<CS308Main.Models.Order>
+
+@{
+    ViewData["Title"] = "Delivery Dashboard";
+    var processingCount = Model.Count(o => o.Status == "Processing");
+    var inTransitCount = Model.Count(o => o.Status == "In-Transit");
+    var deliveredCount = Model.Count(o => o.Status == "Delivered");
+    var totalOrders = Model.Count;
+}
+
+<div class="container-fluid mt-4">
+    <!-- DELIVERY STATISTICS -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="bi bi-truck"></i> Delivery Management Dashboard
+            </h2>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Pending Orders</h6>
+                            <h2 class="mb-0">@processingCount</h2>
+                        </div>
+                        <i class="bi bi-clock-history" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                    <small>Waiting to be shipped</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">In Transit</h6>
+                            <h2 class="mb-0">@inTransitCount</h2>
+                        </div>
+                        <i class="bi bi-truck" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                    <small>Currently being delivered</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Delivered</h6>
+                            <h2 class="mb-0">@deliveredCount</h2>
+                        </div>
+                        <i class="bi bi-check-circle" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                    <small>Successfully completed</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Total Orders</h6>
+                            <h2 class="mb-0">@totalOrders</h2>
+                        </div>
+                        <i class="bi bi-clipboard-data" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                    <small>All time deliveries</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- ORDERS TABLE -->
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                    <i class="bi bi-list-check"></i> Delivery Orders
+                </h4>
+                <div>
+                    <button class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#filterSection">
+                        <i class="bi bi-funnel"></i> Filters
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Filter Section -->
+            <div class="collapse mb-3" id="filterSection">
+                <div class="card card-body bg-light">
+                    <form method="get" asp-action="Index" class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-select">
+                                <option value="">All Status</option>
+                                <option value="Processing">Processing</option>
+                                <option value="In-Transit">In-Transit</option>
+                                <option value="Delivered">Delivered</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date From</label>
+                            <input type="date" name="dateFrom" class="form-control" />
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date To</label>
+                            <input type="date" name="dateTo" class="form-control" />
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-search"></i> Apply Filters
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info text-center py-5">
+                    <i class="bi bi-inbox" style="font-size: 4rem;"></i>
+                    <h4 class="mt-3">No orders to deliver at the moment.</h4>
+                    <p>All deliveries are up to date!</p>
+                </div>
+            }
+            else
+            {
+                <!-- Tabs -->
+                <ul class="nav nav-tabs mb-3" id="deliveryTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button">
+                            <i class="bi bi-list"></i> All Orders (@totalOrders)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="processing-tab" data-bs-toggle="tab" data-bs-target="#processing" type="button">
+                            <i class="bi bi-clock-history"></i> Pending (@processingCount)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="transit-tab" data-bs-toggle="tab" data-bs-target="#transit" type="button">
+                            <i class="bi bi-truck"></i> In Transit (@inTransitCount)
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="delivered-tab" data-bs-toggle="tab" data-bs-target="#delivered" type="button">
+                            <i class="bi bi-check-circle"></i> Delivered (@deliveredCount)
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="deliveryTabsContent">
+                    <!-- All Orders -->
+                    <div class="tab-pane fade show active" id="all" role="tabpanel">
+                        @await Html.PartialAsync("_DeliveryOrdersTable", Model)
+                    </div>
+                    
+                    <!-- Processing Orders -->
+                    <div class="tab-pane fade" id="processing" role="tabpanel">
+                        @await Html.PartialAsync("_DeliveryOrdersTable", Model.Where(o => o.Status == "Processing").ToList())
+                    </div>
+                    
+                    <!-- In-Transit Orders -->
+                    <div class="tab-pane fade" id="transit" role="tabpanel">
+                        @await Html.PartialAsync("_DeliveryOrdersTable", Model.Where(o => o.Status == "In-Transit").ToList())
+                    </div>
+                    
+                    <!-- Delivered Orders -->
+                    <div class="tab-pane fade" id="delivered" role="tabpanel">
+                        @await Html.PartialAsync("_DeliveryOrdersTable", Model.Where(o => o.Status == "Delivered").ToList())
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="bi bi-lightning"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="d-grid">
+                                <a href="#processing" class="btn btn-warning" data-bs-toggle="tab" data-bs-target="#processing">
+                                    <i class="bi bi-clock-history"></i> View Pending Orders
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-grid">
+                                <a href="#transit" class="btn btn-info" data-bs-toggle="tab" data-bs-target="#transit">
+                                    <i class="bi bi-truck"></i> View In-Transit
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-grid">
+                                <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#filterSection">
+                                    <i class="bi bi-funnel"></i> Filter Orders
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-grid">
+                                <a asp-action="Index" class="btn btn-success">
+                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delivery Tips -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="alert alert-light border">
+                <h6 class="alert-heading"><i class="bi bi-info-circle"></i> Delivery Guidelines:</h6>
+                <ul class="mb-0">
+                    <li><strong>Processing:</strong> Order is ready to be picked up for delivery</li>
+                    <li><strong>In-Transit:</strong> Order is currently being delivered to customer</li>
+                    <li><strong>Delivered:</strong> Order has been successfully delivered to customer</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .nav-tabs .nav-link {
+            color: #495057;
+        }
+        .nav-tabs .nav-link.active {
+            font-weight: bold;
+        }
+    </style>
+}

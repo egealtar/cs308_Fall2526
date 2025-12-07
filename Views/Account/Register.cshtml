@@ -39,6 +39,17 @@
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
 
+                        <!-- YENİ: ROLE SEÇİMİ -->
+                        <div class="mb-3">
+                            <label asp-for="Role" class="form-label">Register As</label>
+                            <select asp-for="Role" class="form-select">
+                                <option value="Customer">Customer</option>
+                                <option value="DeliveryAdmin">Delivery Admin</option>
+                            </select>
+                            <span asp-validation-for="Role" class="text-danger"></span>
+                            <small class="text-muted">Select "Delivery Admin" if you want to manage deliveries</small>
+                        </div>
+
                         <div class="mb-3">
                             <label asp-for="TaxId" class="form-label">Tax ID (Optional)</label>
                             <input asp-for="TaxId" class="form-control" placeholder="Enter your tax ID" />

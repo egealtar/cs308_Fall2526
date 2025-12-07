@@ -1,0 +1,120 @@
+@model List<CS308Main.Models.Order>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-secondary text-center py-4">
+        <i class="bi bi-inbox" style="font-size: 3rem;"></i>
+        <h5 class="mt-2">No orders in this category.</h5>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Customer</th>
+                    <th>Delivery Address</th>
+                    <th>Items</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>
+                            <strong class="font-monospace text-primary">
+                                @order.Id.Substring(0, 8)...
+                            </strong>
+                        </td>
+                        <td>
+                            <div>
+                                <strong>@order.CreatedAt.ToString("MMM dd, yyyy")</strong>
+                            </div>
+                            <small class="text-muted">@order.CreatedAt.ToString("HH:mm")</small>
+                        </td>
+                        <td>
+                            <div>
+                                <i class="bi bi-person"></i>
+                                <small class="font-monospace">@order.UserId.Substring(0, 10)...</small>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-truncate" style="max-width: 200px;" title="@order.ShippingAddress">
+                                <i class="bi bi-geo-alt"></i>
+                                <small>@order.ShippingAddress</small>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-secondary">
+                                @order.Items.Count item(s)
+                            </span>
+                        </td>
+                        <td>
+                            <strong class="text-success">$@order.TotalPrice.ToString("F2")</strong>
+                        </td>
+                        <td>
+                            @if (order.Status == "Processing")
+                            {
+                                <span class="badge bg-warning text-dark fs-6">
+                                    <i class="bi bi-clock-history"></i> Processing
+                                </span>
+                            }
+                            else if (order.Status == "In-Transit")
+                            {
+                                <span class="badge bg-info fs-6">
+                                    <i class="bi bi-truck"></i> In-Transit
+                                </span>
+                            }
+                            else if (order.Status == "Delivered")
+                            {
+                                <span class="badge bg-success fs-6">
+                                    <i class="bi bi-check-circle"></i> Delivered
+                                </span>
+                            }
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                @if (order.Status == "Processing")
+                                {
+                                    <form asp-action="UpdateDeliveryStatus" method="post" class="d-inline">
+                                        <input type="hidden" name="orderId" value="@order.Id" />
+                                        <input type="hidden" name="status" value="In-Transit" />
+                                        <button type="submit" class="btn btn-sm btn-info" 
+                                                title="Start Delivery"
+                                                onclick="return confirm('Start delivery for this order?')">
+                                            <i class="bi bi-truck"></i> Ship
+                                        </button>
+                                    </form>
+                                }
+                                
+                                @if (order.Status == "In-Transit")
+                                {
+                                    <form asp-action="UpdateDeliveryStatus" method="post" class="d-inline">
+                                        <input type="hidden" name="orderId" value="@order.Id" />
+                                        <input type="hidden" name="status" value="Delivered" />
+                                        <button type="submit" class="btn btn-sm btn-success" 
+                                                title="Confirm Delivery"
+                                                onclick="return confirm('Confirm that this order has been delivered?')">
+                                            <i class="bi bi-check-circle"></i> Deliver
+                                        </button>
+                                    </form>
+                                }
+                                
+                                <a asp-action="DeliveryDetails" asp-route-id="@order.Id" 
+                                   class="btn btn-sm btn-primary" title="View Full Details">
+                                    <i class="bi bi-eye"></i> Details
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

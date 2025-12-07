@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
-    @* YENİ EKLENEN - Styles section *@
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
@@ -55,14 +54,25 @@
                                     </a>
                                 </li>
                             }
+                            
                             @if (User.IsInRole("SalesManager"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Order" asp-action="AllOrders">
-                                        <i class="bi bi-truck"></i> All Orders
+                                        <i class="bi bi-clipboard-data"></i> All Orders
                                     </a>
                                 </li>
                             }
+                            
+                            @if (User.IsInRole("DeliveryAdmin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Delivery" asp-action="Index">
+                                        <i class="bi bi-truck"></i> Deliveries
+                                    </a>
+                                </li>
+                            }
+                            
                             @if (User.IsInRole("Customer"))
                             {
                                 <li class="nav-item">
@@ -71,22 +81,37 @@
                                     </a>
                                 </li>
                             }
+                            
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                                     <i class="bi bi-person-circle"></i> @User.Identity.Name
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">
-                                        <i class="bi bi-person"></i> Profile
-                                    </a></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
+                                            <i class="bi bi-person"></i> Profile
+                                        </a>
+                                    </li>
                                     @if (User.IsInRole("Customer"))
                                     {
-                                        <li><a class="dropdown-item" asp-controller="Order" asp-action="MyOrders">
-                                            <i class="bi bi-bag"></i> My Orders
-                                        </a></li>
-                                        <li><a class="dropdown-item" asp-controller="Invoice" asp-action="MyInvoices">
-                                            <i class="bi bi-file-earmark-text"></i> My Invoices
-                                        </a></li>
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="Order" asp-action="MyOrders">
+                                                <i class="bi bi-bag"></i> My Orders
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="Invoice" asp-action="MyInvoices">
+                                                <i class="bi bi-file-earmark-text"></i> My Invoices
+                                            </a>
+                                        </li>
+                                    }
+                                    @if (User.IsInRole("DeliveryAdmin"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="Delivery" asp-action="Index">
+                                                <i class="bi bi-truck"></i> My Deliveries
+                                            </a>
+                                        </li>
                                     }
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
@@ -134,7 +159,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     
-    @* YENİ EKLENEN - Scripts section *@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

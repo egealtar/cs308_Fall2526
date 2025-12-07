@@ -28,5 +28,9 @@ namespace CS308Main.Models
         [Required(ErrorMessage = "Home address is required")]
         [StringLength(500)]
         public string HomeAddress { get; set; } = string.Empty;
+
+        // YENİ: Role selection
+        [Required(ErrorMessage = "Please select a role")]
+        public string Role { get; set; } = "Customer";
     }
 }
