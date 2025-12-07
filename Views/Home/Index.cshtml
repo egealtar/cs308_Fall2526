@@ -535,6 +535,7 @@
 
 @section Scripts {
     <script>
+        // Smooth scroll for anchor links on the page
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -543,6 +544,18 @@
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
+        });
+
+        // Handle hash on page load (when navigating from another page with #products)
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.hash === '#products') {
+                setTimeout(function() {
+                    const productsSection = document.querySelector('#products');
+                    if (productsSection) {
+                        productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 100);
+            }
         });
     </script>
 }

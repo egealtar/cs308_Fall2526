@@ -28,7 +28,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Product" asp-action="Directory">
+                            <a class="nav-link products-nav-link" asp-controller="Product" asp-action="Directory">
                                 <i class="bi bi-grid"></i> Products
                             </a>
                         </li>
@@ -158,6 +158,32 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    
+    <script>
+        // Handle Products navigation link - works from any page
+        document.addEventListener('DOMContentLoaded', function() {
+            const productsNavLink = document.querySelector('.products-nav-link');
+            if (productsNavLink) {
+                productsNavLink.addEventListener('click', function(e) {
+                    const path = window.location.pathname.toLowerCase();
+                    const isHomePage = path === '/' || path === '/home' || path === '/home/index';
+                    
+                    if (isHomePage) {
+                        // If on homepage, scroll to products section
+                        e.preventDefault();
+                        const productsSection = document.querySelector('#products');
+                        if (productsSection) {
+                            productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    } else {
+                        // If on another page, navigate to homepage with products hash
+                        e.preventDefault();
+                        window.location.href = '/Home/Index#products';
+                    }
+                });
+            }
+        });
+    </script>
     
     @await RenderSectionAsync("Scripts", required: false)
 </body>
