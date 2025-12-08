@@ -56,7 +56,6 @@ C:/Users/aaa/Desktop/cs308main/CS308Main/obj/Debug/net8.0/refint/CS308Main.dll
 C:/Users/aaa/Desktop/cs308main/CS308Main/obj/Debug/net8.0/CS308Main.pdb
 C:/Users/aaa/Desktop/cs308main/CS308Main/obj/Debug/net8.0/CS308Main.genruntimeconfig.cache
 C:/Users/aaa/Desktop/cs308main/CS308Main/obj/Debug/net8.0/ref/CS308Main.dll
-/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/appsettings.Development.json
 /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/appsettings.json
 /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/CS308Main.staticwebassets.runtime.json
 /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/CS308Main.staticwebassets.endpoints.json
@@ -116,3 +115,14 @@ C:/Users/aaa/Desktop/cs308main/CS308Main/obj/Debug/net8.0/ref/CS308Main.dll
 /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/obj/Debug/net8.0/CS308Main.pdb
 /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/obj/Debug/net8.0/CS308Main.genruntimeconfig.cache
 /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/obj/Debug/net8.0/ref/CS308Main.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/BouncyCastle.Cryptography.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/itext.bouncy-castle-adapter.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/System.IO.Pipelines.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/System.Text.Encodings.Web.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/System.Text.Json.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/itext.pdfua.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/MailKit.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/MimeKit.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/System.Security.Cryptography.Pkcs.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/runtimes/win/lib/net8.0/System.Security.Cryptography.Pkcs.dll
