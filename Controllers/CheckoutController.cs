@@ -164,7 +164,8 @@ namespace CS308Main.Controllers
             foreach (var item in orderItems)
             {
                 var update = Builders<Product>.Update
-                    .Inc(p => p.QuantityInStock, -item.Quantity);
+                    .Inc(p => p.QuantityInStock, -item.Quantity)
+                    .Inc(p => p.Popularity, item.Quantity);
                 
                 await _products.UpdateOneAsync(p => p.Id == item.ProductId, update);
             }

@@ -49,6 +49,10 @@ namespace CS308Main.Models
         [BsonElement("ImagePath")]
         public string ImagePath { get; set; } = string.Empty;
 
+        [BsonElement("Popularity")]
+        public int Popularity { get; set; } = 0;
+
+
         // COMPUTED PROPERTIES (VIEW İÇİN)
         [BsonIgnore]
         public string Category => Genre;

@@ -49,6 +49,7 @@ namespace CS308Main.Controllers
                 "price_desc" => query.SortByDescending(p => p.Price),
                 "name_asc" => query.SortBy(p => p.Name),
                 "name_desc" => query.SortByDescending(p => p.Name),
+                "popularity"     => query.SortByDescending(p => p.Popularity),
                 _ => query.SortBy(p => p.Name)
             };
 
