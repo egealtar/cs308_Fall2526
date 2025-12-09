@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using CS308Main.Models;
 using CS308Main.Services;
 using System.Security.Claims;
+using MongoDB.Driver;
 
 namespace CS308Main.Controllers
 {
@@ -13,11 +14,15 @@ namespace CS308Main.Controllers
         private readonly IAuthService _authService;
         private readonly ILogger<AccountController> _logger;
 
-        public AccountController(IAuthService authService, ILogger<AccountController> logger)
+        private readonly IMongoCollection<ShoppingCart> _carts;
+
+      public AccountController(IAuthService authService, ILogger<AccountController> logger,IMongoDatabase database)
         {
-            _authService = authService;
-            _logger = logger;
+             _authService = authService;
+             _logger = logger;
+             _carts = database.GetCollection<ShoppingCart>("ShoppingCarts");
         }
+
 
         [HttpGet]
         public IActionResult Register()
@@ -101,6 +106,9 @@ namespace CS308Main.Controllers
                 ModelState.AddModelError("", "Invalid email or password");
                 return View(model);
             }
+            
+            await MergeGuestCartAsync(user.Id);
+
 
             var claims = new List<Claim>
             {
@@ -161,5 +169,52 @@ namespace CS308Main.Controllers
 
             return View(user);
         }
+
+        private async Task MergeGuestCartAsync(string userId)
+{
+    const string guestUserId = "guest_user";
+
+    // guest_user için sepet var mı?
+    var guestCart = await _carts.Find(c => c.UserId == guestUserId).FirstOrDefaultAsync();
+    if (guestCart == null || guestCart.Items == null || !guestCart.Items.Any())
+    {
+        return; // merge edilecek bir şey yok
+    }
+
+    // Kullanıcının zaten bir sepeti var mı?
+    var userCart = await _carts.Find(c => c.UserId == userId).FirstOrDefaultAsync();
+
+    if (userCart == null)
+    {
+        // Direkt guest sepetini bu kullanıcıya taşı
+        guestCart.UserId = userId;
+        await _carts.ReplaceOneAsync(c => c.Id == guestCart.Id, guestCart);
+    }
+    else
+    {
+        // İki sepeti birleştir
+        foreach (var guestItem in guestCart.Items)
+        {
+            var existing = userCart.Items
+                .FirstOrDefault(i => i.ProductId == guestItem.ProductId);
+
+            if (existing == null)
+            {
+                userCart.Items.Add(guestItem);
+            }
+            else
+            {
+                existing.Quantity += guestItem.Quantity;
+            }
+        }
+
+        await _carts.ReplaceOneAsync(c => c.Id == userCart.Id, userCart);
+
+        await _carts.DeleteOneAsync(c => c.UserId == guestUserId);
+    }
+
+    _logger.LogInformation($"Merged guest cart into user {userId}");
+}
+
     }
 }
