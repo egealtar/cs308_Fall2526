@@ -4,7 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
+
+  <!-- Exclude test project .cs files from the main web project -->
+  <ItemGroup>
+    <Compile Remove="CS308Main.Tests\**\*.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="itext7" Version="9.4.0" />
