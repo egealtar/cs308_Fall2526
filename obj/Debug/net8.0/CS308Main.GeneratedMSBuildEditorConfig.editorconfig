@@ -18,10 +18,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526
 build_property._RazorSourceGeneratorDebug = 
 
-[/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/Register.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UmVnaXN0ZXIuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
