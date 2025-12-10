@@ -1,7 +1,7 @@
 using CS308Main.Models;
 using Xunit;
 
-namespace CS308Main.Tests.Models
+namespace CS308Main.Tests
 {
     public class ProductTests
     {
