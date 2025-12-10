@@ -88,5 +88,49 @@ namespace CS308Main.Tests
             Assert.NotNull(invoice.Items);
             Assert.Empty(invoice.Items);
         }
+
+              // Test 23: Invoice CreatedAt should store the given DateTime value correctly.
+        [Fact]
+        public void Invoice_CreatedAt_IsStoredCorrectly()
+        {
+            var date = new DateTime(2025, 12, 10, 14, 30, 0);
+
+            var invoice = new Invoice
+            {
+                CreatedAt = date
+            };
+
+            Assert.Equal(date, invoice.CreatedAt);
+        }
+
+        // Test 24: Invoice can have an empty PdfPath (for invoices without generated PDF).
+        [Fact]
+        public void Invoice_AllowsEmptyPdfPath()
+        {
+            var invoice = new Invoice
+            {
+                PdfPath = string.Empty
+            };
+
+            Assert.Equal(string.Empty, invoice.PdfPath);
+        }
+
+        // Test 25: InvoiceItem should correctly store its basic fields (name, quantity, price, total).
+        [Fact]
+        public void InvoiceItem_StoresBasicFieldsCorrectly()
+        {
+            var item = new InvoiceItem
+            {
+                ProductName = "Engine Oil",
+                Quantity = 3,
+                Price = 40m,
+                Total = 120m
+            };
+
+            Assert.Equal("Engine Oil", item.ProductName);
+            Assert.Equal(3, item.Quantity);
+            Assert.Equal(40m, item.Price);
+            Assert.Equal(120m, item.Total);
+        }
     }
 }

@@ -61,5 +61,49 @@ namespace CS308Main.Tests
 
             Assert.Equal(60m, total);
         }
+
+         // Test 20: Order status can be updated from one value to another.
+        [Fact]
+        public void Order_Status_CanBeUpdated()
+        {
+            var order = new Order
+            {
+                Status = "Pending"
+            };
+
+            order.Status = "Shipped";
+
+            Assert.Equal("Shipped", order.Status);
+        }
+
+        // Test 21: Order can have an empty item list without throwing errors.
+        [Fact]
+        public void Order_CanHaveEmptyItemList()
+        {
+            var order = new Order
+            {
+                Items = new List<OrderItem>()
+            };
+
+            Assert.Empty(order.Items);
+        }
+
+        // Test 22: OrderItem basic fields should be stored correctly.
+        [Fact]
+        public void OrderItem_StoresBasicFieldsCorrectly()
+        {
+            var item = new OrderItem
+            {
+                ProductId = "p99",
+                ProductName = "Air Filter",
+                Quantity = 4,
+                Price = 30m
+            };
+
+            Assert.Equal("p99", item.ProductId);
+            Assert.Equal("Air Filter", item.ProductName);
+            Assert.Equal(4, item.Quantity);
+            Assert.Equal(30m, item.Price);
+        }
     }
 }
