@@ -1,39 +1,34 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CS308Main.Data;
-using CS308Main.Models; 
+using MongoDB.Driver;
+using CS308Main.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 
 namespace CS308Main.Controllers
 {
-
-    [Authorize(Roles = "StockManager")] 
+    [Authorize(Roles = "StockManager,ProductManager")]
     public class StockController : Controller
     {
-
-        private readonly IMongoDBRepository<Product> _productRepository;
+        private readonly IMongoCollection<Product> _products;
         private readonly ILogger<StockController> _logger;
 
-        public StockController(
-            IMongoDBRepository<Product> productRepository,
-            ILogger<StockController> logger)
+        public StockController(IMongoDatabase database, ILogger<StockController> logger)
         {
-            _productRepository = productRepository;
+            _products = database.GetCollection<Product>("Products");
             _logger = logger;
         }
 
-       
         [HttpGet]
         public async Task<IActionResult> Index(string stockLevel = "All", int lowStockThreshold = 10)
         {
             try
             {
-                var allProducts = await _productRepository.GetAllAsync();
+                var allProducts = await _products.Find(_ => true).ToListAsync();
 
                 IEnumerable<Product> filtered = allProducts;
 
@@ -47,17 +42,17 @@ namespace CS308Main.Controllers
                 }
 
                 var finalList = filtered
-                                .OrderBy(p => p.Name) 
+                                .OrderBy(p => p.Name)
                                 .ToList();
 
                 ViewBag.SelectedStockLevel = stockLevel;
-                ViewBag.LowStockThreshold = lowStockThreshold; 
+                ViewBag.LowStockThreshold = lowStockThreshold;
                 return View(finalList);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error fetching products for stock management");
-                return View(Enumerable.Empty<Product>()); 
+                return View(Enumerable.Empty<Product>());
             }
         }
 
@@ -79,10 +74,7 @@ namespace CS308Main.Controllers
 
             try
             {
-              
-                var allProducts = await _productRepository.GetAllAsync();
-                var product = allProducts.FirstOrDefault(p => p.Id == productId);
-                
+                var product = await _products.Find(p => p.Id == productId).FirstOrDefaultAsync();
 
                 if (product == null)
                 {
@@ -91,10 +83,11 @@ namespace CS308Main.Controllers
                 }
 
                 var oldQuantity = product.QuantityInStock;
-                product.QuantityInStock = newQuantity; 
+                product.QuantityInStock = newQuantity;
 
-                await _productRepository.UpdateAsync(productId, product);
-                
+                var update = Builders<Product>.Update.Set(p => p.QuantityInStock, newQuantity);
+                await _products.UpdateOneAsync(p => p.Id == productId, update);
+
                 TempData["SuccessMessage"] = $"Stock updated for {product.Name}: {oldQuantity} → {newQuantity}";
                 return RedirectToAction(nameof(Index));
             }
@@ -105,6 +98,5 @@ namespace CS308Main.Controllers
                 return RedirectToAction(nameof(Index));
             }
         }
-
     }
 }

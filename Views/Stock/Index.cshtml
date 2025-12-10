@@ -1,0 +1,288 @@
+@model List<CS308Main.Models.Product>
+
+@{
+    ViewData["Title"] = "Stock Management";
+    var allCount = Model.Count;
+    var lowStockCount = Model.Count(p => p.QuantityInStock > 0 && p.QuantityInStock <= (ViewBag.LowStockThreshold ?? 10));
+    var outOfStockCount = Model.Count(p => p.QuantityInStock == 0);
+    var inStockCount = Model.Count(p => p.QuantityInStock > (ViewBag.LowStockThreshold ?? 10));
+    var selectedStockLevel = ViewBag.SelectedStockLevel ?? "All";
+    var lowStockThreshold = ViewBag.LowStockThreshold ?? 10;
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="bi bi-box-seam"></i> Stock Management
+            </h2>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Total Products</h6>
+                            <h2 class="mb-0">@allCount</h2>
+                        </div>
+                        <i class="bi bi-box" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                    <small>All products in inventory</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">In Stock</h6>
+                            <h2 class="mb-0">@inStockCount</h2>
+                        </div>
+                        <i class="bi bi-check-circle" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                    <small>Well stocked items</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Low Stock</h6>
+                            <h2 class="mb-0">@lowStockCount</h2>
+                        </div>
+                        <i class="bi bi-exclamation-triangle" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                    <small>Needs restocking</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white shadow">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Out of Stock</h6>
+                            <h2 class="mb-0">@outOfStockCount</h2>
+                        </div>
+                        <i class="bi bi-x-circle" style="font-size: 3rem; opacity: 0.3;"></i>
+                    </div>
+                    <small>Requires immediate attention</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stock Management Table -->
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                    <i class="bi bi-list-check"></i> Product Inventory
+                </h4>
+                <div>
+                    <button class="btn btn-sm btn-light" data-bs-toggle="collapse" data-bs-target="#filterSection">
+                        <i class="bi bi-funnel"></i> Filters
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <!-- Filter Section -->
+            <div class="collapse mb-3" id="filterSection">
+                <div class="card card-body bg-light">
+                    <form method="get" asp-action="Index" class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Stock Level</label>
+                            <select name="stockLevel" class="form-select">
+                                <option value="All" selected="@(selectedStockLevel == "All")">All Products</option>
+                                <option value="LowStock" selected="@(selectedStockLevel == "LowStock")">Low Stock</option>
+                                <option value="OutOfStock" selected="@(selectedStockLevel == "OutOfStock")">Out of Stock</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Low Stock Threshold</label>
+                            <input type="number" name="lowStockThreshold" class="form-control" value="@lowStockThreshold" min="1" />
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="bi bi-search"></i> Apply Filters
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info text-center py-5">
+                    <i class="bi bi-inbox" style="font-size: 4rem;"></i>
+                    <h4 class="mt-3">No products found.</h4>
+                    <p>No products match the selected filters.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Model</th>
+                                <th>Current Stock</th>
+                                <th>Status</th>
+                                <th>Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var product in Model)
+                            {
+                                var stockStatus = product.QuantityInStock == 0 ? "Out of Stock" 
+                                    : product.QuantityInStock <= lowStockThreshold ? "Low Stock" 
+                                    : "In Stock";
+                                var statusClass = product.QuantityInStock == 0 ? "danger" 
+                                    : product.QuantityInStock <= lowStockThreshold ? "warning" 
+                                    : "success";
+                                
+                                <tr>
+                                    <td>
+                                        <strong>@product.Name</strong><br />
+                                        <small class="text-muted">ID: @product.Id</small>
+                                    </td>
+                                    <td>@product.Model</td>
+                                    <td>
+                                        <strong class="text-@statusClass">@product.QuantityInStock</strong>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-@statusClass">@stockStatus</span>
+                                    </td>
+                                    <td>@product.Price.ToString("C")</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-primary" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#updateStockModal_@product.Id">
+                                            <i class="bi bi-pencil"></i> Update Stock
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <!-- Update Stock Modal -->
+                                <div class="modal fade" id="updateStockModal_@product.Id" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Update Stock - @product.Name</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <form asp-action="UpdateStock" method="post">
+                                                @Html.AntiForgeryToken()
+                                                <div class="modal-body">
+                                                    <input type="hidden" name="productId" value="@product.Id" />
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Current Stock: <strong>@product.QuantityInStock</strong></label>
+                                                        <input type="number" 
+                                                               name="newQuantity" 
+                                                               class="form-control" 
+                                                               value="@product.QuantityInStock" 
+                                                               min="0" 
+                                                               required />
+                                                        <small class="text-muted">Enter the new stock quantity</small>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">
+                                                        <i class="bi bi-check-circle"></i> Update Stock
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="bi bi-lightning"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="d-grid">
+                                <a asp-action="Index" asp-route-stockLevel="LowStock" class="btn btn-warning">
+                                    <i class="bi bi-exclamation-triangle"></i> View Low Stock Items
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-grid">
+                                <a asp-action="Index" asp-route-stockLevel="OutOfStock" class="btn btn-danger">
+                                    <i class="bi bi-x-circle"></i> View Out of Stock Items
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-grid">
+                                <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#filterSection">
+                                    <i class="bi bi-funnel"></i> Filter Products
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="d-grid">
+                                <a asp-action="Index" class="btn btn-success">
+                                    <i class="bi bi-arrow-clockwise"></i> Refresh
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+    </style>
+}
