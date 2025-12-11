@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "wg3LSai36gqT/rMRAAsao3CiY5kvYEar98GFQGJxDkw=",
+  "Hash": "Fjx3EigvLaUtyfJMKgQjOMcmoMOHZtgBtFYCPwr0SUg=",
   "Source": "CS308Main",
   "BasePath": "_content/CS308Main",
   "Mode": "Default",
@@ -737,6 +737,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/Invoices/Invoice_INV-20251210-1430_20251210221614.pdf"
+    },
+    {
+      "Identity": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251211-2071_20251211195222.pdf",
+      "SourceId": "CS308Main",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/",
+      "BasePath": "_content/CS308Main",
+      "RelativePath": "Invoices/Invoice_INV-20251211-2071_20251211195222.pdf",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/Invoices/Invoice_INV-20251211-2071_20251211195222.pdf"
     },
     {
       "Identity": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/js/site.js",

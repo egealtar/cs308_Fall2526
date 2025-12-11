@@ -129,6 +129,10 @@
       "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251210-1430_20251210221614.pdf"
     },
     {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251211-2071_20251211195222.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251211-2071_20251211195222.pdf"
+    },
+    {
       "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/css/site.css",
       "PackagePath": "staticwebassets/css/site.css"
     },
