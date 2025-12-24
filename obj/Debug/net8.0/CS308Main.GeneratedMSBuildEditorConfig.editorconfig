@@ -60,6 +60,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVsaXZlcnkvX0RlbGl2ZXJ5T3JkZXJzVGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Discount/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnQvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Discount/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnQvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

@@ -1,0 +1,174 @@
+@model CS308Main.Models.DiscountViewModel
+
+@{
+    ViewData["Title"] = "Create Discount";
+    var products = ViewBag.Products as List<CS308Main.Models.Product> ?? new List<CS308Main.Models.Product>();
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-tag-fill"></i> Create New Discount
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <!-- Product Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">
+                                <i class="bi bi-box-seam"></i> Select Products
+                            </label>
+                            <div class="border rounded p-3" style="max-height: 300px; overflow-y: auto;">
+                                @if (!products.Any())
+                                {
+                                    <div class="alert alert-warning">
+                                        <i class="bi bi-exclamation-triangle"></i> No products available
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mb-2">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAll()">
+                                            Select All
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deselectAll()">
+                                            Deselect All
+                                        </button>
+                                    </div>
+                                    @foreach (var product in products)
+                                    {
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input product-checkbox" type="checkbox" 
+                                                   name="ProductIds" value="@product.Id" id="product_@product.Id" />
+                                            <label class="form-check-label" for="product_@product.Id">
+                                                <strong>@product.Name</strong>
+                                                <span class="text-muted">- $@product.Price.ToString("F2")</span>
+                                                @if (product.HasDiscount)
+                                                {
+                                                    <span class="badge bg-danger">Already discounted</span>
+                                                }
+                                            </label>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <span asp-validation-for="ProductIds" class="text-danger"></span>
+                        </div>
+
+                        <!-- Discount Percentage -->
+                        <div class="mb-3">
+                            <label asp-for="DiscountPercentage" class="form-label fw-bold">
+                                <i class="bi bi-percent"></i> Discount Percentage
+                            </label>
+                            <div class="input-group">
+                                <input asp-for="DiscountPercentage" class="form-control" type="number" min="1" max="99" 
+                                       placeholder="Enter discount percentage" oninput="updatePreview()" />
+                                <span class="input-group-text">%</span>
+                            </div>
+                            <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+                        </div>
+
+                        <!-- Date Range -->
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="StartDate" class="form-label fw-bold">
+                                    <i class="bi bi-calendar-event"></i> Start Date
+                                </label>
+                                <input asp-for="StartDate" class="form-control" type="date" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="EndDate" class="form-label fw-bold">
+                                    <i class="bi bi-calendar-check"></i> End Date
+                                </label>
+                                <input asp-for="EndDate" class="form-control" type="date" />
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Preview -->
+                        <div class="alert alert-info" id="previewBox" style="display: none;">
+                            <h6 class="fw-bold">
+                                <i class="bi bi-eye"></i> Preview
+                            </h6>
+                            <p class="mb-0">
+                                Example: A product priced at <strong>$100.00</strong> will be sold for 
+                                <strong class="text-danger">$<span id="previewPrice">100.00</span></strong>
+                                (Save <strong>$<span id="previewSavings">0.00</span></strong>)
+                            </p>
+                        </div>
+
+                        <!-- Info Box -->
+                        <div class="alert alert-warning">
+                            <h6 class="fw-bold">
+                                <i class="bi bi-bell"></i> Notification
+                            </h6>
+                            <p class="mb-0">
+                                Users who have these products in their wish list will receive an email notification about this discount.
+                            </p>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Create Discount
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        function selectAll() {
+            document.querySelectorAll('.product-checkbox').forEach(cb => cb.checked = true);
+        }
+
+        function deselectAll() {
+            document.querySelectorAll('.product-checkbox').forEach(cb => cb.checked = false);
+        }
+
+        function updatePreview() {
+            const discountInput = document.querySelector('input[name="DiscountPercentage"]');
+            const percentage = parseFloat(discountInput.value) || 0;
+            
+            if (percentage > 0 && percentage <= 99) {
+                const originalPrice = 100.00;
+                const discountedPrice = originalPrice * (1 - percentage / 100);
+                const savings = originalPrice - discountedPrice;
+                
+                document.getElementById('previewPrice').textContent = discountedPrice.toFixed(2);
+                document.getElementById('previewSavings').textContent = savings.toFixed(2);
+                document.getElementById('previewBox').style.display = 'block';
+            } else {
+                document.getElementById('previewBox').style.display = 'none';
+            }
+        }
+
+        // Set default dates
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            
+            const startInput = document.querySelector('input[name="StartDate"]');
+            const endInput = document.querySelector('input[name="EndDate"]');
+            
+            if (!startInput.value) startInput.value = today;
+            if (!endInput.value) endInput.value = nextWeek;
+        });
+    </script>
+}
