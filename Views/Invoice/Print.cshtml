@@ -1,0 +1,152 @@
+@model CS308Main.Models.Invoice
+@{
+    ViewData["Title"] = "Print Invoice";
+    var user = ViewBag.User as CS308Main.Models.User;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Invoice @Model.InvoiceNumber</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 28px;
+            margin: 0;
+            color: #333;
+        }
+        .header h2 {
+            font-size: 20px;
+            margin: 10px 0;
+            color: #666;
+        }
+        .invoice-info {
+            margin-bottom: 30px;
+        }
+        .invoice-info p {
+            margin: 5px 0;
+        }
+        .customer-info {
+            margin-bottom: 30px;
+        }
+        .customer-info p {
+            margin: 5px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .total {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+        }
+        @@media print {
+            body {
+                padding: 0;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print" style="margin-bottom: 20px;">
+        <button onclick="window.print()" style="padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px;">
+            <i class="bi bi-printer"></i> Print
+        </button>
+        <a href="@Url.Action("Download", new { id = Model.Id })" style="padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">
+            <i class="bi bi-download"></i> Download PDF
+        </a>
+    </div>
+
+    <div class="header">
+        <h1>MOTORMATCH</h1>
+        <h2>INVOICE</h2>
+    </div>
+
+    <div class="invoice-info">
+        <p><strong>Invoice Number:</strong> @Model.InvoiceNumber</p>
+        <p><strong>Date:</strong> @Model.CreatedAt.ToString("MMMM dd, yyyy HH:mm")</p>
+    </div>
+
+    @if (user != null)
+    {
+        <div class="customer-info">
+            <h3>Bill To:</h3>
+            <p><strong>@user.Name</strong></p>
+            <p>@user.Email</p>
+            @if (!string.IsNullOrEmpty(user.HomeAddress))
+            {
+                <p>@user.HomeAddress</p>
+            }
+        </div>
+    }
+
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th style="text-align: center;">Quantity</th>
+                <th style="text-align: right;">Price</th>
+                <th style="text-align: right;">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td style="text-align: center;">@item.Quantity</td>
+                    <td style="text-align: right;">$@item.Price.ToString("F2")</td>
+                    <td style="text-align: right;">$@item.Total.ToString("F2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="total">
+        <p>Total Amount: $@Model.TotalAmount.ToString("F2")</p>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for your business!</p>
+        <p>MotorMatch - Premium Auto Parts & Accessories</p>
+    </div>
+
+    <script>
+        // Auto-print when page loads (optional)
+        // window.onload = function() {
+        //     window.print();
+        // }
+    </script>
+</body>
+</html>

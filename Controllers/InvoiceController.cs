@@ -128,13 +128,39 @@ namespace CS308Main.Controllers
                 return Forbid();
             }
 
+            // If PDF doesn't exist, generate it
             if (string.IsNullOrEmpty(invoice.PdfPath) || !System.IO.File.Exists(invoice.PdfPath))
             {
-                return NotFound("Invoice PDF not found");
+                try
+                {
+                    var user = await _users.Find(u => u.Id == invoice.UserId).FirstOrDefaultAsync();
+                    if (user == null)
+                    {
+                        return NotFound("User not found for invoice");
+                    }
+
+                    // Generate PDF
+                    var pdfPath = await _pdfService.GenerateInvoicePdfAsync(invoice, user);
+                    
+                    // Update invoice with PDF path
+                    var update = Builders<Invoice>.Update.Set(i => i.PdfPath, pdfPath);
+                    await _invoices.UpdateOneAsync(i => i.Id == invoice.Id, update);
+                    
+                    // Update local invoice object
+                    invoice.PdfPath = pdfPath;
+                    
+                    _logger.LogInformation($"Generated PDF for invoice {invoice.InvoiceNumber}");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"Failed to generate PDF for invoice {invoice.Id}");
+                    TempData["Error"] = "Failed to generate invoice PDF. Please try again.";
+                    return RedirectToAction("AllInvoices");
+                }
             }
 
             var fileBytes = await System.IO.File.ReadAllBytesAsync(invoice.PdfPath);
-            var fileName = Path.GetFileName(invoice.PdfPath);
+            var fileName = $"Invoice_{invoice.InvoiceNumber}.pdf";
 
             return File(fileBytes, "application/pdf", fileName);
         }
@@ -257,6 +283,120 @@ namespace CS308Main.Controllers
             ViewBag.DailyData = dailyData.OrderBy(d => d.Date).ToList();
 
             return View();
+        }
+
+        // Print invoice view
+        [HttpGet]
+        [Authorize(Roles = "SalesManager,ProductManager")]
+        public async Task<IActionResult> Print(string id)
+        {
+            var invoice = await _invoices.Find(i => i.Id == id).FirstOrDefaultAsync();
+            if (invoice == null)
+            {
+                return NotFound("Invoice not found");
+            }
+
+            var user = await _users.Find(u => u.Id == invoice.UserId).FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            ViewBag.User = user;
+            return View(invoice);
+        }
+
+        // Bulk download invoices as PDF (zip file)
+        [HttpPost]
+        [Authorize(Roles = "SalesManager")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BulkDownload(DateTime? dateFrom = null, DateTime? dateTo = null)
+        {
+            var filterBuilder = Builders<Invoice>.Filter;
+            var filter = filterBuilder.Empty;
+
+            // Date range filter
+            if (dateFrom.HasValue)
+            {
+                filter = filter & filterBuilder.Gte(i => i.CreatedAt, dateFrom.Value);
+            }
+
+            if (dateTo.HasValue)
+            {
+                filter = filter & filterBuilder.Lte(i => i.CreatedAt, dateTo.Value.AddDays(1));
+            }
+
+            var invoices = await _invoices
+                .Find(filter)
+                .SortByDescending(i => i.CreatedAt)
+                .ToListAsync();
+
+            if (!invoices.Any())
+            {
+                TempData["Error"] = "No invoices found for the selected date range";
+                return RedirectToAction("AllInvoices", new { dateFrom, dateTo });
+            }
+
+            try
+            {
+                // Create a zip file with all PDFs
+                var tempFolder = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+                Directory.CreateDirectory(tempFolder);
+
+                var pdfFiles = new List<string>();
+
+                foreach (var invoice in invoices)
+                {
+                    if (!string.IsNullOrEmpty(invoice.PdfPath) && System.IO.File.Exists(invoice.PdfPath))
+                    {
+                        var fileName = $"Invoice_{invoice.InvoiceNumber}.pdf";
+                        var destPath = Path.Combine(tempFolder, fileName);
+                        System.IO.File.Copy(invoice.PdfPath, destPath);
+                        pdfFiles.Add(destPath);
+                    }
+                    else
+                    {
+                        // Generate PDF if it doesn't exist
+                        var user = await _users.Find(u => u.Id == invoice.UserId).FirstOrDefaultAsync();
+                        if (user != null)
+                        {
+                            var pdfPath = await _pdfService.GenerateInvoicePdfAsync(invoice, user);
+                            var fileName = $"Invoice_{invoice.InvoiceNumber}.pdf";
+                            var destPath = Path.Combine(tempFolder, fileName);
+                            System.IO.File.Copy(pdfPath, destPath);
+                            pdfFiles.Add(destPath);
+                        }
+                    }
+                }
+
+                if (!pdfFiles.Any())
+                {
+                    Directory.Delete(tempFolder, true);
+                    TempData["Error"] = "No PDF files found to download";
+                    return RedirectToAction("AllInvoices", new { dateFrom, dateTo });
+                }
+
+                // Create zip file
+                var zipFileName = $"Invoices_{dateFrom?.ToString("yyyyMMdd") ?? "All"}_{dateTo?.ToString("yyyyMMdd") ?? DateTime.Now.ToString("yyyyMMdd")}.zip";
+                var zipPath = Path.Combine(Path.GetTempPath(), zipFileName);
+
+                System.IO.Compression.ZipFile.CreateFromDirectory(tempFolder, zipPath);
+
+                // Clean up temp folder
+                Directory.Delete(tempFolder, true);
+
+                // Return zip file
+                var zipBytes = await System.IO.File.ReadAllBytesAsync(zipPath);
+                System.IO.File.Delete(zipPath);
+
+                return File(zipBytes, "application/zip", zipFileName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating bulk PDF download");
+                TempData["Error"] = "Error creating PDF archive. Please try downloading individual invoices.";
+                return RedirectToAction("AllInvoices", new { dateFrom, dateTo });
+            }
         }
     }
 
