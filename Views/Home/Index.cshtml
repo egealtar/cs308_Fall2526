@@ -2,321 +2,280 @@
 
 @{
     ViewData["Title"] = "Home";
-    var categories = ViewBag.Categories as List<string>;
+    var genres = ViewBag.Genres as List<string> ?? new List<string>();
     var currentGenre = ViewBag.CurrentGenre as string;
-    var currentSearch = ViewBag.CurrentSearch as string;
-    var currentSort = ViewBag.CurrentSort as string;
+    var searchQuery = ViewBag.SearchQuery as string;
+    var sortOption = ViewBag.SortOption as string;
 }
 
-<div class="hero-section">
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="hero-background"></div>
     <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <div class="container">
-            <div class="row align-items-center" style="min-height: 500px;">
-                <div class="col-lg-6 text-white hero-text">
-                    <h1 class="display-3 fw-bold mb-4 animate-fade-in">
-                        Welcome to <span class="text-warning">MotorMatch</span>
-                    </h1>
-                    <p class="lead mb-4 animate-fade-in-delay-1">
-                        Your ultimate destination for premium auto parts and accessories. 
-                        Quality guaranteed, performance delivered.
-                    </p>
-                    <div class="animate-fade-in-delay-2">
-                        <a href="#products" class="btn btn-warning btn-lg me-3 pulse-button">
-                            <i class="bi bi-shop"></i> Shop Now
-                        </a>
-                        <a href="#categories" class="btn btn-outline-light btn-lg">
-                            <i class="bi bi-grid"></i> Browse Categories
-                        </a>
-                    </div>
-                    <div class="mt-4 animate-fade-in-delay-3">
-                        <div class="d-flex gap-4">
-                            <div>
-                                <h3 class="text-warning mb-0">500+</h3>
-                                <small>Products</small>
-                            </div>
-                            <div>
-                                <h3 class="text-warning mb-0">50K+</h3>
-                                <small>Happy Customers</small>
-                            </div>
-                            <div>
-                                <h3 class="text-warning mb-0">24/7</h3>
-                                <small>Support</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="hero-content container text-center text-white position-relative">
+        <h1 class="display-3 fw-bold mb-4 animate-fade-in">Welcome to MotorMatch</h1>
+        <p class="lead mb-5 animate-fade-in" style="animation-delay: 0.2s;">Premium Auto Parts & Accessories</p>
+        <a href="#products" class="btn btn-primary btn-lg pulse-button">
+            <i class="bi bi-shop"></i> Shop Now
+        </a>
     </div>
-</div>
+</section>
 
 <!-- Features Section -->
-<div class="container my-5">
-    <div class="row text-center g-4">
-        <div class="col-md-3">
-            <div class="feature-box">
-                <div class="feature-icon bg-primary">
-                    <i class="bi bi-truck"></i>
+<section class="features-section py-5 bg-light">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="feature-box text-center p-4 animate-fade-in">
+                    <i class="bi bi-truck feature-icon text-primary"></i>
+                    <h5 class="mt-3">Free Shipping</h5>
+                    <p class="text-muted">On orders over $100</p>
                 </div>
-                <h5 class="mt-3">Free Shipping</h5>
-                <p class="text-muted">On orders over $100</p>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="feature-box">
-                <div class="feature-icon bg-success">
-                    <i class="bi bi-shield-check"></i>
+            <div class="col-md-3">
+                <div class="feature-box text-center p-4 animate-fade-in" style="animation-delay: 0.1s;">
+                    <i class="bi bi-shield-check feature-icon text-success"></i>
+                    <h5 class="mt-3">Warranty</h5>
+                    <p class="text-muted">Quality guaranteed</p>
                 </div>
-                <h5 class="mt-3">Warranty</h5>
-                <p class="text-muted">Quality guaranteed</p>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="feature-box">
-                <div class="feature-icon bg-warning">
-                    <i class="bi bi-headset"></i>
+            <div class="col-md-3">
+                <div class="feature-box text-center p-4 animate-fade-in" style="animation-delay: 0.2s;">
+                    <i class="bi bi-headset feature-icon text-info"></i>
+                    <h5 class="mt-3">24/7 Support</h5>
+                    <p class="text-muted">Always here to help</p>
                 </div>
-                <h5 class="mt-3">24/7 Support</h5>
-                <p class="text-muted">Expert assistance</p>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="feature-box">
-                <div class="feature-icon bg-danger">
-                    <i class="bi bi-percent"></i>
+            <div class="col-md-3">
+                <div class="feature-box text-center p-4 animate-fade-in" style="animation-delay: 0.3s;">
+                    <i class="bi bi-tag feature-icon text-warning"></i>
+                    <h5 class="mt-3">Best Deals</h5>
+                    <p class="text-muted">Competitive prices</p>
                 </div>
-                <h5 class="mt-3">Best Deals</h5>
-                <p class="text-muted">Amazing discounts</p>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<!-- Search and Filter Section -->
-<div class="container" id="products">
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-lg border-0">
-                <div class="card-body p-4">
-                    <form method="get" asp-action="Index" class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold">
-                                <i class="bi bi-search"></i> Search Products
-                            </label>
-                            <input type="text" name="search" class="form-control form-control-lg" 
-                                   placeholder="Search by name, author, description..." value="@currentSearch" />
+<!-- Products Section -->
+<section id="products" class="products-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Products</h2>
+
+        <!-- Search and Filter Bar -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form method="get" asp-action="Index" class="row g-3">
+                    <!-- Search -->
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" name="search" class="form-control" 
+                                   placeholder="Search products..." 
+                                   value="@searchQuery" />
                         </div>
-                        <div class="col-md-3" id="categories">
-                            <label class="form-label fw-bold">
-                                <i class="bi bi-tag"></i> Category
-                            </label>
-                            <select name="genre" class="form-select form-select-lg">
-                                <option value="">All Categories</option>
-                                @if (categories != null)
-                                {
-                                    foreach (var cat in categories)
-                                    {
-                                        <option value="@cat" selected="@(cat == currentGenre)">@cat</option>
-                                    }
-                                }
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label fw-bold">
-                                <i class="bi bi-sort-down"></i> Sort By
-                            </label>
-                            <select name="sort" class="form-select form-select-lg">
-                                <option value="">Default</option>
-                                <option value="price_asc" selected="@(currentSort == "price_asc")">Price: Low to High</option>
-                                <option value="price_desc" selected="@(currentSort == "price_desc")">Price: High to Low</option>
-                                <option value="name_asc" selected="@(currentSort == "name_asc")">Name: A-Z</option>
-                                <option value="name_desc" selected="@(currentSort == "name_desc")">Name: Z-A</option>
-                                <option value="popularity" selected="@(currentSort == "popularity")">Most Popular</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="col-md-3">
+                        <select name="genre" class="form-select">
+                            <option value="">All Categories</option>
+                            @foreach (var genre in genres)
+                            {
+                                <option value="@genre" selected="@(genre == currentGenre)">@genre</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Sort -->
+                    <div class="col-md-3">
+                        <select name="sort" class="form-select">
+                            <option value="">Default</option>
+                            <option value="price_asc" selected="@(sortOption == "price_asc")">Price: Low to High</option>
+                            <option value="price_desc" selected="@(sortOption == "price_desc")">Price: High to Low</option>
+                            <option value="name_asc" selected="@(sortOption == "name_asc")">Name: A to Z</option>
+                            <option value="name_desc" selected="@(sortOption == "name_desc")">Name: Z to A</option>
+                        </select>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="col-md-2">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-funnel"></i> Filter
                             </button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
 
-    <!-- Products Grid -->
-    <div class="row">
+        <!-- Products Grid -->
         @if (Model == null || !Model.Any())
         {
-            <div class="col-12">
-                <div class="alert alert-info text-center py-5">
-                    <i class="bi bi-info-circle" style="font-size: 4rem;"></i>
-                    <h3 class="mt-3">No products found</h3>
-                    <p class="lead">Try adjusting your search or filters</p>
-                    <a asp-action="Index" class="btn btn-primary mt-3">
-                        <i class="bi bi-arrow-clockwise"></i> Reset Filters
-                    </a>
-                </div>
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle"></i> No products found matching your criteria.
             </div>
         }
         else
         {
-            foreach (var product in Model)
-            {
-                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                    <div class="product-card">
-                        @if (product.HasDiscount)
-                        {
-                            <div class="discount-badge">
-                                <span>-@product.DiscountPercentage%</span>
-                            </div>
-                        }
-
-                        <div class="product-image">
-                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+            <div class="row g-4">
+                @foreach (var product in Model)
+                {
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="card product-card h-100 shadow-sm">
+                            @if (product.HasDiscount)
                             {
-                                <img src="@product.ImageUrl" alt="@product.Name" />
+                                <span class="badge bg-danger position-absolute top-0 end-0 m-2" style="z-index: 10;">
+                                    -@product.DiscountPercentage%
+                                </span>
+                            }
+
+                            @if (product.QuantityInStock == 0)
+                            {
+                                <span class="badge bg-secondary position-absolute top-0 start-0 m-2" style="z-index: 10;">
+                                    Out of Stock
+                                </span>
+                            }
+
+                            @if (!string.IsNullOrEmpty(product.ImagePath))
+                            {
+                                <div class="product-image-container">
+                                    <img src="@product.ImagePath" class="card-img-top product-image" alt="@product.Name" />
+                                </div>
                             }
                             else
                             {
-                                <div class="no-image">
-                                    <i class="bi bi-image"></i>
+                                <div class="product-image-container bg-secondary text-white d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image" style="font-size: 3rem;"></i>
                                 </div>
                             }
-                            <div class="product-overlay">
-                                <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" 
-                                   class="btn btn-light btn-sm">
-                                    <i class="bi bi-eye"></i> Quick View
-                                </a>
-                            </div>
-                        </div>
 
-                        <div class="product-body">
-                            <div class="product-category">
-                                <span class="badge bg-secondary">@product.Category</span>
-                                @if (product.WarrantyStatus)
-                                {
-                                    <span class="badge bg-success">
-                                        <i class="bi bi-shield-check"></i> Warranty
-                                    </span>
-                                }
-                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title">@product.Name</h6>
+                                <p class="card-text text-muted small flex-grow-1">
+                                    @(product.Description.Length > 60 ? product.Description.Substring(0, 60) + "..." : product.Description)
+                                </p>
 
-                            <h5 class="product-title">@product.Name</h5>
-                            
-                            @if (!string.IsNullOrEmpty(product.Author))
-                            {
-                                <p class="product-author">by @product.Author</p>
-                            }
-
-                            <p class="product-description">
-                                @{
-                                    var description = product.Description ?? "No description available";
-                                    if (description.Length > 60)
-                                    {
-                                        @description.Substring(0, 60)<text>...</text>
-                                    }
-                                    else
-                                    {
-                                        @description
-                                    }
-                                }
-                            </p>
-
-                            <div class="product-footer">
-                                <div class="product-price">
+                                <div class="mb-2">
                                     @if (product.HasDiscount)
                                     {
                                         <div>
-                                            <span class="old-price">$@product.Price.ToString("F2")</span>
-                                            <span class="new-price">$@product.FinalPrice.ToString("F2")</span>
+                                            <span class="text-decoration-line-through text-muted">$@product.Price.ToString("F2")</span>
+                                            <span class="h5 text-danger ms-2">$@product.FinalPrice.ToString("F2")</span>
                                         </div>
                                     }
                                     else
                                     {
-                                        <span class="new-price">$@product.Price.ToString("F2")</span>
+                                        <span class="h5 text-success">$@product.Price.ToString("F2")</span>
                                     }
                                 </div>
 
-                                <div class="product-stock">
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-box-seam"></i> Stock: @product.QuantityInStock
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="card-footer bg-transparent">
+                                <div class="d-grid gap-2">
+                                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+                                    {
+                                        <form asp-controller="WishList" asp-action="AddToWishList" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="productId" value="@product.Id" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                <i class="bi bi-heart"></i> Add to Wish List
+                                            </button>
+                                        </form>
+                                    }
+
                                     @if (product.QuantityInStock > 0)
                                     {
-                                        <span class="badge bg-success">
-                                            <i class="bi bi-check-circle"></i> In Stock
-                                        </span>
+                                        <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="productId" value="@product.Id" />
+                                            <input type="hidden" name="quantity" value="1" />
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="bi bi-cart-plus"></i> Add to Cart
+                                            </button>
+                                        </form>
                                     }
                                     else
                                     {
-                                        <span class="badge bg-danger">
+                                        <button class="btn btn-secondary btn-sm" disabled>
                                             <i class="bi bi-x-circle"></i> Out of Stock
-                                        </span>
-                                    }
-                                </div>
-                            </div>
-
-<div class="product-actions">
-                                @if (product.QuantityInStock > 0)
-                                {
-                                    <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post" class="w-100">
-                                        <input type="hidden" name="productId" value="@product.Id" />
-                                        <input type="hidden" name="quantity" value="1" />
-
-                                        <button type="submit" class="btn btn-primary w-100">
-                                            <i class="bi bi-cart-plus"></i> Add to Cart
                                         </button>
-                                    </form>
-                                }
-                                else
-                                {
-                                    <button class="btn btn-secondary w-100" disabled>
-                                        <i class="bi bi-x-circle"></i> Out of Stock
-                                    </button>
-                                }
+                                    }
+
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" 
+                                       class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-info-circle"></i> Details
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         }
     </div>
-</div>
+</section>
 
-
-<!-- Simple Info Section -->
-<div class="container my-5">
-    <div class="alert alert-primary text-center py-4 shadow-sm" style="font-size: 1.2rem;">
-        🚗 <strong>New arrivals coming soon!</strong> Stay tuned for fresh auto parts.
+<!-- Newsletter Section -->
+<section class="newsletter-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center text-white">
+                <h3 class="mb-3">Subscribe to Our Newsletter</h3>
+                <p class="mb-4">Get the latest updates on new products and exclusive deals!</p>
+                <form class="row g-3 justify-content-center">
+                    <div class="col-md-6">
+                        <input type="email" class="form-control" placeholder="Enter your email" required />
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-light">
+                            <i class="bi bi-envelope"></i> Subscribe
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
-
+</section>
 
 @section Styles {
     <style>
         .hero-section {
-            position: relative;
-            background: url('/maxresdefault.jpg') center/cover no-repeat;
-            min-height: 500px;
-            margin-top: -20px;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/images/maxresdefault.jpg') center/cover;
+            z-index: 1;
         }
 
         .hero-overlay {
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,123,255,0.6) 100%);
-        }
-
-        .hero-content {
-            position: relative;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 123, 255, 0.6) 100%);
             z-index: 2;
         }
 
-        .hero-text {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        .hero-content {
+            z-index: 3;
         }
 
         @@keyframes fadeInUp {
@@ -331,229 +290,68 @@
         }
 
         .animate-fade-in {
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        .animate-fade-in-delay-1 {
-            animation: fadeInUp 0.8s ease-out 0.2s both;
-        }
-
-        .animate-fade-in-delay-2 {
-            animation: fadeInUp 0.8s ease-out 0.4s both;
-        }
-
-        .animate-fade-in-delay-3 {
-            animation: fadeInUp 0.8s ease-out 0.6s both;
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
         }
 
         @@keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         .pulse-button {
             animation: pulse 2s infinite;
         }
 
+        .feature-icon {
+            font-size: 3rem;
+        }
+
         .feature-box {
-            padding: 30px;
-            transition: transform 0.3s ease;
+            background: white;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .feature-box:hover {
             transform: translateY(-10px);
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            font-size: 2rem;
-            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .product-card {
-            background: white;
-            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
         }
 
         .product-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
 
-        .discount-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #dc3545;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 25px;
-            font-weight: bold;
-            z-index: 10;
-            box-shadow: 0 3px 10px rgba(220,53,69,0.5);
-        }
-
-        .product-image {
-            position: relative;
-            height: 220px;
+        .product-image-container {
+            height: 200px;
             overflow: hidden;
             background: #f8f9fa;
         }
 
-        .product-image img {
+        .product-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
         }
 
-        .product-card:hover .product-image img {
+        .product-card:hover .product-image {
             transform: scale(1.1);
-        }
-
-        .no-image {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            font-size: 4rem;
-            color: #dee2e6;
-        }
-
-        .product-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .product-card:hover .product-overlay {
-            opacity: 1;
-        }
-
-        .product-body {
-            padding: 20px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .product-category {
-            margin-bottom: 10px;
-        }
-
-        .product-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #212529;
-            min-height: 50px;
-        }
-
-        .product-author {
-            font-size: 0.85rem;
-            color: #6c757d;
-            margin-bottom: 10px;
-        }
-
-        .product-description {
-            font-size: 0.85rem;
-            color: #6c757d;
-            flex-grow: 1;
-            margin-bottom: 15px;
-            min-height: 40px;
-        }
-
-        .product-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .old-price {
-            text-decoration: line-through;
-            color: #6c757d;
-            font-size: 0.9rem;
-            display: block;
-        }
-
-        .new-price {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #28a745;
-        }
-
-        .product-card:hover .new-price {
-            color: #dc3545;
         }
 
         .newsletter-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-
-        @@media (max-width: 768px) {
-            .hero-section {
-                min-height: 400px;
-            }
-            
-            .product-card {
-                margin-bottom: 20px;
-            }
-        }
     </style>
-}
-
-@section Scripts {
-    <script>
-        // Smooth scroll for anchor links on the page
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Handle hash on page load (when navigating from another page with #products)
-        document.addEventListener('DOMContentLoaded', function() {
-            if (window.location.hash === '#products') {
-                setTimeout(function() {
-                    const productsSection = document.querySelector('#products');
-                    if (productsSection) {
-                        productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                }, 100);
-            }
-        });
-
-      
-    
-
-
-    </script>
 }
