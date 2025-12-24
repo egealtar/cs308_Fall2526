@@ -91,25 +91,46 @@ namespace CS308Main.Controllers
 
             await _discounts.InsertOneAsync(discount);
 
-            // Apply discount to products
+            // Apply discount to products automatically
+            // Only apply if start date is today or in the past (discount is active)
+            var now = DateTime.UtcNow;
+            bool isActiveNow = model.StartDate.Date <= now.Date && model.EndDate.Date >= now.Date;
+
             foreach (var productId in model.ProductIds)
             {
                 var product = await _products.Find(p => p.Id == productId).FirstOrDefaultAsync();
                 if (product != null)
                 {
+                    // Calculate discounted price based on original Price (not DiscountedPrice to avoid double discounting)
                     var discountedPrice = product.Price * (1 - model.DiscountPercentage / 100);
 
                     var update = Builders<Product>.Update
-                        .Set(p => p.DiscountedPrice, discountedPrice);
+                        .Set(p => p.DiscountedPrice, isActiveNow ? discountedPrice : null);
 
                     await _products.UpdateOneAsync(p => p.Id == productId, update);
 
-                    _logger.LogInformation($"Applied {model.DiscountPercentage}% discount to product {productId}");
+                    if (isActiveNow)
+                    {
+                        _logger.LogInformation($"Applied {model.DiscountPercentage}% discount to product {productId} (Price: ${product.Price:F2} -> Discounted: ${discountedPrice:F2})");
+                    }
+                    else
+                    {
+                        _logger.LogInformation($"Discount created for product {productId} but will activate on {model.StartDate:yyyy-MM-dd}");
+                    }
                 }
             }
 
-            // Notify users with products in their wish list
-            await NotifyWishListUsers(model.ProductIds, model.DiscountPercentage);
+            // Automatically notify users with products in their wish list about the discount
+            // Only notify if discount is active now, or notify about upcoming discount
+            if (isActiveNow)
+            {
+                await NotifyWishListUsers(model.ProductIds, model.DiscountPercentage);
+            }
+            else if (model.StartDate.Date > now.Date)
+            {
+                // Could add logic here to notify about upcoming discounts
+                _logger.LogInformation($"Discount will be active starting {model.StartDate:yyyy-MM-dd}, notifications will be sent then");
+            }
 
             TempData["Success"] = $"Discount of {model.DiscountPercentage}% applied to {model.ProductIds.Count} product(s)!";
 
@@ -177,16 +198,28 @@ namespace CS308Main.Controllers
 
                     if (!discountedWishListItems.Any()) continue;
 
-                    // Get product details
-                    var productNames = new List<string>();
+                    // Get product details with pricing information
+                    var productDetails = new List<(string Name, decimal OriginalPrice, decimal DiscountedPrice)>();
                     foreach (var item in discountedWishListItems)
                     {
                         var product = await _products.Find(p => p.Id == item.ProductId).FirstOrDefaultAsync();
                         if (product != null)
                         {
-                            productNames.Add(product.Name);
+                            var discountedPrice = product.Price * (1 - discountPercentage / 100);
+                            productDetails.Add((product.Name, product.Price, discountedPrice));
                         }
                     }
+
+                    if (!productDetails.Any()) continue;
+
+                    // Build product list HTML with prices
+                    var productListHtml = string.Join("", productDetails.Select(p => 
+                        $@"<li style='margin-bottom: 10px;'>
+                            <strong>{p.Name}</strong><br/>
+                            <span style='text-decoration: line-through; color: #6c757d;'>${p.OriginalPrice:F2}</span>
+                            <span style='color: #dc3545; font-weight: bold; font-size: 1.1em; margin-left: 10px;'>${p.DiscountedPrice:F2}</span>
+                            <span style='color: #28a745; margin-left: 5px;'>(Save ${(p.OriginalPrice - p.DiscountedPrice):F2})</span>
+                        </li>"));
 
                     // Send email notification
                     var subject = $"Great News! {discountPercentage}% OFF on Your Wish List Items!";
@@ -206,11 +239,11 @@ namespace CS308Main.Controllers
                                 </div>
 
                                 <h4>Products on Sale:</h4>
-                                <ul>
-                                    {string.Join("", productNames.Select(name => $"<li>{name}</li>"))}
+                                <ul style='list-style: none; padding-left: 0;'>
+                                    {productListHtml}
                                 </ul>
 
-                                <p>Hurry! This offer won't last forever.</p>
+                                <p><strong>Hurry! This offer won't last forever.</strong></p>
                                 
                                 <div style='text-align: center; margin: 30px 0;'>
                                     <a href='https://localhost:7001/WishList' 
