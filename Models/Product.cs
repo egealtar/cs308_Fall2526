@@ -27,7 +27,12 @@ namespace CS308Main.Models
         [BsonElement("Price")]
         public decimal Price { get; set; }
 
+        [BsonElement("OriginalPrice")]
+        [BsonIgnoreIfNull]
+        public decimal? OriginalPrice { get; set; }
+
         [BsonElement("DiscountedPrice")]
+        [BsonIgnoreIfNull]
         public decimal? DiscountedPrice { get; set; }
 
         [BsonElement("WarrantyStatus")]
@@ -41,6 +46,13 @@ namespace CS308Main.Models
 
         [BsonElement("ImagePath")]
         public string ImagePath { get; set; } = string.Empty;
+
+        [BsonElement("Author")]
+        [BsonIgnoreIfNull]
+        public string? Author { get; set; }
+
+        [BsonElement("Popularity")]
+        public int Popularity { get; set; } = 0;
 
         // Computed properties
         public string Category => Genre;

@@ -276,7 +276,7 @@ namespace CS308Main.Controllers
                     
                     var fullPdfPath = Path.Combine(_environment.WebRootPath, pdfPath.TrimStart('/'));
                     
-                    if (!File.Exists(fullPdfPath))
+                    if (!System.IO.File.Exists(fullPdfPath))
                     {
                         _logger.LogError($"PDF file not found at: {fullPdfPath}");
                         throw new Exception("PDF file not found for email attachment");
