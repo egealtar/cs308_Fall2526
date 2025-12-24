@@ -13,6 +13,7 @@ namespace CS308Main.Controllers
         private readonly IMongoCollection<Invoice> _invoices;
         private readonly IMongoCollection<Order> _orders;
         private readonly IMongoCollection<User> _users;
+        private readonly IMongoCollection<Product> _products;
         private readonly IPdfService _pdfService;
         private readonly IEmailService _emailService;
         private readonly ILogger<InvoiceController> _logger;
@@ -26,6 +27,7 @@ namespace CS308Main.Controllers
             _invoices = database.GetCollection<Invoice>("Invoices");
             _orders = database.GetCollection<Order>("Orders");
             _users = database.GetCollection<User>("Users");
+            _products = database.GetCollection<Product>("Products");
             _pdfService = pdfService;
             _emailService = emailService;
             _logger = logger;
@@ -155,14 +157,112 @@ namespace CS308Main.Controllers
         // SalesManager için tüm faturalar
         [HttpGet]
         [Authorize(Roles = "SalesManager,ProductManager")]
-        public async Task<IActionResult> AllInvoices()
+        public async Task<IActionResult> AllInvoices(DateTime? dateFrom = null, DateTime? dateTo = null)
         {
+            var filterBuilder = Builders<Invoice>.Filter;
+            var filter = filterBuilder.Empty;
+
+            // Date range filter
+            if (dateFrom.HasValue)
+            {
+                filter = filter & filterBuilder.Gte(i => i.CreatedAt, dateFrom.Value);
+            }
+
+            if (dateTo.HasValue)
+            {
+                filter = filter & filterBuilder.Lte(i => i.CreatedAt, dateTo.Value.AddDays(1));
+            }
+
             var invoices = await _invoices
-                .Find(_ => true)
+                .Find(filter)
                 .SortByDescending(i => i.CreatedAt)
                 .ToListAsync();
 
+            ViewBag.DateFrom = dateFrom?.ToString("yyyy-MM-dd");
+            ViewBag.DateTo = dateTo?.ToString("yyyy-MM-dd");
+
             return View(invoices);
         }
+
+        // Revenue and Profit/Loss calculation
+        [HttpGet]
+        [Authorize(Roles = "SalesManager")]
+        public async Task<IActionResult> RevenueReport(DateTime? dateFrom = null, DateTime? dateTo = null)
+        {
+            var filterBuilder = Builders<Invoice>.Filter;
+            var filter = filterBuilder.Empty;
+
+            // Default to last 30 days if no dates provided
+            if (!dateFrom.HasValue || !dateTo.HasValue)
+            {
+                dateTo = DateTime.UtcNow;
+                dateFrom = dateTo.Value.AddDays(-30);
+            }
+
+            filter = filter & filterBuilder.Gte(i => i.CreatedAt, dateFrom.Value);
+            filter = filter & filterBuilder.Lte(i => i.CreatedAt, dateTo.Value.AddDays(1));
+
+            var invoices = await _invoices
+                .Find(filter)
+                .ToListAsync();
+
+            decimal totalRevenue = 0;
+            decimal totalCost = 0;
+            var dailyData = new List<DailyRevenueData>();
+
+            foreach (var invoice in invoices)
+            {
+                totalRevenue += invoice.TotalAmount;
+
+                // Calculate cost for each item
+                foreach (var item in invoice.Items)
+                {
+                    // Find the order to get product IDs
+                    var order = await _orders.Find(o => o.Id == invoice.OrderId).FirstOrDefaultAsync();
+                    if (order != null)
+                    {
+                        var orderItem = order.Items.FirstOrDefault(oi => oi.ProductName == item.ProductName);
+                        if (orderItem != null)
+                        {
+                            var product = await _products.Find(p => p.Id == orderItem.ProductId).FirstOrDefaultAsync();
+                            if (product != null)
+                            {
+                                var productCost = product.GetProductCost();
+                                totalCost += productCost * item.Quantity;
+                            }
+                        }
+                    }
+                }
+
+                // Group by date for chart
+                var dateKey = invoice.CreatedAt.Date;
+                var dailyEntry = dailyData.FirstOrDefault(d => d.Date == dateKey);
+                if (dailyEntry == null)
+                {
+                    dailyEntry = new DailyRevenueData { Date = dateKey };
+                    dailyData.Add(dailyEntry);
+                }
+                dailyEntry.Revenue += invoice.TotalAmount;
+            }
+
+            var profit = totalRevenue - totalCost;
+            var profitMargin = totalRevenue > 0 ? (profit / totalRevenue) * 100 : 0;
+
+            ViewBag.TotalRevenue = totalRevenue;
+            ViewBag.TotalCost = totalCost;
+            ViewBag.Profit = profit;
+            ViewBag.ProfitMargin = profitMargin;
+            ViewBag.DateFrom = dateFrom.Value.ToString("yyyy-MM-dd");
+            ViewBag.DateTo = dateTo.Value.ToString("yyyy-MM-dd");
+            ViewBag.DailyData = dailyData.OrderBy(d => d.Date).ToList();
+
+            return View();
+        }
+    }
+
+    public class DailyRevenueData
+    {
+        public DateTime Date { get; set; }
+        public decimal Revenue { get; set; }
     }
 }

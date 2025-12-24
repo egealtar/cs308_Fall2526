@@ -52,7 +52,7 @@ namespace CS308Main.Controllers
             }
 
             // Validate role
-            var validRoles = new[] { "Customer", "DeliveryAdmin", "ProductManager", "SalesManager" };
+            var validRoles = new[] { "Customer", "SalesManager", "ProductManager", "SupportAgent" };
             if (!validRoles.Contains(model.Role))
             {
                 ModelState.AddModelError("Role", "Invalid role selected");
@@ -137,9 +137,9 @@ namespace CS308Main.Controllers
             // Redirect based on role
             return user.Role switch
             {
-                "DeliveryAdmin" => RedirectToAction("Index", "Delivery"),
                 "ProductManager" => RedirectToAction("Index", "Stock"),
                 "SalesManager" => RedirectToAction("AllOrders", "Order"),
+                "SupportAgent" => RedirectToAction("Index", "Home"), // Support agent features coming soon
                 _ => RedirectToAction("Index", "Home")
             };
         }

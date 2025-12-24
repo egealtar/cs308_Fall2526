@@ -1,0 +1,84 @@
+@model List<CS308Main.Models.Invoice>
+
+@{
+    ViewData["Title"] = "All Invoices";
+    var dateFrom = ViewBag.DateFrom as string;
+    var dateTo = ViewBag.DateTo as string;
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="bi bi-file-earmark-text"></i> All Invoices</h3>
+            <a asp-action="RevenueReport" class="btn btn-light btn-sm">
+                <i class="bi bi-graph-up"></i> Revenue Report
+            </a>
+        </div>
+        <div class="card-body">
+            <!-- Date Range Filter -->
+            <form method="get" class="mb-4">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="dateFrom" class="form-label">From Date</label>
+                        <input type="date" name="dateFrom" id="dateFrom" class="form-control" value="@dateFrom" />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="dateTo" class="form-label">To Date</label>
+                        <input type="date" name="dateTo" id="dateTo" class="form-control" value="@dateTo" />
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <div class="d-grid gap-2 w-100">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-funnel"></i> Filter
+                            </button>
+                            <a asp-action="AllInvoices" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-x-circle"></i> Clear
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> No invoices found for the selected date range.
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Total Amount</th>
+                                <th>Items</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var invoice in Model)
+                            {
+                                <tr>
+                                    <td><strong>@invoice.InvoiceNumber</strong></td>
+                                    <td>@invoice.UserId</td>
+                                    <td>@invoice.CreatedAt.ToString("MMM dd, yyyy HH:mm")</td>
+                                    <td><strong class="text-success">$@invoice.TotalAmount.ToString("F2")</strong></td>
+                                    <td>@invoice.Items.Count item(s)</td>
+                                    <td>
+                                        <a asp-action="Download" asp-route-id="@invoice.Id" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-download"></i> Download PDF
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -56,14 +56,16 @@
                             <select asp-for="Role" class="form-select" required>
                                 <option value="">-- Select Account Type --</option>
                                 <option value="Customer">Customer</option>
-                                <option value="DeliveryAdmin">Delivery Admin</option>
+                                <option value="SalesManager">Sales Manager</option>
                                 <option value="ProductManager">Product Manager</option>
+                                <option value="SupportAgent">Support Agent</option>
                             </select>
                             <span asp-validation-for="Role" class="text-danger"></span>
                             <small class="text-muted">
                                 <strong>Customer:</strong> Shop and place orders<br />
-                                <strong>Delivery Admin:</strong> Manage and track deliveries<br />
-                                <strong>Product Manager:</strong> Manage product stock and approve comments
+                                <strong>Sales Manager:</strong> Set prices, manage discounts, view revenue reports<br />
+                                <strong>Product Manager:</strong> Manage products, stock, categories, and deliveries<br />
+                                <strong>Support Agent:</strong> Provide customer support (coming soon)
                             </small>
                         </div>
 

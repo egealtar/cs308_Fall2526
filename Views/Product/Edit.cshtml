@@ -1,0 +1,123 @@
+@model CS308Main.Models.Product
+
+@{
+    ViewData["Title"] = "Edit Product";
+    var genres = ViewBag.Genres as List<string> ?? new List<string>();
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-warning text-dark">
+            <h3 class="mb-0"><i class="bi bi-pencil"></i> Edit Product</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Name" class="form-label">Product Name *</label>
+                        <input asp-for="Name" class="form-control" required />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Model" class="form-label">Model *</label>
+                        <input asp-for="Model" class="form-control" required />
+                        <span asp-validation-for="Model" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="SerialNumber" class="form-label">Serial Number</label>
+                        <input asp-for="SerialNumber" class="form-control" />
+                        <span asp-validation-for="SerialNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Genre" class="form-label">Category/Genre *</label>
+                        <input asp-for="Genre" class="form-control" list="genres" required />
+                        <datalist id="genres">
+                            @foreach (var genre in genres)
+                            {
+                                <option value="@genre">@genre</option>
+                            }
+                        </datalist>
+                        <small class="form-text text-muted">Type to select existing or create new category</small>
+                        <span asp-validation-for="Genre" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Description *</label>
+                    <textarea asp-for="Description" class="form-control" rows="4" required></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="Price" class="form-label">Price *</label>
+                        <input asp-for="Price" type="number" step="0.01" class="form-control" required />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="ProductCost" class="form-label">Product Cost</label>
+                        <input asp-for="ProductCost" type="number" step="0.01" class="form-control" />
+                        <small class="form-text text-muted">Leave empty to default to 50% of price</small>
+                        <span asp-validation-for="ProductCost" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="QuantityInStock" class="form-label">Quantity In Stock *</label>
+                        <input asp-for="QuantityInStock" type="number" class="form-control" required />
+                        <span asp-validation-for="QuantityInStock" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ImagePath" class="form-label">Image Path</label>
+                        <input asp-for="ImagePath" class="form-control" placeholder="/images/products/product.jpg" />
+                        <span asp-validation-for="ImagePath" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="DistributorInformation" class="form-label">Distributor Information</label>
+                        <input asp-for="DistributorInformation" class="form-control" />
+                        <span asp-validation-for="DistributorInformation" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input asp-for="WarrantyStatus" type="checkbox" class="form-check-input" />
+                    <label asp-for="WarrantyStatus" class="form-check-label">Warranty Status</label>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Directory" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Cancel
+                    </a>
+                    <div>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-check-circle"></i> Update Product
+                        </button>
+                        <form asp-action="Delete" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -5,7 +5,7 @@ using CS308Main.Models;
 
 namespace CS308Main.Controllers
 {
-    [Authorize(Roles = "DeliveryAdmin")]
+    [Authorize(Roles = "DeliveryAdmin,ProductManager")]
     public class DeliveryController : Controller
     {
         private readonly IMongoCollection<Order> _orders;

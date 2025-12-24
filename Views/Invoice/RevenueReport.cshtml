@@ -1,0 +1,141 @@
+@{
+    ViewData["Title"] = "Revenue Report";
+    var totalRevenue = ViewBag.TotalRevenue as decimal? ?? 0;
+    var totalCost = ViewBag.TotalCost as decimal? ?? 0;
+    var profit = ViewBag.Profit as decimal? ?? 0;
+    var profitMargin = ViewBag.ProfitMargin as decimal? ?? 0;
+    var dateFrom = ViewBag.DateFrom as string;
+    var dateTo = ViewBag.DateTo as string;
+    var dailyData = ViewBag.DailyData as List<CS308Main.Controllers.DailyRevenueData> ?? new List<CS308Main.Controllers.DailyRevenueData>();
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0"><i class="bi bi-graph-up"></i> Revenue & Profit Report</h3>
+        </div>
+        <div class="card-body">
+            <!-- Date Range Filter -->
+            <form method="get" class="mb-4">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="dateFrom" class="form-label">From Date</label>
+                        <input type="date" name="dateFrom" id="dateFrom" class="form-control" value="@dateFrom" />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="dateTo" class="form-label">To Date</label>
+                        <input type="date" name="dateTo" id="dateTo" class="form-control" value="@dateTo" />
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <div class="d-grid gap-2 w-100">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-funnel"></i> Generate Report
+                            </button>
+                            <a asp-action="AllInvoices" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-arrow-left"></i> Back to Invoices
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Summary Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Revenue</h5>
+                            <h2 class="mb-0">$@totalRevenue.ToString("F2")</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-danger text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Cost</h5>
+                            <h2 class="mb-0">$@totalCost.ToString("F2")</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-@(profit >= 0 ? "success" : "warning") text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Profit/Loss</h5>
+                            <h2 class="mb-0">$@profit.ToString("F2")</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Profit Margin</h5>
+                            <h2 class="mb-0">@profitMargin.ToString("F2")%</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            @if (dailyData.Any())
+            {
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Daily Revenue Chart</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="revenueChart" height="100"></canvas>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+        @if (dailyData.Any())
+        {
+            <text>
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            const chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [@Html.Raw(string.Join(",", dailyData.Select(d => $"'{d.Date:MMM dd}'")))],
+                    datasets: [{
+                        label: 'Daily Revenue ($)',
+                        data: [@string.Join(",", dailyData.Select(d => d.Revenue.ToString("F2")))],
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toFixed(2);
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return 'Revenue: $' + context.parsed.y.toFixed(2);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            </text>
+        }
+    </script>
+}

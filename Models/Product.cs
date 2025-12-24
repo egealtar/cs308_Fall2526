@@ -28,6 +28,10 @@ namespace CS308Main.Models
         [BsonElement("Price")]
         public decimal Price { get; set; }
 
+        [BsonElement("ProductCost")]
+        [BsonIgnoreIfNull]
+        public decimal? ProductCost { get; set; }
+
         [BsonElement("OriginalPrice")]
         [BsonIgnoreIfNull]
         public decimal? OriginalPrice { get; set; }
@@ -66,5 +70,8 @@ namespace CS308Main.Models
         public int DiscountPercentage => HasDiscount 
             ? (int)Math.Round((1 - (DiscountedPrice!.Value / Price)) * 100) 
             : 0;
+
+        // Product cost defaults to 50% of price if not specified
+        public decimal GetProductCost() => ProductCost ?? (Price * 0.5m);
     }
 }

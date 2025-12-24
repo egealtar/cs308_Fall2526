@@ -53,6 +53,21 @@
                                         <i class="bi bi-box-seam"></i> Stock
                                     </a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Delivery" asp-action="Index">
+                                        <i class="bi bi-truck"></i> Deliveries
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Category" asp-action="Index">
+                                        <i class="bi bi-tags"></i> Categories
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Invoice" asp-action="AllInvoices">
+                                        <i class="bi bi-file-earmark-text"></i> Invoices
+                                    </a>
+                                </li>
                             }
                             
                             @if (User.IsInRole("SalesManager"))
@@ -65,6 +80,16 @@
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Discount" asp-action="Index">
                                         <i class="bi bi-tag-fill"></i> Discounts
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Invoice" asp-action="AllInvoices">
+                                        <i class="bi bi-file-earmark-text"></i> Invoices
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Invoice" asp-action="RevenueReport">
+                                        <i class="bi bi-graph-up"></i> Revenue Report
                                     </a>
                                 </li>
                             }
