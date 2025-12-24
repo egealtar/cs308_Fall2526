@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Delivery Management";
+    ViewData["Title"] = "Delivery List";
     var deliveryList = ViewBag.DeliveryList as List<CS308Main.Controllers.DeliveryListItem> ?? new List<CS308Main.Controllers.DeliveryListItem>();
     var dateFrom = ViewBag.DateFrom as string;
     var dateTo = ViewBag.DateTo as string;
@@ -10,7 +10,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <h2 class="mb-4">
-                <i class="bi bi-truck"></i> Delivery Management
+                <i class="bi bi-list-ul"></i> Delivery List
             </h2>
         </div>
     </div>

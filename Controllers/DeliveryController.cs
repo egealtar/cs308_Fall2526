@@ -9,11 +9,13 @@ namespace CS308Main.Controllers
     public class DeliveryController : Controller
     {
         private readonly IMongoCollection<Order> _orders;
+        private readonly IMongoCollection<User> _users;
         private readonly ILogger<DeliveryController> _logger;
 
         public DeliveryController(IMongoDatabase database, ILogger<DeliveryController> logger)
         {
             _orders = database.GetCollection<Order>("Orders");
+            _users = database.GetCollection<User>("Users");
             _logger = logger;
         }
 
@@ -45,9 +47,34 @@ namespace CS308Main.Controllers
                 .SortByDescending(o => o.CreatedAt)
                 .ToListAsync();
 
+            // Create delivery list with all required properties
+            var deliveryList = new List<DeliveryListItem>();
+            foreach (var order in orders)
+            {
+                var user = await _users.Find(u => u.Id == order.UserId).FirstOrDefaultAsync();
+                foreach (var item in order.Items)
+                {
+                    deliveryList.Add(new DeliveryListItem
+                    {
+                        DeliveryId = order.Id,
+                        CustomerId = order.UserId,
+                        CustomerName = user?.Name ?? "Unknown",
+                        ProductId = item.ProductId,
+                        ProductName = item.ProductName,
+                        Quantity = item.Quantity,
+                        TotalPrice = item.Price * item.Quantity,
+                        DeliveryAddress = order.ShippingAddress,
+                        IsCompleted = order.Status == "Delivered",
+                        OrderStatus = order.Status,
+                        OrderDate = order.CreatedAt
+                    });
+                }
+            }
+
             ViewBag.CurrentStatus = status;
             ViewBag.DateFrom = dateFrom?.ToString("yyyy-MM-dd");
             ViewBag.DateTo = dateTo?.ToString("yyyy-MM-dd");
+            ViewBag.DeliveryList = deliveryList;
 
             return View(orders);
         }
@@ -82,7 +109,7 @@ namespace CS308Main.Controllers
 
             await _orders.UpdateOneAsync(o => o.Id == orderId, update);
 
-            _logger.LogInformation($"Delivery Admin updated order {orderId} status to {status}");
+            _logger.LogInformation($"Product Manager updated order {orderId} status to {status}");
             TempData["Success"] = $"Order status updated to {status}";
 
             return RedirectToAction("Index");
@@ -100,5 +127,21 @@ namespace CS308Main.Controllers
 
             return View(order);
         }
+    }
+
+    // Delivery List Item ViewModel with all required properties
+    public class DeliveryListItem
+    {
+        public string DeliveryId { get; set; } = string.Empty;
+        public string CustomerId { get; set; } = string.Empty;
+        public string CustomerName { get; set; } = string.Empty;
+        public string ProductId { get; set; } = string.Empty;
+        public string ProductName { get; set; } = string.Empty;
+        public int Quantity { get; set; }
+        public decimal TotalPrice { get; set; }
+        public string DeliveryAddress { get; set; } = string.Empty;
+        public bool IsCompleted { get; set; }
+        public string OrderStatus { get; set; } = string.Empty;
+        public DateTime OrderDate { get; set; }
     }
 }
