@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj": {}
+    "C:\\Users\\aaa\\Desktop\\cs308main\\cs308_Fall2526\\CS308Main.csproj": {}
   },
   "projects": {
-    "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj": {
+    "C:\\Users\\aaa\\Desktop\\cs308main\\cs308_Fall2526\\CS308Main.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj",
+        "projectUniqueName": "C:\\Users\\aaa\\Desktop\\cs308main\\cs308_Fall2526\\CS308Main.csproj",
         "projectName": "CS308Main",
-        "projectPath": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj",
-        "packagesPath": "/Users/eralpkiziloglu/.nuget/packages/",
-        "outputPath": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/obj/",
+        "projectPath": "C:\\Users\\aaa\\Desktop\\cs308main\\cs308_Fall2526\\CS308Main.csproj",
+        "packagesPath": "C:\\Users\\aaa\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aaa\\Desktop\\cs308main\\cs308_Fall2526\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/eralpkiziloglu/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\aaa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -37,7 +43,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -83,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
