@@ -59,30 +59,36 @@ else
                         </td>
                         <td>
                             <div class="btn-group" role="group">
-                                @if (order.Status == "Processing")
+                                @* Only Product Managers can update delivery status *@
+                                @if (User.IsInRole("ProductManager"))
                                 {
-                                    <form asp-controller="Order" asp-action="UpdateStatus" method="post" class="d-inline">
-                                        <input type="hidden" name="orderId" value="@order.Id" />
-                                        <input type="hidden" name="status" value="In-Transit" />
-                                        <button type="submit" class="btn btn-sm btn-info" 
-                                                title="Mark as In-Transit"
-                                                onclick="return confirm('Mark this order as In-Transit?')">
-                                            <i class="bi bi-truck"></i> Ship
-                                        </button>
-                                    </form>
-                                }
-                                
-                                @if (order.Status == "In-Transit")
-                                {
-                                    <form asp-controller="Order" asp-action="UpdateStatus" method="post" class="d-inline">
-                                        <input type="hidden" name="orderId" value="@order.Id" />
-                                        <input type="hidden" name="status" value="Delivered" />
-                                        <button type="submit" class="btn btn-sm btn-success" 
-                                                title="Mark as Delivered"
-                                                onclick="return confirm('Mark this order as Delivered?')">
-                                            <i class="bi bi-check-circle"></i> Deliver
-                                        </button>
-                                    </form>
+                                    @if (order.Status == "Processing")
+                                    {
+                                        <form asp-controller="Delivery" asp-action="UpdateDeliveryStatus" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="orderId" value="@order.Id" />
+                                            <input type="hidden" name="status" value="In-Transit" />
+                                            <button type="submit" class="btn btn-sm btn-info" 
+                                                    title="Mark as In-Transit"
+                                                    onclick="return confirm('Mark this order as In-Transit?')">
+                                                <i class="bi bi-truck"></i> Ship
+                                            </button>
+                                        </form>
+                                    }
+                                    
+                                    @if (order.Status == "In-Transit")
+                                    {
+                                        <form asp-controller="Delivery" asp-action="UpdateDeliveryStatus" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="orderId" value="@order.Id" />
+                                            <input type="hidden" name="status" value="Delivered" />
+                                            <button type="submit" class="btn btn-sm btn-success" 
+                                                    title="Mark as Delivered"
+                                                    onclick="return confirm('Mark this order as Delivered?')">
+                                                <i class="bi bi-check-circle"></i> Deliver
+                                            </button>
+                                        </form>
+                                    }
                                 }
                                 
                                 <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id" 

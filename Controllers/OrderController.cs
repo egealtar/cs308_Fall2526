@@ -58,31 +58,6 @@ namespace CS308Main.Controllers
             return View(order);
         }
 
-        // SalesManager - Sipariş durumu güncelleme
-        [HttpPost]
-        [Authorize(Roles = "SalesManager")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateStatus(string orderId, string status)
-        {
-            var validStatuses = new[] { "Processing", "In-Transit", "Delivered" };
-
-            if (!validStatuses.Contains(status))
-            {
-                TempData["Error"] = "Invalid status";
-                return RedirectToAction("AllOrders");
-            }
-
-            var update = Builders<Order>.Update
-                .Set(o => o.Status, status)
-                .Set(o => o.UpdatedAt, DateTime.UtcNow);
-
-            await _orders.UpdateOneAsync(o => o.Id == orderId, update);
-
-            _logger.LogInformation($"Order {orderId} status updated to {status}");
-            TempData["Success"] = $"Order status updated to {status}";
-
-            return RedirectToAction("AllOrders");
-        }
 
         // SalesManager - Tüm siparişler
         [HttpGet]

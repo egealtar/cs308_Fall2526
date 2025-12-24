@@ -56,20 +56,21 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="Price" class="form-label">Price *</label>
-                        <input asp-for="Price" type="number" step="0.01" class="form-control" required />
-                        <span asp-validation-for="Price" class="text-danger"></span>
+                    <div class="col-md-6 mb-3">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> <strong>Note:</strong> Product price must be set by a Sales Manager after product creation.
+                        </div>
                     </div>
-
-                    <div class="col-md-4 mb-3">
-                        <label asp-for="ProductCost" class="form-label">Product Cost</label>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ProductCost" class="form-label">Product Cost (Optional)</label>
                         <input asp-for="ProductCost" type="number" step="0.01" class="form-control" />
-                        <small class="form-text text-muted">Leave empty to default to 50% of price</small>
+                        <small class="form-text text-muted">Leave empty to default to 50% of price (set by Sales Manager)</small>
                         <span asp-validation-for="ProductCost" class="text-danger"></span>
                     </div>
+                </div>
 
-                    <div class="col-md-4 mb-3">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
                         <label asp-for="QuantityInStock" class="form-label">Quantity In Stock *</label>
                         <input asp-for="QuantityInStock" type="number" class="form-control" required />
                         <span asp-validation-for="QuantityInStock" class="text-danger"></span>

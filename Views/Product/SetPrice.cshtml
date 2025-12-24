@@ -1,0 +1,96 @@
+@model CS308Main.Models.Product
+
+@{
+    ViewData["Title"] = "Set Product Price";
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h3 class="mb-0"><i class="bi bi-currency-dollar"></i> Set Product Price</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h5>Product Information</h5>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Name:</strong> @Model.Name</p>
+                            <p><strong>Model:</strong> @Model.Model</p>
+                            <p><strong>Current Price:</strong> 
+                                @if (Model.Price > 0)
+                                {
+                                    <span class="text-success">$@Model.Price.ToString("F2")</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Not Set</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Category:</strong> @Model.Genre</p>
+                            <p><strong>Stock:</strong> @Model.QuantityInStock</p>
+                            @if (Model.ProductCost.HasValue && Model.ProductCost > 0)
+                            {
+                                <p><strong>Product Cost:</strong> $@Model.ProductCost.Value.ToString("F2")</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-action="SetPrice" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+                
+                <div class="mb-3">
+                    <label for="price" class="form-label">New Price *</label>
+                    <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" name="price" id="price" step="0.01" min="0.01" 
+                               class="form-control" value="@(Model.Price > 0 ? Model.Price : "")" 
+                               placeholder="Enter price" required />
+                    </div>
+                    <small class="form-text text-muted">
+                        @if (Model.ProductCost.HasValue && Model.ProductCost > 0)
+                        {
+                            <text>Product Cost: $@Model.ProductCost.Value.ToString("F2") | 
+                            Profit Margin: @((Model.Price > 0 ? ((Model.Price - Model.ProductCost.Value) / Model.Price * 100) : 0).ToString("F2"))%</text>
+                        }
+                        else
+                        {
+                            <text>Product cost will be set to 50% of the price if not already set.</text>
+                        }
+                    </small>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Directory" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Set Price
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Calculate profit margin on price change
+        document.getElementById('price').addEventListener('input', function() {
+            var price = parseFloat(this.value) || 0;
+            var cost = @(Model.ProductCost.HasValue && Model.ProductCost > 0 ? Model.ProductCost.Value : 0);
+            if (price > 0 && cost > 0) {
+                var margin = ((price - cost) / price * 100).toFixed(2);
+                var marginText = margin >= 0 ? margin + '%' : 'Loss: ' + Math.abs(margin) + '%';
+                this.nextElementSibling.nextElementSibling.innerHTML = 
+                    'Product Cost: $' + cost.toFixed(2) + ' | Profit Margin: ' + marginText;
+            }
+        });
+    </script>
+}

@@ -48,15 +48,18 @@ namespace CS308Main.Controllers
                 return View(product);
             }
 
-            // Set default product cost if not provided
+            // Product Managers cannot set prices - set to 0, Sales Manager must set it
+            product.Price = 0;
+            
+            // Set default product cost if not provided (based on 0 price, will need to be updated)
             if (!product.ProductCost.HasValue)
             {
-                product.ProductCost = product.Price * 0.5m;
+                product.ProductCost = 0;
             }
 
             await _products.InsertOneAsync(product);
-            _logger.LogInformation($"Product {product.Name} created by Product Manager");
-            TempData["Success"] = $"Product '{product.Name}' created successfully!";
+            _logger.LogInformation($"Product {product.Name} created by Product Manager (price must be set by Sales Manager)");
+            TempData["Success"] = $"Product '{product.Name}' created successfully! Note: Price must be set by a Sales Manager.";
             return RedirectToAction("Directory");
         }
 
@@ -101,13 +104,20 @@ namespace CS308Main.Controllers
                 product.ProductCost = product.Price * 0.5m;
             }
 
+            // Get existing product to preserve price (Product Managers cannot change price)
+            var existingProduct = await _products.Find(p => p.Id == id).FirstOrDefaultAsync();
+            if (existingProduct == null)
+            {
+                return NotFound();
+            }
+
             var update = Builders<Product>.Update
                 .Set(p => p.Name, product.Name)
                 .Set(p => p.Model, product.Model)
                 .Set(p => p.SerialNumber, product.SerialNumber)
                 .Set(p => p.Description, product.Description)
                 .Set(p => p.QuantityInStock, product.QuantityInStock)
-                .Set(p => p.Price, product.Price)
+                // Price is NOT updated - only Sales Managers can set prices
                 .Set(p => p.ProductCost, product.ProductCost)
                 .Set(p => p.WarrantyStatus, product.WarrantyStatus)
                 .Set(p => p.DistributorInformation, product.DistributorInformation)
@@ -115,8 +125,54 @@ namespace CS308Main.Controllers
                 .Set(p => p.ImagePath, product.ImagePath);
 
             await _products.UpdateOneAsync(p => p.Id == id, update);
-            _logger.LogInformation($"Product {product.Name} updated by Product Manager");
+            _logger.LogInformation($"Product {product.Name} updated by Product Manager (price unchanged)");
             TempData["Success"] = $"Product '{product.Name}' updated successfully!";
+            return RedirectToAction("Directory");
+        }
+
+        // Sales Manager: Set Product Price
+        [HttpGet]
+        [Authorize(Roles = "SalesManager")]
+        public async Task<IActionResult> SetPrice(string id)
+        {
+            var product = await _products.Find(p => p.Id == id).FirstOrDefaultAsync();
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "SalesManager")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetPrice(string id, [FromForm] decimal price)
+        {
+            var product = await _products.Find(p => p.Id == id).FirstOrDefaultAsync();
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            if (price <= 0)
+            {
+                ModelState.AddModelError("Price", "Price must be greater than 0");
+                return View(product);
+            }
+
+            var update = Builders<Product>.Update
+                .Set(p => p.Price, price);
+
+            // If product cost is 0 or not set, set it to 50% of price
+            if (!product.ProductCost.HasValue || product.ProductCost == 0)
+            {
+                update = update.Set(p => p.ProductCost, price * 0.5m);
+            }
+
+            await _products.UpdateOneAsync(p => p.Id == id, update);
+            _logger.LogInformation($"Price set to ${price} for product {product.Name} by Sales Manager");
+            TempData["Success"] = $"Price set to ${price:F2} for '{product.Name}'";
             return RedirectToAction("Directory");
         }
 
