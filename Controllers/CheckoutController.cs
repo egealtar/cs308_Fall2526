@@ -18,6 +18,7 @@ namespace CS308Main.Controllers
         private readonly MockPaymentService _paymentService;
         private readonly IPdfService _pdfService;
         private readonly IEmailService _emailService;
+        private readonly IWebHostEnvironment _environment;
         private readonly ILogger<CheckoutController> _logger;
 
         public CheckoutController(
@@ -25,6 +26,7 @@ namespace CS308Main.Controllers
             MockPaymentService paymentService,
             IPdfService pdfService,
             IEmailService emailService,
+            IWebHostEnvironment environment,
             ILogger<CheckoutController> logger)
         {
             _carts = database.GetCollection<ShoppingCart>("ShoppingCarts");
@@ -35,6 +37,7 @@ namespace CS308Main.Controllers
             _paymentService = paymentService;
             _pdfService = pdfService;
             _emailService = emailService;
+            _environment = environment;
             _logger = logger;
         }
 
@@ -98,7 +101,7 @@ namespace CS308Main.Controllers
                 return RedirectToAction("Index", "ShoppingCart");
             }
 
-            // Validate card with Luhn algorithm
+            // Validate card
             if (!_paymentService.ValidateCardNumber(cardNumber))
             {
                 TempData["Error"] = "Invalid card number";
@@ -164,8 +167,7 @@ namespace CS308Main.Controllers
             foreach (var item in orderItems)
             {
                 var update = Builders<Product>.Update
-                    .Inc(p => p.QuantityInStock, -item.Quantity)
-                    .Inc(p => p.Popularity, item.Quantity);
+                    .Inc(p => p.QuantityInStock, -item.Quantity);
                 
                 await _products.UpdateOneAsync(p => p.Id == item.ProductId, update);
             }
@@ -178,12 +180,14 @@ namespace CS308Main.Controllers
             // Generate invoice and send email
             try
             {
+                _logger.LogInformation($"Generating invoice for order {order.Id}");
                 await GenerateAndSendInvoiceAsync(order.Id, userId ?? "");
                 TempData["Success"] = "Order placed successfully! Invoice has been sent to your email.";
+                _logger.LogInformation($"Invoice generated and email sent for order {order.Id}");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Failed to generate or send invoice");
+                _logger.LogError(ex, $"Failed to generate or send invoice for order {order.Id}");
                 TempData["Success"] = "Order placed successfully! Invoice generation failed, but you can download it from your order history.";
             }
 
@@ -194,67 +198,101 @@ namespace CS308Main.Controllers
 
         private async Task GenerateAndSendInvoiceAsync(string orderId, string userId)
         {
-            // Get user
-            var user = await _users.Find(u => u.Id == userId).FirstOrDefaultAsync();
-            if (user == null)
-            {
-                _logger.LogWarning($"User {userId} not found for invoice generation");
-                return;
-            }
-
-            // Get order
-            var order = await _orders.Find(o => o.Id == orderId).FirstOrDefaultAsync();
-            if (order == null)
-            {
-                _logger.LogWarning($"Order {orderId} not found for invoice generation");
-                return;
-            }
-
-            // Check if invoice already exists
-            var existingInvoice = await _invoices.Find(i => i.OrderId == orderId).FirstOrDefaultAsync();
-            if (existingInvoice != null)
-            {
-                _logger.LogInformation($"Invoice already exists for order {orderId}");
-                return;
-            }
-
-            // Create invoice
-            var invoice = new Invoice
-            {
-                OrderId = orderId,
-                UserId = userId,
-                InvoiceNumber = $"INV-{DateTime.Now:yyyyMMdd}-{new Random().Next(1000, 9999)}",
-                TotalAmount = order.TotalPrice,
-                Items = order.Items.Select(item => new InvoiceItem
-                {
-                    ProductName = item.ProductName,
-                    Quantity = item.Quantity,
-                    Price = item.Price,
-                    Total = item.Price * item.Quantity
-                }).ToList(),
-                CreatedAt = DateTime.UtcNow
-            };
-
-            await _invoices.InsertOneAsync(invoice);
-            _logger.LogInformation($"Invoice {invoice.InvoiceNumber} created for order {orderId}");
-
             try
             {
+                _logger.LogInformation($"Starting invoice generation for order {orderId}");
+
+                // Get user
+                var user = await _users.Find(u => u.Id == userId).FirstOrDefaultAsync();
+                if (user == null)
+                {
+                    _logger.LogWarning($"User {userId} not found");
+                    throw new Exception("User not found");
+                }
+
+                _logger.LogInformation($"User found: {user.Email}");
+
+                // Get order
+                var order = await _orders.Find(o => o.Id == orderId).FirstOrDefaultAsync();
+                if (order == null)
+                {
+                    _logger.LogWarning($"Order {orderId} not found");
+                    throw new Exception("Order not found");
+                }
+
+                _logger.LogInformation($"Order found: {order.Id}");
+
+                // Check if invoice already exists
+                var existingInvoice = await _invoices.Find(i => i.OrderId == orderId).FirstOrDefaultAsync();
+                if (existingInvoice != null)
+                {
+                    _logger.LogInformation($"Invoice already exists: {existingInvoice.InvoiceNumber}");
+                    return;
+                }
+
+                // Create invoice
+                var invoice = new Invoice
+                {
+                    OrderId = orderId,
+                    UserId = userId,
+                    InvoiceNumber = $"INV-{DateTime.Now:yyyyMMdd}-{new Random().Next(1000, 9999)}",
+                    TotalAmount = order.TotalPrice,
+                    Items = order.Items.Select(item => new InvoiceItem
+                    {
+                        ProductName = item.ProductName,
+                        Quantity = item.Quantity,
+                        Price = item.Price,
+                        Total = item.Price * item.Quantity
+                    }).ToList(),
+                    CreatedAt = DateTime.UtcNow,
+                    PdfPath = ""
+                };
+
+                // Save invoice to DB
+                await _invoices.InsertOneAsync(invoice);
+                _logger.LogInformation($"Invoice saved to DB: {invoice.InvoiceNumber} with ID: {invoice.Id}");
+
                 // Generate PDF
+                _logger.LogInformation($"Generating PDF for invoice {invoice.InvoiceNumber}");
                 var pdfPath = await _pdfService.GenerateInvoicePdfAsync(invoice, user);
-                _logger.LogInformation($"PDF generated at {pdfPath}");
+                _logger.LogInformation($"PDF generated at: {pdfPath}");
 
                 // Update invoice with PDF path
+                var filter = Builders<Invoice>.Filter.Eq(i => i.Id, invoice.Id);
                 var update = Builders<Invoice>.Update.Set(i => i.PdfPath, pdfPath);
-                await _invoices.UpdateOneAsync(i => i.Id == invoice.Id, update);
+                var result = await _invoices.UpdateOneAsync(filter, update);
+
+                _logger.LogInformation($"PDF path updated in DB. Modified count: {result.ModifiedCount}");
+
+                if (result.ModifiedCount == 0)
+                {
+                    _logger.LogWarning($"Failed to update PDF path for invoice {invoice.Id}");
+                }
 
                 // Send email
-                await _emailService.SendInvoiceEmailAsync(user.Email, invoice.InvoiceNumber, pdfPath);
-                _logger.LogInformation($"Invoice email sent to {user.Email}");
+                try
+                {
+                    _logger.LogInformation($"Sending email to: {user.Email}");
+                    
+                    var fullPdfPath = Path.Combine(_environment.WebRootPath, pdfPath.TrimStart('/'));
+                    
+                    if (!File.Exists(fullPdfPath))
+                    {
+                        _logger.LogError($"PDF file not found at: {fullPdfPath}");
+                        throw new Exception("PDF file not found for email attachment");
+                    }
+
+                    await _emailService.SendInvoiceEmailAsync(user.Email, invoice.InvoiceNumber, fullPdfPath);
+                    _logger.LogInformation($"Email sent successfully to {user.Email}");
+                }
+                catch (Exception emailEx)
+                {
+                    _logger.LogError(emailEx, $"Failed to send email: {emailEx.Message}");
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Failed to generate PDF or send email for invoice {invoice.InvoiceNumber}");
+                _logger.LogError(ex, $"Error in GenerateAndSendInvoiceAsync: {ex.Message}");
                 throw;
             }
         }
@@ -271,24 +309,6 @@ namespace CS308Main.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            // Get invoice for this order
-            var invoice = await _invoices.Find(i => i.OrderId == orderId).FirstOrDefaultAsync();
-            
-            // If invoice doesn't exist yet, try to generate it
-            if (invoice == null)
-            {
-                try
-                {
-                    await GenerateAndSendInvoiceAsync(orderId, userId ?? "");
-                    invoice = await _invoices.Find(i => i.OrderId == orderId).FirstOrDefaultAsync();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, $"Failed to generate invoice for order {orderId}");
-                }
-            }
-
-            ViewBag.Invoice = invoice;
             return View(order);
         }
     }

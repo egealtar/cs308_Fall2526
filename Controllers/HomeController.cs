@@ -1,20 +1,18 @@
-using CS308Main.Models;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using MongoDB.Bson;
-using System.Diagnostics;
+using CS308Main.Models;
 
 namespace CS308Main.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IMongoCollection<Product> _products;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger, IMongoDatabase database)
+        public HomeController(IMongoDatabase database, ILogger<HomeController> logger)
         {
-            _logger = logger;
             _products = database.GetCollection<Product>("Products");
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index(string? genre = null, string? search = null, string? sort = null)
@@ -22,7 +20,7 @@ namespace CS308Main.Controllers
             var filterBuilder = Builders<Product>.Filter;
             var filter = filterBuilder.Empty;
 
-            // Genre filter (URL'de genre parametresi kullan)
+            // Genre filter
             if (!string.IsNullOrEmpty(genre))
             {
                 filter = filter & filterBuilder.Eq(p => p.Genre, genre);
@@ -32,14 +30,17 @@ namespace CS308Main.Controllers
             if (!string.IsNullOrEmpty(search))
             {
                 var searchFilter = filterBuilder.Or(
-                    filterBuilder.Regex(p => p.Name, new BsonRegularExpression(search, "i")),
-                    filterBuilder.Regex(p => p.Description, new BsonRegularExpression(search, "i")),
-                    filterBuilder.Regex(p => p.Author, new BsonRegularExpression(search, "i"))
+                    filterBuilder.Regex(p => p.Name, new MongoDB.Bson.BsonRegularExpression(search, "i")),
+                    filterBuilder.Regex(p => p.Description, new MongoDB.Bson.BsonRegularExpression(search, "i"))
                 );
                 filter = filter & searchFilter;
             }
 
-            // Get products
+            // Get all genres for filter dropdown
+            var allProducts = await _products.Find(filterBuilder.Empty).ToListAsync();
+            var genres = allProducts.Select(p => p.Genre).Distinct().OrderBy(g => g).ToList();
+
+            // Query products
             var query = _products.Find(filter);
 
             // Sorting
@@ -49,26 +50,15 @@ namespace CS308Main.Controllers
                 "price_desc" => query.SortByDescending(p => p.Price),
                 "name_asc" => query.SortBy(p => p.Name),
                 "name_desc" => query.SortByDescending(p => p.Name),
-                "popularity"     => query.SortByDescending(p => p.Popularity),
                 _ => query.SortBy(p => p.Name)
             };
 
             var products = await query.ToListAsync();
 
-            // Get all genres (categories)
-            var allProducts = await _products.Find(filterBuilder.Empty).ToListAsync();
-            ViewBag.Categories = allProducts
-                .Select(p => p.Genre)
-                .Distinct()
-                .Where(g => !string.IsNullOrEmpty(g))
-                .OrderBy(g => g)
-                .ToList();
-
-            ViewBag.CurrentGenre = genre;  // genre parametresini gönder
-            ViewBag.CurrentSearch = search;
-            ViewBag.CurrentSort = sort;
-
-            _logger.LogInformation($"Loaded {products.Count} products");
+            ViewBag.Genres = genres;
+            ViewBag.CurrentGenre = genre;
+            ViewBag.SearchQuery = search;
+            ViewBag.SortOption = sort;
 
             return View(products);
         }
@@ -81,7 +71,7 @@ namespace CS308Main.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel { RequestId = System.Diagnostics.Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
