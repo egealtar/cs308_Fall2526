@@ -1,0 +1,149 @@
+@model CS308Main.Models.ShoppingCart
+
+@{
+    ViewData["Title"] = "Checkout";
+    var cartItems = ViewBag.CartItems as List<CS308Main.Models.CartItem>;
+    var total = ViewBag.Total as decimal?;
+    var user = ViewBag.User as CS308Main.Models.User;
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Checkout</h2>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <!-- Order Summary -->
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    @if (cartItems != null && cartItems.Any())
+                    {
+                        <ul class="list-group list-group-flush mb-3">
+                            @foreach (var item in cartItems)
+                            {
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>@item.ProductId (x@item.Quantity)</span>
+                                    <span>$--</span>
+                                </li>
+                            }
+                        </ul>
+                        <hr />
+                        <div class="d-flex justify-content-between">
+                            <strong>Total:</strong>
+                            <strong class="text-success">$@total?.ToString("F2")</strong>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Form -->
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Payment Information</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="ProcessPayment" method="post">
+                        <!-- Shipping Address -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Shipping Address</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Address</label>
+                                <textarea name="shippingAddress" class="form-control" rows="3" required>@user?.HomeAddress</textarea>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <!-- Card Information -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Card Information</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Card Number</label>
+                                <input type="text" name="cardNumber" class="form-control" 
+                                       placeholder="1234 5678 9012 3456" 
+                                       pattern="[0-9]{13,19}" 
+                                       maxlength="19" 
+                                       required />
+                                <small class="text-muted">Enter 13-19 digit card number</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Cardholder Name</label>
+                                <input type="text" name="cardName" class="form-control" 
+                                       placeholder="JOHN DOE" 
+                                       required />
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label class="form-label">Expiry Date</label>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <select name="expiryMonth" class="form-select" required>
+                                                <option value="">Month</option>
+                                                @for (int i = 1; i <= 12; i++)
+                                                {
+                                                    <option value="@i.ToString("D2")">@i.ToString("D2")</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <select name="expiryYear" class="form-select" required>
+                                                <option value="">Year</option>
+                                                @for (int i = DateTime.Now.Year; i <= DateTime.Now.Year + 10; i++)
+                                                {
+                                                    <option value="@i">@i</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">CVV</label>
+                                    <input type="text" name="cvv" class="form-control" 
+                                           placeholder="123" 
+                                           pattern="[0-9]{3,4}" 
+                                           maxlength="4" 
+                                           required />
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-credit-card"></i> Pay $@total?.ToString("F2")
+                            </button>
+                            <a asp-controller="ShoppingCart" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Cart
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Format card number input
+        document.querySelector('input[name="cardNumber"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            e.target.value = value;
+        });
+    </script>
+}

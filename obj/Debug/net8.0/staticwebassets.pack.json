@@ -1,0 +1,409 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Emails/Email_20251207182851_c3e8ffae.txt",
+      "PackagePath": "staticwebassets/Emails/Email_20251207182851_c3e8ffae.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Emails/Email_20251207182952_8a736533.txt",
+      "PackagePath": "staticwebassets/Emails/Email_20251207182952_8a736533.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Emails/Email_20251207183131_4dab8761.txt",
+      "PackagePath": "staticwebassets/Emails/Email_20251207183131_4dab8761.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Emails/Email_20251207183156_c3f80340.txt",
+      "PackagePath": "staticwebassets/Emails/Email_20251207183156_c3f80340.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Emails/Email_20251207183539_95343001.txt",
+      "PackagePath": "staticwebassets/Emails/Email_20251207183539_95343001.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Emails/Email_20251207183647_ddd3cb6a.txt",
+      "PackagePath": "staticwebassets/Emails/Email_20251207183647_ddd3cb6a.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Emails/Email_20251207183922_b0fea8fb.txt",
+      "PackagePath": "staticwebassets/Emails/Email_20251207183922_b0fea8fb.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Emails/Email_20251207184401_3a01a3e9.txt",
+      "PackagePath": "staticwebassets/Emails/Email_20251207184401_3a01a3e9.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Emails/Email_20251208191905_80f8a96c.txt",
+      "PackagePath": "staticwebassets/Emails/Email_20251208191905_80f8a96c.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Emails/Email_20251208192954_2d35a9a9.txt",
+      "PackagePath": "staticwebassets/Emails/Email_20251208192954_2d35a9a9.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-1050_20251207175724.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-1050_20251207175724.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-1431_20251207182148.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-1431_20251207182148.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-1585_20251207180128.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-1585_20251207180128.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-1636_20251207174444.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-1636_20251207174444.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-2149_20251207175153.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-2149_20251207175153.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-2202_20251207183911.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-2202_20251207183911.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-2870_20251207175218.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-2870_20251207175218.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-3213_20251207183527.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-3213_20251207183527.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-3860_20251207183145.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-3860_20251207183145.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-4567_20251207182840.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-4567_20251207182840.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-4844_20251207182940.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-4844_20251207182940.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-4867_20251207162633.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-4867_20251207162633.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-5653_20251207183119.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-5653_20251207183119.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-5959_20251207183635.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-5959_20251207183635.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-7239_20251207184349.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-7239_20251207184349.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-7922_20251207181515.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-7922_20251207181515.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-8749_20251207131811.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-8749_20251207131811.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-9626_20251207165938.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251207-9626_20251207165938.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251208-2872_20251208192947.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251208-2872_20251208192947.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251208-8323_20251208195606.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251208-8323_20251208195606.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251208-8543_20251208191853.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251208-8543_20251208191853.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251210-1430_20251210221614.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251210-1430_20251210221614.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251211-2071_20251211195222.pdf",
+      "PackagePath": "staticwebassets/Invoices/Invoice_INV-20251211-2071_20251211195222.pdf"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/css/site.css",
+      "PackagePath": "staticwebassets/css/site.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/favicon.ico",
+      "PackagePath": "staticwebassets/favicon.ico"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/images/Parts/air-filter.jpg",
+      "PackagePath": "staticwebassets/images/Parts/air-filter.jpg"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/images/Parts/brake-disc.jpg",
+      "PackagePath": "staticwebassets/images/Parts/brake-disc.jpg"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/images/Parts/shock-absorber.jpg",
+      "PackagePath": "staticwebassets/images/Parts/shock-absorber.jpg"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/images/maxresdefault.jpg",
+      "PackagePath": "staticwebassets/images/maxresdefault.jpg"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/js/site.js",
+      "PackagePath": "staticwebassets/js/site.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/LICENSE",
+      "PackagePath": "staticwebassets/lib/bootstrap"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.min.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.js.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.min.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.js.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.min.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.min.js.map"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt",
+      "PackagePath": "staticwebassets/lib/jquery-validation-unobtrusive/LICENSE.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery-validation/LICENSE.md",
+      "PackagePath": "staticwebassets/lib/jquery-validation/LICENSE.md"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery-validation/dist/additional-methods.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation/dist/additional-methods.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery-validation/dist/additional-methods.min.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation/dist/additional-methods.min.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation/dist/jquery.validate.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+      "PackagePath": "staticwebassets/lib/jquery-validation/dist/jquery.validate.min.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery/LICENSE.txt",
+      "PackagePath": "staticwebassets/lib/jquery/LICENSE.txt"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery/dist/jquery.js",
+      "PackagePath": "staticwebassets/lib/jquery/dist/jquery.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery/dist/jquery.min.js",
+      "PackagePath": "staticwebassets/lib/jquery/dist/jquery.min.js"
+    },
+    {
+      "Id": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/wwwroot/lib/jquery/dist/jquery.min.map",
+      "PackagePath": "staticwebassets/lib/jquery/dist/jquery.min.map"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.CS308Main.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.CS308Main.props",
+      "PackagePath": "build\\CS308Main.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.CS308Main.props",
+      "PackagePath": "buildMultiTargeting\\CS308Main.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.CS308Main.props",
+      "PackagePath": "buildTransitive\\CS308Main.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

@@ -1,0 +1,22 @@
+Email saved (Email service not configured or failed)
+========================================
+To: egealtar@sabanciuniv.edu
+Subject: Your Invoice - INV-20251207-3213
+Date: 2025-12-07 18:35:39
+Attachment: /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/wwwroot/Invoices/Invoice_INV-20251207-3213_20251207183527.pdf
+
+Body:
+
+                <html>
+                <body style='font-family: Arial, sans-serif;'>
+                    <h2>Thank you for your purchase!</h2>
+                    <p>Dear Customer,</p>
+                    <p>Your order has been successfully processed.</p>
+                    <p><strong>Invoice Number:</strong> INV-20251207-3213</p>
+                    <p>Please find your invoice attached to this email.</p>
+                    <br>
+                    <p>Best regards,</p>
+                    <p><strong>MotorMatch Team</strong></p>
+                </body>
+                </html>
+            

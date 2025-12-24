@@ -1,0 +1,357 @@
+﻿@model List<CS308Main.Models.Product>
+
+@{
+    ViewData["Title"] = "Home";
+    var genres = ViewBag.Genres as List<string> ?? new List<string>();
+    var currentGenre = ViewBag.CurrentGenre as string;
+    var searchQuery = ViewBag.SearchQuery as string;
+    var sortOption = ViewBag.SortOption as string;
+}
+
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="hero-background"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content container text-center text-white position-relative">
+        <h1 class="display-3 fw-bold mb-4 animate-fade-in">Welcome to MotorMatch</h1>
+        <p class="lead mb-5 animate-fade-in" style="animation-delay: 0.2s;">Premium Auto Parts & Accessories</p>
+        <a href="#products" class="btn btn-primary btn-lg pulse-button">
+            <i class="bi bi-shop"></i> Shop Now
+        </a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5 bg-light">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="feature-box text-center p-4 animate-fade-in">
+                    <i class="bi bi-truck feature-icon text-primary"></i>
+                    <h5 class="mt-3">Free Shipping</h5>
+                    <p class="text-muted">On orders over $100</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-box text-center p-4 animate-fade-in" style="animation-delay: 0.1s;">
+                    <i class="bi bi-shield-check feature-icon text-success"></i>
+                    <h5 class="mt-3">Warranty</h5>
+                    <p class="text-muted">Quality guaranteed</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-box text-center p-4 animate-fade-in" style="animation-delay: 0.2s;">
+                    <i class="bi bi-headset feature-icon text-info"></i>
+                    <h5 class="mt-3">24/7 Support</h5>
+                    <p class="text-muted">Always here to help</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-box text-center p-4 animate-fade-in" style="animation-delay: 0.3s;">
+                    <i class="bi bi-tag feature-icon text-warning"></i>
+                    <h5 class="mt-3">Best Deals</h5>
+                    <p class="text-muted">Competitive prices</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Products Section -->
+<section id="products" class="products-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Products</h2>
+
+        <!-- Search and Filter Bar -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <form method="get" asp-action="Index" class="row g-3">
+                    <!-- Search -->
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" name="search" class="form-control" 
+                                   placeholder="Search products..." 
+                                   value="@searchQuery" />
+                        </div>
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="col-md-3">
+                        <select name="genre" class="form-select">
+                            <option value="">All Categories</option>
+                            @foreach (var genre in genres)
+                            {
+                                <option value="@genre" selected="@(genre == currentGenre)">@genre</option>
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Sort -->
+                    <div class="col-md-3">
+                        <select name="sort" class="form-select">
+                            <option value="">Default</option>
+                            <option value="price_asc" selected="@(sortOption == "price_asc")">Price: Low to High</option>
+                            <option value="price_desc" selected="@(sortOption == "price_desc")">Price: High to Low</option>
+                            <option value="name_asc" selected="@(sortOption == "name_asc")">Name: A to Z</option>
+                            <option value="name_desc" selected="@(sortOption == "name_desc")">Name: Z to A</option>
+                        </select>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="col-md-2">
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-funnel"></i> Filter
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        @if (Model == null || !Model.Any())
+        {
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle"></i> No products found matching your criteria.
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var product in Model)
+                {
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="card product-card h-100 shadow-sm">
+                            @if (product.HasDiscount)
+                            {
+                                <span class="badge bg-danger position-absolute top-0 end-0 m-2" style="z-index: 10;">
+                                    -@product.DiscountPercentage%
+                                </span>
+                            }
+
+                            @if (product.QuantityInStock == 0)
+                            {
+                                <span class="badge bg-secondary position-absolute top-0 start-0 m-2" style="z-index: 10;">
+                                    Out of Stock
+                                </span>
+                            }
+
+                            @if (!string.IsNullOrEmpty(product.ImagePath))
+                            {
+                                <div class="product-image-container">
+                                    <img src="@product.ImagePath" class="card-img-top product-image" alt="@product.Name" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="product-image-container bg-secondary text-white d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-image" style="font-size: 3rem;"></i>
+                                </div>
+                            }
+
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title">@product.Name</h6>
+                                <p class="card-text text-muted small flex-grow-1">
+                                    @(product.Description.Length > 60 ? product.Description.Substring(0, 60) + "..." : product.Description)
+                                </p>
+
+                                <div class="mb-2">
+                                    @if (product.HasDiscount)
+                                    {
+                                        <div>
+                                            <span class="text-decoration-line-through text-muted">$@product.Price.ToString("F2")</span>
+                                            <span class="h5 text-danger ms-2">$@product.FinalPrice.ToString("F2")</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span class="h5 text-success">$@product.Price.ToString("F2")</span>
+                                    }
+                                </div>
+
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-box-seam"></i> Stock: @product.QuantityInStock
+                                    </small>
+                                </div>
+                            </div>
+
+                            <div class="card-footer bg-transparent">
+                                <div class="d-grid gap-2">
+                                    @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+                                    {
+                                        <form asp-controller="WishList" asp-action="AddToWishList" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="productId" value="@product.Id" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                <i class="bi bi-heart"></i> Add to Wish List
+                                            </button>
+                                        </form>
+                                    }
+
+                                    @if (product.QuantityInStock > 0)
+                                    {
+                                        <form asp-controller="ShoppingCart" asp-action="AddToCart" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="productId" value="@product.Id" />
+                                            <input type="hidden" name="quantity" value="1" />
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="bi bi-cart-plus"></i> Add to Cart
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary btn-sm" disabled>
+                                            <i class="bi bi-x-circle"></i> Out of Stock
+                                        </button>
+                                    }
+
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" 
+                                       class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-info-circle"></i> Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center text-white">
+                <h3 class="mb-3">Subscribe to Our Newsletter</h3>
+                <p class="mb-4">Get the latest updates on new products and exclusive deals!</p>
+                <form class="row g-3 justify-content-center">
+                    <div class="col-md-6">
+                        <input type="email" class="form-control" placeholder="Enter your email" required />
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-light">
+                            <i class="bi bi-envelope"></i> Subscribe
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        .hero-section {
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('/images/maxresdefault.jpg') center/cover;
+            z-index: 1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 123, 255, 0.6) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            z-index: 3;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        @@keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .pulse-button {
+            animation: pulse 2s infinite;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+        }
+
+        .feature-box {
+            background: white;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .product-image-container {
+            height: 200px;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+
+        .newsletter-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+}
