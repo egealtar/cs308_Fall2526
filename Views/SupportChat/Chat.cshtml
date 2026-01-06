@@ -78,50 +78,153 @@
                         </div>
                         <!-- Customer Details Sidebar -->
                         <div class="col-md-4 border-start">
-                            <div class="p-3">
-                                <h5>Customer Information</h5>
+                            <div class="p-3" style="max-height: 600px; overflow-y: auto;">
+                                <h5><i class="bi bi-person-circle"></i> Customer Information</h5>
                                 @if (customerDetails != null)
                                 {
-                                    <div class="mb-3">
-                                        <strong>Name:</strong> @customerDetails.Name<br />
-                                        <strong>Email:</strong> @customerDetails.Email<br />
-                                        <strong>Address:</strong> @customerDetails.HomeAddress
+                                    <!-- Basic Info -->
+                                    <div class="card mb-3">
+                                        <div class="card-body p-2">
+                                            <h6 class="card-title"><i class="bi bi-info-circle"></i> Contact</h6>
+                                            <small>
+                                                <strong>Name:</strong> @customerDetails.Name<br />
+                                                <strong>Email:</strong> <a href="mailto:@customerDetails.Email">@customerDetails.Email</a><br />
+                                                <strong>Address:</strong> @customerDetails.HomeAddress
+                                            </small>
+                                        </div>
                                     </div>
-                                    <div class="mb-3">
-                                        <strong>Cart Items:</strong> @customerDetails.CartItemCount
-                                    </div>
-                                    <div class="mb-3">
-                                        <strong>Wish List Items:</strong> @customerDetails.WishListItemCount
-                                    </div>
-                                    @if (customerDetails.Orders.Any())
+
+                                    <!-- Shopping Cart -->
+                                    @if (customerDetails.CartItems != null && customerDetails.CartItems.Any())
                                     {
-                                        <div class="mb-3">
-                                            <strong>Orders (@customerDetails.Orders.Count):</strong>
-                                            <div class="mt-2" style="max-height: 300px; overflow-y: auto;">
-                                                @foreach (var order in customerDetails.Orders)
-                                                {
-                                                    <div class="card mb-2">
-                                                        <div class="card-body p-2">
+                                        <div class="card mb-3">
+                                            <div class="card-header bg-warning text-dark p-2">
+                                                <h6 class="mb-0"><i class="bi bi-cart"></i> Shopping Cart (@customerDetails.CartItemCount items)</h6>
+                                            </div>
+                                            <div class="card-body p-2">
+                                                <div style="max-height: 150px; overflow-y: auto;">
+                                                    @foreach (var item in customerDetails.CartItems)
+                                                    {
+                                                        <div class="mb-2 pb-2 border-bottom">
                                                             <small>
-                                                                <strong>Order #@order.Id.Substring(0, 8)</strong><br />
-                                                                Total: $@order.TotalPrice.ToString("F2")<br />
-                                                                Status: <span class="badge bg-info">@order.Status</span><br />
-                                                                Date: @order.CreatedAt.ToString("MMM dd, yyyy")<br />
-                                                                @if (!string.IsNullOrEmpty(order.ShippingAddress))
+                                                                <strong>@item.ProductName</strong><br />
+                                                                Quantity: @item.Quantity | Price: $@item.Price.ToString("F2")<br />
+                                                                @if (!item.IsAvailable)
                                                                 {
-                                                                    <em>@order.ShippingAddress</em>
+                                                                    <span class="badge bg-danger">Out of Stock</span>
                                                                 }
                                                             </small>
                                                         </div>
-                                                    </div>
-                                                }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <!-- Wish List -->
+                                    @if (customerDetails.WishListItems != null && customerDetails.WishListItems.Any())
+                                    {
+                                        <div class="card mb-3">
+                                            <div class="card-header bg-danger text-white p-2">
+                                                <h6 class="mb-0"><i class="bi bi-heart"></i> Wish List (@customerDetails.WishListItemCount items)</h6>
+                                            </div>
+                                            <div class="card-body p-2">
+                                                <div style="max-height: 150px; overflow-y: auto;">
+                                                    @foreach (var item in customerDetails.WishListItems)
+                                                    {
+                                                        <div class="mb-2 pb-2 border-bottom">
+                                                            <small>
+                                                                <strong>@item.ProductName</strong><br />
+                                                                Price: $@(item.DiscountedPrice ?? item.Price).ToString("F2")
+                                                                @if (item.DiscountedPrice.HasValue)
+                                                                {
+                                                                    <span class="text-decoration-line-through text-muted">$@item.Price.ToString("F2")</span>
+                                                                }
+                                                                <br />
+                                                                @if (item.IsAvailable)
+                                                                {
+                                                                    <span class="badge bg-success">Available</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span class="badge bg-danger">Out of Stock</span>
+                                                                }
+                                                                <br />
+                                                                <em class="text-muted">Added: @item.AddedAt.ToString("MMM dd, yyyy")</em>
+                                                            </small>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    <!-- Orders -->
+                                    @if (customerDetails.Orders.Any())
+                                    {
+                                        <div class="card mb-3">
+                                            <div class="card-header bg-primary text-white p-2">
+                                                <h6 class="mb-0"><i class="bi bi-bag"></i> Orders (@customerDetails.Orders.Count)</h6>
+                                            </div>
+                                            <div class="card-body p-2">
+                                                <div style="max-height: 300px; overflow-y: auto;">
+                                                    @foreach (var order in customerDetails.Orders)
+                                                    {
+                                                        var statusBadgeClass = order.Status switch
+                                                        {
+                                                            "Delivered" => "bg-success",
+                                                            "In-Transit" => "bg-warning",
+                                                            "Processing" => "bg-info",
+                                                            _ => "bg-secondary"
+                                                        };
+                                                        
+                                                        <div class="card mb-2">
+                                                            <div class="card-body p-2">
+                                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                                    <strong>Order #@order.Id.Substring(0, 8)</strong>
+                                                                    <span class="badge @statusBadgeClass">@order.Status</span>
+                                                                </div>
+                                                                <small>
+                                                                    <strong>Total:</strong> $@order.TotalPrice.ToString("F2")<br />
+                                                                    <strong>Date:</strong> @order.CreatedAt.ToString("MMM dd, yyyy")<br />
+                                                                    @if (order.Status == "In-Transit" || order.Status == "Delivered")
+                                                                    {
+                                                                        <strong>Updated:</strong> @order.UpdatedAt.ToString("MMM dd, yyyy")<br />
+                                                                    }
+                                                                    @if (!string.IsNullOrEmpty(order.PaymentMethod))
+                                                                    {
+                                                                        <strong>Payment:</strong> @order.PaymentMethod<br />
+                                                                    }
+                                                                    @if (!string.IsNullOrEmpty(order.ShippingAddress))
+                                                                    {
+                                                                        <strong>Shipping:</strong> @order.ShippingAddress<br />
+                                                                    }
+                                                                    @if (order.Items.Any())
+                                                                    {
+                                                                        <details class="mt-2">
+                                                                            <summary class="text-primary" style="cursor: pointer;">Items (@order.Items.Count)</summary>
+                                                                            <ul class="mt-1 mb-0">
+                                                                                @foreach (var orderItem in order.Items)
+                                                                                {
+                                                                                    <li>@orderItem.ProductName (Qty: @orderItem.Quantity) - $@orderItem.Price.ToString("F2")</li>
+                                                                                }
+                                                                            </ul>
+                                                                        </details>
+                                                                    }
+                                                                </small>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
                                     }
                                 }
                                 else
                                 {
-                                    <p class="text-muted">Customer is a guest user.</p>
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle"></i> Customer is a guest user. No account information available.
+                                    </div>
                                 }
                             </div>
                         </div>

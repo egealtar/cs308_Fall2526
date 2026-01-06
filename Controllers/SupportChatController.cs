@@ -18,6 +18,7 @@ namespace CS308Main.Controllers
         private readonly IMongoCollection<Order> _orders;
         private readonly IMongoCollection<WishList> _wishLists;
         private readonly IMongoCollection<User> _users;
+        private readonly IMongoCollection<Product> _products;
         private readonly IHubContext<ChatHub> _hubContext;
         private readonly IAuthService _authService;
         private readonly ILogger<SupportChatController> _logger;
@@ -34,6 +35,7 @@ namespace CS308Main.Controllers
             _orders = database.GetCollection<Order>("Orders");
             _wishLists = database.GetCollection<WishList>("WishLists");
             _users = database.GetCollection<User>("Users");
+            _products = database.GetCollection<Product>("Products");
             _hubContext = hubContext;
             _authService = authService;
             _logger = logger;
@@ -160,6 +162,58 @@ namespace CS308Main.Controllers
                         .SortByDescending(o => o.CreatedAt)
                         .ToListAsync();
                     var wishList = await _wishLists.Find(w => w.UserId == chat.CustomerId).FirstOrDefaultAsync();
+                    
+                    // Get product details for wish list items
+                    var wishListItems = new List<WishListItemDetails>();
+                    if (wishList != null && wishList.Items != null && wishList.Items.Any())
+                    {
+                        var wishListProductIds = wishList.Items.Select(i => i.ProductId).ToList();
+                        var wishListFilter = Builders<Product>.Filter.In(p => p.Id, wishListProductIds);
+                        var products = await _products.Find(wishListFilter).ToListAsync();
+                        
+                        foreach (var item in wishList.Items)
+                        {
+                            var product = products.FirstOrDefault(p => p.Id == item.ProductId);
+                            if (product != null)
+                            {
+                                wishListItems.Add(new WishListItemDetails
+                                {
+                                    ProductId = product.Id,
+                                    ProductName = product.Name,
+                                    Price = product.Price,
+                                    DiscountedPrice = product.DiscountedPrice,
+                                    IsAvailable = product.QuantityInStock > 0,
+                                    AddedAt = item.AddedAt
+                                });
+                            }
+                        }
+                    }
+                    
+                    // Get cart items with product details
+                    var cartItems = new List<CartItemDetails>();
+                    if (cart != null && cart.Items != null && cart.Items.Any())
+                    {
+                        var cartProductIds = cart.Items.Select(i => i.ProductId).ToList();
+                        var cartFilter = Builders<Product>.Filter.In(p => p.Id, cartProductIds);
+                        var cartProducts = await _products.Find(cartFilter).ToListAsync();
+                        
+                        foreach (var item in cart.Items)
+                        {
+                            var product = cartProducts.FirstOrDefault(p => p.Id == item.ProductId);
+                            if (product != null)
+                            {
+                                cartItems.Add(new CartItemDetails
+                                {
+                                    ProductId = product.Id,
+                                    ProductName = product.Name,
+                                    Price = product.Price,
+                                    Quantity = item.Quantity,
+                                    IsAvailable = item.IsAvailable
+                                });
+                            }
+                        }
+                    }
+                    
                     customerDetails = new CustomerDetails
                     {
                         UserId = customer.Id,
@@ -167,21 +221,26 @@ namespace CS308Main.Controllers
                         Email = customer.Email,
                         HomeAddress = customer.HomeAddress,
                         CartItemCount = cart?.Items?.Count ?? 0,
+                        CartItems = cartItems,
                         Orders = orders.Select(o => new OrderDetails
                         {
                             Id = o.Id,
                             TotalPrice = o.TotalPrice,
                             Status = o.Status,
                             CreatedAt = o.CreatedAt,
+                            UpdatedAt = o.UpdatedAt,
                             ShippingAddress = o.ShippingAddress,
+                            PaymentMethod = o.PaymentMethod,
                             Items = o.Items.Select(i => new OrderItemDetails
                             {
+                                ProductId = i.ProductId,
                                 ProductName = i.ProductName,
                                 Quantity = i.Quantity,
                                 Price = i.Price
                             }).ToList()
                         }).ToList(),
-                        WishListItemCount = wishList?.Items?.Count ?? 0
+                        WishListItemCount = wishList?.Items?.Count ?? 0,
+                        WishListItems = wishListItems
                     };
                     }
                 }
@@ -426,8 +485,10 @@ namespace CS308Main.Controllers
         public string Email { get; set; } = string.Empty;
         public string HomeAddress { get; set; } = string.Empty;
         public int CartItemCount { get; set; }
+        public List<CartItemDetails> CartItems { get; set; } = new List<CartItemDetails>();
         public List<OrderDetails> Orders { get; set; } = new List<OrderDetails>();
         public int WishListItemCount { get; set; }
+        public List<WishListItemDetails> WishListItems { get; set; } = new List<WishListItemDetails>();
     }
 
     public class OrderDetails
@@ -436,15 +497,38 @@ namespace CS308Main.Controllers
         public decimal TotalPrice { get; set; }
         public string Status { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
         public string ShippingAddress { get; set; } = string.Empty;
+        public string PaymentMethod { get; set; } = string.Empty;
         public List<OrderItemDetails> Items { get; set; } = new List<OrderItemDetails>();
     }
 
     public class OrderItemDetails
     {
+        public string ProductId { get; set; } = string.Empty;
         public string ProductName { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public decimal Price { get; set; }
     }
+
+    public class CartItemDetails
+    {
+        public string ProductId { get; set; } = string.Empty;
+        public string ProductName { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+        public bool IsAvailable { get; set; }
+    }
+
+    public class WishListItemDetails
+    {
+        public string ProductId { get; set; } = string.Empty;
+        public string ProductName { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public decimal? DiscountedPrice { get; set; }
+        public bool IsAvailable { get; set; }
+        public DateTime AddedAt { get; set; }
+    }
 }
+
 
