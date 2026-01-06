@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Checkout";
-    var cartItems = ViewBag.CartItems as List<CS308Main.Models.CartItem>;
+    var cartItems = ViewBag.CartItems as List<CS308Main.Controllers.CartItemViewModel>;
     var total = ViewBag.Total as decimal?;
     var user = ViewBag.User as CS308Main.Models.User;
 }
@@ -31,9 +31,17 @@
                         <ul class="list-group list-group-flush mb-3">
                             @foreach (var item in cartItems)
                             {
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span>@item.ProductId (x@item.Quantity)</span>
-                                    <span>$--</span>
+                                <li class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>@item.ProductName</strong>
+                                            <br />
+                                            <small class="text-muted">Quantity: @item.Quantity × $@item.Price.ToString("F2")</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <strong class="text-success">$@((item.Price * item.Quantity).ToString("F2"))</strong>
+                                        </div>
+                                    </div>
                                 </li>
                             }
                         </ul>
@@ -42,6 +50,10 @@
                             <strong>Total:</strong>
                             <strong class="text-success">$@total?.ToString("F2")</strong>
                         </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">Your cart is empty.</p>
                     }
                 </div>
             </div>

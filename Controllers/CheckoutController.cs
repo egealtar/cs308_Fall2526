@@ -62,18 +62,32 @@ namespace CS308Main.Controllers
                 return RedirectToAction("Index", "ShoppingCart");
             }
 
-            // Calculate total
+            // Get product details and calculate total
+            var cartItemsWithDetails = new List<CartItemViewModel>();
             decimal total = 0;
+            
             foreach (var item in cart.Items)
             {
                 var product = await _products.Find(p => p.Id == item.ProductId).FirstOrDefaultAsync();
                 if (product != null)
                 {
-                    total += product.FinalPrice * item.Quantity;
+                    var itemTotal = product.FinalPrice * item.Quantity;
+                    total += itemTotal;
+                    
+                    cartItemsWithDetails.Add(new CartItemViewModel
+                    {
+                        ProductId = product.Id,
+                        ProductName = product.Name,
+                        Price = product.FinalPrice,
+                        Quantity = item.Quantity,
+                        ImageUrl = product.ImageUrl,
+                        IsAvailable = item.IsAvailable,
+                        QuantityInStock = product.QuantityInStock
+                    });
                 }
             }
 
-            ViewBag.CartItems = cart.Items;
+            ViewBag.CartItems = cartItemsWithDetails;
             ViewBag.Total = total;
             ViewBag.User = user;
 
