@@ -49,25 +49,7 @@
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Role" class="form-label">
-                                <i class="bi bi-person-badge"></i> Register As
-                            </label>
-                            <select asp-for="Role" class="form-select" required>
-                                <option value="">-- Select Account Type --</option>
-                                <option value="Customer">Customer</option>
-                                <option value="SalesManager">Sales Manager</option>
-                                <option value="ProductManager">Product Manager</option>
-                                <option value="SupportAgent">Support Agent</option>
-                            </select>
-                            <span asp-validation-for="Role" class="text-danger"></span>
-                            <small class="text-muted">
-                                <strong>Customer:</strong> Shop and place orders<br />
-                                <strong>Sales Manager:</strong> Set prices, manage discounts, view revenue reports<br />
-                                <strong>Product Manager:</strong> Manage products, stock, categories, and deliveries<br />
-                                <strong>Support Agent:</strong> Provide customer support (coming soon)
-                            </small>
-                        </div>
+                        <input type="hidden" asp-for="Role" value="Customer" />
 
                         <div class="mb-3">
                             <label asp-for="TaxId" class="form-label">Tax ID (Optional)</label>

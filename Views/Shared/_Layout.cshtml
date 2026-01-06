@@ -22,21 +22,27 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">
-                                <i class="bi bi-house"></i> Home
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Product" asp-action="Directory">
-                                <i class="bi bi-grid"></i> Products
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">
-                                <i class="bi bi-cart"></i> Cart
-                            </a>
-                        </li>
+                        @if (!User.IsInRole("SupportAgent"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                    <i class="bi bi-house"></i> Home
+                                </a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Customer") || !User.Identity?.IsAuthenticated == true)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Product" asp-action="Directory">
+                                    <i class="bi bi-grid"></i> Products
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">
+                                    <i class="bi bi-cart"></i> Cart
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav">
                         @if (User.Identity?.IsAuthenticated == true)
@@ -94,11 +100,20 @@
                                 </li>
                             }
                             
-                            @if (User.IsInRole("DeliveryAdmin"))
+                            @if (User.IsInRole("SupportAgent"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link" asp-controller="Delivery" asp-action="Index">
-                                        <i class="bi bi-truck"></i> Deliveries
+                                    <a class="nav-link" asp-controller="SupportChat" asp-action="Index">
+                                        <i class="bi bi-headset"></i> Support Chat
+                                    </a>
+                                </li>
+                            }
+                            
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Admin" asp-action="Index">
+                                        <i class="bi bi-shield-check"></i> User Management
                                     </a>
                                 </li>
                             }
@@ -153,11 +168,16 @@
                                             </a>
                                         </li>
                                     }
-                                    @if (User.IsInRole("DeliveryAdmin"))
+                                    @if (User.IsInRole("Admin"))
                                     {
                                         <li>
-                                            <a class="dropdown-item" asp-controller="Delivery" asp-action="Index">
-                                                <i class="bi bi-truck"></i> My Deliveries
+                                            <a class="dropdown-item" asp-controller="Admin" asp-action="Index">
+                                                <i class="bi bi-shield-check"></i> User Management
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="Admin" asp-action="Statistics">
+                                                <i class="bi bi-graph-up"></i> Statistics
                                             </a>
                                         </li>
                                     }
@@ -204,9 +224,38 @@
         </div>
     </footer>
     
+    <!-- Chat Widget (visible on all pages except chat pages) -->
+    @if (!Context.Request.Path.StartsWithSegments("/Chat") && !Context.Request.Path.StartsWithSegments("/SupportChat"))
+    {
+        <div id="chatWidget" class="chat-widget">
+            <button id="chatWidgetToggle" class="chat-widget-toggle btn btn-primary rounded-circle shadow-lg position-relative">
+                <i class="bi bi-chat-dots-fill"></i>
+                <span id="chatNotificationBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">
+                    0
+                </span>
+            </button>
+            <div id="chatWidgetPanel" class="chat-widget-panel d-none">
+                <div class="chat-widget-header">
+                    <h6 class="mb-0"><i class="bi bi-headset"></i> Need Help?</h6>
+                    <button id="chatWidgetClose" class="btn btn-sm btn-link text-white">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+                <div class="chat-widget-body">
+                    <p class="mb-3">Start a conversation with our support team!</p>
+                    <a asp-controller="Chat" asp-action="Index" class="btn btn-primary w-100">
+                        <i class="bi bi-chat-left-text"></i> Start Chat
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/chat-widget.js" asp-append-version="true"></script>
     
     @await RenderSectionAsync("Scripts", required: false)
 </body>

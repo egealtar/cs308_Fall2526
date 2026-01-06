@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj": {}
+    "/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj": {}
   },
   "projects": {
-    "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj": {
+    "/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj",
+        "projectUniqueName": "/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj",
         "projectName": "CS308Main",
-        "projectPath": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj",
-        "packagesPath": "/Users/eralpkiziloglu/.nuget/packages/",
-        "outputPath": "/Users/eralpkiziloglu/Documents/GitHub/cs308_Fall2526/obj/",
+        "projectPath": "/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/CS308Main.csproj",
+        "packagesPath": "/Users/ayca.aydogdu/.nuget/packages/",
+        "outputPath": "/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/eralpkiziloglu/.nuget/NuGet/NuGet.Config"
+          "/Users/ayca.aydogdu/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -37,7 +37,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -46,6 +47,10 @@
             "MailKit": {
               "target": "Package",
               "version": "[4.14.1, )"
+            },
+            "Microsoft.AspNetCore.SignalR": {
+              "target": "Package",
+              "version": "[1.2.0, )"
             },
             "MongoDB.Bson": {
               "target": "Package",
@@ -75,6 +80,20 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.21, 8.0.21]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.osx-arm64",
+              "version": "[8.0.21, 8.0.21]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.21, 8.0.21]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -83,7 +102,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.416/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.306/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

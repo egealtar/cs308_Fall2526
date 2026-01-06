@@ -1,0 +1,115 @@
+@model CS308Main.Models.UserManagementViewModel
+@{
+    ViewData["Title"] = "User Details";
+    var validRoles = ViewBag.ValidRoles as string[] ?? new string[0];
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="bi bi-person-circle"></i> User Details
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Name:</dt>
+                        <dd class="col-sm-8">@Model.Name</dd>
+
+                        <dt class="col-sm-4">Email:</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+
+                        <dt class="col-sm-4">Current Role:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-info fs-6">@Model.Role</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Status:</dt>
+                        <dd class="col-sm-8">
+                            @if (Model.IsActive)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-4">Created At:</dt>
+                        <dd class="col-sm-8">@Model.CreatedAt.ToString("MMMM dd, yyyy 'at' HH:mm")</dd>
+
+                        @if (!string.IsNullOrEmpty(Model.TaxId))
+                        {
+                            <dt class="col-sm-4">Tax ID:</dt>
+                            <dd class="col-sm-8">@Model.TaxId</dd>
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.HomeAddress))
+                        {
+                            <dt class="col-sm-4">Address:</dt>
+                            <dd class="col-sm-8">@Model.HomeAddress</dd>
+                        }
+                    </dl>
+
+                    <hr />
+
+                    <!-- Change Role Form -->
+                    <h5 class="mt-4">Change Account Type</h5>
+                    <form asp-action="ChangeRole" method="post" class="mt-3">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="UserId" value="@Model.Id" />
+                        <div class="row">
+                            <div class="col-md-8">
+                                <select name="NewRole" class="form-select" required>
+                                    @foreach (var role in validRoles)
+                                    {
+                                        <option value="@role" selected="@(Model.Role == role)">@role</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-warning w-100">
+                                    <i class="bi bi-arrow-repeat"></i> Change Role
+                                </button>
+                            </div>
+                        </div>
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle"></i> Changing a user's role will affect their access permissions immediately.
+                        </small>
+                    </form>
+
+                    <!-- Toggle Active Status -->
+                    <hr />
+                    <h5 class="mt-4">Account Status</h5>
+                    <form asp-action="ToggleActive" method="post" class="mt-3">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="userId" value="@Model.Id" />
+                        @if (Model.IsActive)
+                        {
+                            <button type="submit" class="btn btn-danger" 
+                                    onclick="return confirm('Are you sure you want to deactivate this user?')">
+                                <i class="bi bi-x-circle"></i> Deactivate Account
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Activate Account
+                            </button>
+                        }
+                    </form>
+
+                    <div class="mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to User List
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

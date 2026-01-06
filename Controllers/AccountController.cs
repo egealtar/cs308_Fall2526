@@ -51,15 +51,7 @@ namespace CS308Main.Controllers
                 return View(model);
             }
 
-            // Validate role
-            var validRoles = new[] { "Customer", "SalesManager", "ProductManager", "SupportAgent" };
-            if (!validRoles.Contains(model.Role))
-            {
-                ModelState.AddModelError("Role", "Invalid role selected");
-                return View(model);
-            }
-
-            // Create user with selected role
+            // Force Customer role on registration - only Admin can change roles later
             var user = new User
             {
                 Name = model.Name,
@@ -67,7 +59,7 @@ namespace CS308Main.Controllers
                 PasswordHash = _authService.HashPassword(model.Password),
                 TaxId = model.TaxId ?? "",
                 HomeAddress = model.HomeAddress,
-                Role = model.Role,
+                Role = "Customer", // All registrations are Customer - Admin can change later
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true
             };
@@ -139,7 +131,8 @@ namespace CS308Main.Controllers
             {
                 "ProductManager" => RedirectToAction("Index", "Stock"),
                 "SalesManager" => RedirectToAction("AllOrders", "Order"),
-                "SupportAgent" => RedirectToAction("Index", "Home"), // Support agent features coming soon
+                "SupportAgent" => RedirectToAction("Index", "SupportChat"), // SupportAgent goes directly to Support Chat
+                "Admin" => RedirectToAction("Index", "Admin"),
                 _ => RedirectToAction("Index", "Home")
             };
         }

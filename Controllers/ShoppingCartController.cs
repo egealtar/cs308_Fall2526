@@ -9,6 +9,17 @@ namespace CS308Main.Controllers
 {
     public class ShoppingCartController : Controller
     {
+        // Allow guests and customers only - block other roles (SupportAgent, SalesManager, ProductManager, Admin)
+        private bool IsShoppingAllowed()
+        {
+            // Guests (not authenticated) can shop
+            if (User.Identity?.IsAuthenticated != true)
+            {
+                return true;
+            }
+            // Only Customer role can shop when authenticated
+            return User.IsInRole("Customer");
+        }
         private readonly ShoppingCartService _cartService;
         private readonly IMongoCollection<Product> _products;
         private readonly ILogger<ShoppingCartController> _logger;
@@ -26,6 +37,11 @@ namespace CS308Main.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            if (!IsShoppingAllowed())
+            {
+                return Forbid("Shopping is only available for customers.");
+            }
+
             string userId;
 
             if (User.Identity?.IsAuthenticated == true)
@@ -77,6 +93,11 @@ namespace CS308Main.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToCart(string productId, int quantity = 1)
         {
+            if (!IsShoppingAllowed())
+            {
+                return Forbid("Shopping is only available for customers.");
+            }
+
             string userId;
 
             if (User.Identity?.IsAuthenticated == true)
@@ -113,6 +134,11 @@ namespace CS308Main.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateQuantity(string productId, int quantity)
         {
+            if (!IsShoppingAllowed())
+            {
+                return Forbid("Shopping is only available for customers.");
+            }
+
             string userId;
 
             if (User.Identity?.IsAuthenticated == true)
@@ -153,6 +179,11 @@ namespace CS308Main.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveFromCart(string productId)
         {
+            if (!IsShoppingAllowed())
+            {
+                return Forbid("Shopping is only available for customers.");
+            }
+
             string userId;
 
             if (User.Identity?.IsAuthenticated == true)
@@ -174,6 +205,11 @@ namespace CS308Main.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Clear()
         {
+            if (!IsShoppingAllowed())
+            {
+                return Forbid("Shopping is only available for customers.");
+            }
+
             string userId;
 
             if (User.Identity?.IsAuthenticated == true)

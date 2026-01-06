@@ -64,12 +64,15 @@
                     <hr class="my-4" />
 
                     <div class="d-flex justify-content-between">
-                        <a asp-controller="Order" asp-action="MyOrders" class="btn btn-primary">
-                            <i class="bi bi-box-seam"></i> My Orders
-                        </a>
-                        <a asp-controller="Invoice" asp-action="MyInvoices" class="btn btn-info">
-                            <i class="bi bi-file-earmark-text"></i> My Invoices
-                        </a>
+                        @if (User.IsInRole("Customer"))
+                        {
+                            <a asp-controller="Order" asp-action="MyOrders" class="btn btn-primary">
+                                <i class="bi bi-box-seam"></i> My Orders
+                            </a>
+                            <a asp-controller="Invoice" asp-action="MyInvoices" class="btn btn-info">
+                                <i class="bi bi-file-earmark-text"></i> My Invoices
+                            </a>
+                        }
                         <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                             <button type="submit" class="btn btn-danger">
                                 <i class="bi bi-box-arrow-right"></i> Logout

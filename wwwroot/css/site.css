@@ -20,3 +20,149 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Chat Widget Styles */
+.chat-widget {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.chat-widget-toggle {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.chat-widget-toggle:hover {
+  transform: scale(1.1);
+}
+
+#chatNotificationBadge {
+  font-size: 0.7rem;
+  padding: 0.25em 0.5em;
+  min-width: 20px;
+  animation: pulse 2s infinite;
+  top: -5px;
+  right: -5px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+  }
+}
+
+.chat-widget-panel {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 320px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.chat-widget-header {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-widget-body {
+  padding: 20px;
+}
+
+/* Chat Messages Styles */
+.chat-messages {
+  scroll-behavior: smooth;
+}
+
+.message {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-bubble {
+  word-wrap: break-word;
+  word-break: break-word;
+}
+
+.message-customer .message-bubble {
+  margin-left: auto;
+}
+
+.message-agent .message-bubble {
+  margin-right: auto;
+}
+
+.message-system .message-bubble {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.message-attachments {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.attachment-item {
+  display: inline-block;
+}
+
+/* Chat Input Styles */
+.chat-input {
+  background-color: white;
+}
+
+.chat-input .input-group {
+  display: flex;
+  align-items: stretch;
+}
+
+.chat-input #fileInput {
+  flex: 0 0 auto;
+}
+
+.chat-input #messageInput {
+  flex: 1 1 auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .chat-widget-panel {
+    width: calc(100vw - 40px);
+    right: 0;
+  }
+  
+  .message-bubble {
+    max-width: 85% !important;
+  }
+}

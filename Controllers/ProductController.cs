@@ -209,6 +209,12 @@ namespace CS308Main.Controllers
         [HttpGet]
         public async Task<IActionResult> Directory()
         {
+            // Allow guests and customers only - block other roles
+            if (User.Identity?.IsAuthenticated == true && !User.IsInRole("Customer"))
+            {
+                return Forbid("Product browsing is only available for customers.");
+            }
+
             var products = await _products.Find(_ => true).ToListAsync();
             return View(products);
         }
@@ -216,6 +222,11 @@ namespace CS308Main.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
+            // Allow guests and customers only - block other roles
+            if (User.Identity?.IsAuthenticated == true && !User.IsInRole("Customer"))
+            {
+                return Forbid("Product browsing is only available for customers.");
+            }
             var product = await _products.Find(p => p.Id == id).FirstOrDefaultAsync();
 
             if (product == null)

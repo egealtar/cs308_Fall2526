@@ -25,7 +25,7 @@ namespace CS308Main.Models
         public string HomeAddress { get; set; } = string.Empty;
 
         [BsonElement("Role")]
-        public string Role { get; set; } = "Customer"; // Customer, SalesManager, ProductManager, DeliveryAdmin
+        public string Role { get; set; } = "Customer"; // Customer, SalesManager, ProductManager, SupportAgent, Admin
 
         [BsonElement("CreatedAt")]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

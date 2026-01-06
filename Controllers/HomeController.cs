@@ -17,6 +17,32 @@ namespace CS308Main.Controllers
 
         public async Task<IActionResult> Index(string? genre = null, string? search = null, string? sort = null)
         {
+            // Redirect non-customer roles to their task-focused interfaces
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                if (User.IsInRole("SupportAgent"))
+                {
+                    return RedirectToAction("Index", "SupportChat");
+                }
+                if (User.IsInRole("SalesManager"))
+                {
+                    return RedirectToAction("AllOrders", "Order");
+                }
+                if (User.IsInRole("ProductManager"))
+                {
+                    return RedirectToAction("Index", "Stock");
+                }
+                if (User.IsInRole("Admin"))
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+                // If authenticated but not Customer, redirect to appropriate page
+                if (!User.IsInRole("Customer"))
+                {
+                    return RedirectToAction("Index", "Home"); // Fallback, but shouldn't happen
+                }
+            }
+
             var filterBuilder = Builders<Product>.Filter;
             var filter = filterBuilder.Empty;
 

@@ -1,0 +1,142 @@
+@model List<CS308Main.Models.UserManagementViewModel>
+@{
+    ViewData["Title"] = "User Management";
+    var searchTerm = ViewBag.SearchTerm as string;
+    var roleFilter = ViewBag.RoleFilter as string;
+    var validRoles = ViewBag.ValidRoles as string[] ?? new string[0];
+    var roleCounts = ViewBag.RoleCounts as Dictionary<string, int> ?? new Dictionary<string, int>();
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2><i class="bi bi-people"></i> User Management</h2>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mt-3">
+        @foreach (var role in validRoles)
+        {
+            var count = roleCounts.ContainsKey(role) ? roleCounts[role] : 0;
+            <div class="col-md-2 mb-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">@count</h5>
+                        <p class="card-text small">@role</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" asp-action="Index">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="text" name="searchTerm" class="form-control" 
+                                       placeholder="Search by name or email..." value="@searchTerm" />
+                            </div>
+                            <div class="col-md-4">
+                                <select name="roleFilter" class="form-select">
+                                    <option value="">All Roles</option>
+                                    @foreach (var role in validRoles)
+                                    {
+                                        <option value="@role" selected="@(roleFilter == role)">@role</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-list-ul"></i> Users (@Model.Count)
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Any())
+                                {
+                                    @foreach (var user in Model)
+                                    {
+                                        <tr>
+                                            <td>@user.Name</td>
+                                            <td>@user.Email</td>
+                                            <td>
+                                                <span class="badge bg-info">@user.Role</span>
+                                            </td>
+                                            <td>
+                                                @if (user.IsActive)
+                                                {
+                                                    <span class="badge bg-success">Active</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Inactive</span>
+                                                }
+                                            </td>
+                                            <td>@user.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                            <td>
+                                                <a asp-action="Details" asp-route-id="@user.Id" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye"></i> Details
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted py-4">
+                                            No users found
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <a asp-action="Statistics" class="btn btn-outline-secondary">
+                <i class="bi bi-graph-up"></i> View Statistics
+            </a>
+        </div>
+    </div>
+</div>
+

@@ -258,3 +258,10 @@ C:/Users/aaa/Desktop/cs308main/cs308_Fall2526/obj/Debug/net8.0/ref/CS308Main.dll
 /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/obj/Debug/net8.0/CS308Main.pdb
 /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/obj/Debug/net8.0/CS308Main.genruntimeconfig.cache
 /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/obj/Debug/net8.0/ref/CS308Main.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/Microsoft.Extensions.Hosting.Abstractions.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/Microsoft.Extensions.Logging.Abstractions.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/Microsoft.Extensions.ObjectPool.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/Microsoft.Extensions.Options.dll
+/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/bin/Debug/net8.0/System.Net.WebSockets.WebSocketProtocol.dll

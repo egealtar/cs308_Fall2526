@@ -1,5 +1,6 @@
 using MongoDB.Driver;
 using CS308Main.Services;
+using CS308Main.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Net;
 using System.Net.Security;
@@ -33,6 +34,9 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IPdfService, PdfService>();
 builder.Services.AddScoped<ShoppingCartService>();
 builder.Services.AddScoped<MockPaymentService>();
+
+// SignalR
+builder.Services.AddSignalR();
 
 // Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -84,5 +88,7 @@ app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<ChatHub>("/chathub");
 
 app.Run();
