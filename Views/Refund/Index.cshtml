@@ -1,0 +1,136 @@
+@model List<CS308Main.Models.RefundRequest>
+
+@{
+    ViewData["Title"] = "Refund Requests";
+    var statusFilter = ViewBag.StatusFilter as string;
+}
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">
+                <i class="bi bi-arrow-counterclockwise"></i> Refund Requests
+            </h3>
+        </div>
+        <div class="card-body">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["Error"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <!-- Status Filter -->
+            <div class="mb-3">
+                <div class="btn-group" role="group">
+                    <a asp-action="Index" asp-route-status="" 
+                       class="btn @(string.IsNullOrEmpty(statusFilter) ? "btn-primary" : "btn-outline-primary")">
+                        All
+                    </a>
+                    <a asp-action="Index" asp-route-status="Pending" 
+                       class="btn @(statusFilter == "Pending" ? "btn-warning" : "btn-outline-warning")">
+                        Pending
+                    </a>
+                    <a asp-action="Index" asp-route-status="Approved" 
+                       class="btn @(statusFilter == "Approved" ? "btn-info" : "btn-outline-info")">
+                        Approved
+                    </a>
+                    <a asp-action="Index" asp-route-status="Rejected" 
+                       class="btn @(statusFilter == "Rejected" ? "btn-danger" : "btn-outline-danger")">
+                        Rejected
+                    </a>
+                    <a asp-action="Index" asp-route-status="Completed" 
+                       class="btn @(statusFilter == "Completed" ? "btn-success" : "btn-outline-success")">
+                        Completed
+                    </a>
+                </div>
+            </div>
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-info text-center py-5">
+                    <i class="bi bi-info-circle" style="font-size: 4rem;"></i>
+                    <h4 class="mt-3">No refund requests found.</h4>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Order ID</th>
+                                <th>Requested Date</th>
+                                <th>Items</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var request in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong class="font-monospace">@request.Id.Substring(0, 8)...</strong>
+                                    </td>
+                                    <td>
+                                        <strong class="font-monospace">@request.OrderId.Substring(0, 8)...</strong>
+                                    </td>
+                                    <td>
+                                        <small>@request.RequestedAt.ToString("MMM dd, yyyy")</small><br />
+                                        <small class="text-muted">@request.RequestedAt.ToString("HH:mm")</small>
+                                    </td>
+                                    <td>@request.Items.Count item(s)</td>
+                                    <td><strong class="text-success">$@request.TotalRefundAmount.ToString("F2")</strong></td>
+                                    <td>
+                                        @if (request.Status == "Pending")
+                                        {
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="bi bi-clock-history"></i> Pending
+                                            </span>
+                                        }
+                                        else if (request.Status == "Approved")
+                                        {
+                                            <span class="badge bg-info">
+                                                <i class="bi bi-check-circle"></i> Approved
+                                            </span>
+                                        }
+                                        else if (request.Status == "Rejected")
+                                        {
+                                            <span class="badge bg-danger">
+                                                <i class="bi bi-x-circle"></i> Rejected
+                                            </span>
+                                        }
+                                        else if (request.Status == "Completed")
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-check-circle-fill"></i> Completed
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@request.Id" 
+                                           class="btn btn-sm btn-primary" title="View Details">
+                                            <i class="bi bi-eye"></i> Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

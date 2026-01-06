@@ -201,8 +201,10 @@ namespace CS308Main.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Failed to generate or send invoice for order {order.Id}");
-                TempData["Success"] = "Order placed successfully! Invoice generation failed, but you can download it from your order history.";
+                _logger.LogError(ex, $"Failed to generate or send invoice for order {order.Id}: {ex.Message}");
+                // Order is still successful, but invoice email failed
+                TempData["Success"] = "Order placed successfully! However, the invoice email could not be sent. You can download the invoice from your order history.";
+                TempData["Warning"] = "Invoice email failed. Please check your email settings or download the invoice from your order history.";
             }
 
             TempData["OrderId"] = order.Id;
@@ -288,7 +290,8 @@ namespace CS308Main.Controllers
                 {
                     _logger.LogInformation($"Sending email to: {user.Email}");
                     
-                    var fullPdfPath = Path.Combine(_environment.WebRootPath, pdfPath.TrimStart('/'));
+                    // pdfPath is now a relative path like /Invoices/Invoice_xxx.pdf
+                    var fullPdfPath = Path.Combine(_environment.WebRootPath, pdfPath.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
                     
                     if (!System.IO.File.Exists(fullPdfPath))
                     {
@@ -296,12 +299,15 @@ namespace CS308Main.Controllers
                         throw new Exception("PDF file not found for email attachment");
                     }
 
+                    _logger.LogInformation($"PDF file found at: {fullPdfPath}");
                     await _emailService.SendInvoiceEmailAsync(user.Email, invoice.InvoiceNumber, fullPdfPath);
                     _logger.LogInformation($"Email sent successfully to {user.Email}");
                 }
                 catch (Exception emailEx)
                 {
                     _logger.LogError(emailEx, $"Failed to send email: {emailEx.Message}");
+                    // Re-throw to ensure the outer catch handles it properly
+                    throw;
                 }
             }
             catch (Exception ex)

@@ -84,6 +84,12 @@
                                                 <i class="bi bi-check-circle"></i> Delivered
                                             </span>
                                         }
+                                        else if (order.Status == "Cancelled")
+                                        {
+                                            <span class="badge bg-secondary">
+                                                <i class="bi bi-x-circle"></i> Cancelled
+                                            </span>
+                                        }
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group">
@@ -110,6 +116,18 @@
                                                     </button>
                                                 </form>
                                             }
+                                            
+                                            @if (order.Status == "Delivered")
+                                            {
+                                                var daysSincePurchase = (DateTime.UtcNow - order.CreatedAt).TotalDays;
+                                                @if (daysSincePurchase <= 30)
+                                                {
+                                                    <a asp-action="RequestRefund" asp-route-orderId="@order.Id" 
+                                                       class="btn btn-sm btn-warning" title="Request Refund">
+                                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                                    </a>
+                                                }
+                                            }
                                         </div>
                                     </td>
                                 </tr>
@@ -122,14 +140,17 @@
                 <div class="alert alert-light mt-3">
                     <h6 class="fw-bold">Order Status Guide:</h6>
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <span class="badge bg-warning text-dark">Processing</span> - Order is being prepared
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <span class="badge bg-info">In-Transit</span> - Order is on the way
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <span class="badge bg-success">Delivered</span> - Order has been delivered
+                        </div>
+                        <div class="col-md-3">
+                            <span class="badge bg-secondary">Cancelled</span> - Order has been cancelled
                         </div>
                     </div>
                 </div>

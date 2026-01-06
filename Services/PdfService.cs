@@ -106,7 +106,22 @@ namespace CS308Main.Services
                 }
             }
 
-            return Task.FromResult(filePath);
+            // Return relative path for web access
+            string webPath;
+            try
+            {
+                var relativePath = Path.GetRelativePath(_environment.WebRootPath, filePath);
+                // Ensure path uses forward slashes and starts with /
+                webPath = "/" + relativePath.Replace("\\", "/");
+            }
+            catch (ArgumentException)
+            {
+                // If paths are not related (e.g., different drives), use the file name only
+                var fallbackFileName = Path.GetFileName(filePath);
+                webPath = "/Invoices/" + fallbackFileName;
+            }
+            
+            return Task.FromResult(webPath);
         }
     }
 }

@@ -136,6 +136,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3JkZXIvTXlPcmRlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Order/RequestRefund.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3JkZXIvUmVxdWVzdFJlZnVuZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Order/_OrdersTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3JkZXIvX09yZGVyc1RhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -158,6 +162,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Product/SetPrice.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9TZXRQcmljZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Refund/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVmdW5kL0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Refund/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVmdW5kL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Shared/Error.cshtml]

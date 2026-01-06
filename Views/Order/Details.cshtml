@@ -37,6 +37,10 @@
                             {
                                 <span class="badge bg-success">@Model.Status</span>
                             }
+                            else if (Model.Status == "Cancelled")
+                            {
+                                <span class="badge bg-secondary">@Model.Status</span>
+                            }
                         </div>
                     </div>
 
@@ -86,16 +90,47 @@
                     <hr class="my-4" />
 
                     <div class="d-flex justify-content-between">
-                        <a asp-action="MyOrders" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left"></i> Back to Orders
-                        </a>
-                        @if (Model.Status == "Delivered")
+                        @if (User.IsInRole("Customer"))
                         {
-                            <a asp-controller="Invoice" asp-action="Generate" asp-route-orderId="@Model.Id" 
-                               class="btn btn-success">
-                                <i class="bi bi-file-earmark-text"></i> Generate Invoice
+                            <a asp-action="MyOrders" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Orders
                             </a>
                         }
+                        else
+                        {
+                            <a asp-controller="Order" asp-action="AllOrders" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Orders
+                            </a>
+                        }
+                        <div>
+                            @if (Model.Status == "Delivered")
+                            {
+                                @if (User.IsInRole("Customer"))
+                                {
+                                    var daysSincePurchase = (DateTime.UtcNow - Model.CreatedAt).TotalDays;
+                                    @if (daysSincePurchase <= 30)
+                                    {
+                                        <a asp-action="RequestRefund" asp-route-orderId="@Model.Id" 
+                                           class="btn btn-warning me-2">
+                                            <i class="bi bi-arrow-counterclockwise"></i> Request Refund
+                                        </a>
+                                    }
+                                }
+                                <a asp-controller="Invoice" asp-action="Generate" asp-route-orderId="@Model.Id" 
+                                   class="btn btn-success">
+                                    <i class="bi bi-file-earmark-text"></i> Generate Invoice
+                                </a>
+                            }
+                            else if (Model.Status == "Processing" && User.IsInRole("Customer"))
+                            {
+                                <form asp-action="Cancel" asp-route-id="@Model.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-danger" 
+                                            onclick="return confirm('Are you sure you want to cancel this order?')">
+                                        <i class="bi bi-x-circle"></i> Cancel Order
+                                    </button>
+                                </form>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
