@@ -9,205 +9,205 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = CS308Main
 build_property.RootNamespace = CS308Main
-build_property.ProjectDir = /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/
+build_property.ProjectDir = C:\Users\aaa\desktop\cs308main\cs308_Fall2526\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526
+build_property.MSBuildProjectDirectory = C:\Users\aaa\desktop\cs308main\cs308_Fall2526
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Account/Login.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Account/Profile.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Qcm9maWxlLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Account/Register.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWdpc3Rlci5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Admin/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRGV0YWlscy5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Admin/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Admin/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vSW5kZXguY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Admin/Statistics.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vU3RhdGlzdGljcy5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Admin/Statistics.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3RhdGlzdGljcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Category/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2F0ZWdvcnkvQ3JlYXRlLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Category/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Category/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2F0ZWdvcnkvRWRpdC5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Category/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Category/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2F0ZWdvcnkvSW5kZXguY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Category/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Chat/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2hhdC9JbmRleC5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Chat/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hhdFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Checkout/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2hlY2tvdXQvSW5kZXguY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Checkout/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tvdXRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Checkout/Success.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2hlY2tvdXQvU3VjY2Vzcy5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Checkout/Success.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2hlY2tvdXRcU3VjY2Vzcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Comment/Manage.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29tbWVudC9NYW5hZ2UuY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Comment/Manage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWVudFxNYW5hZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Comment/_CommentsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ29tbWVudC9fQ29tbWVudHNQYXJ0aWFsLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Comment/_CommentsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWVudFxfQ29tbWVudHNQYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Delivery/DeliveryDetails.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVsaXZlcnkvRGVsaXZlcnlEZXRhaWxzLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Delivery/DeliveryDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVsaXZlcnlcRGVsaXZlcnlEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Delivery/DeliveryList.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVsaXZlcnkvRGVsaXZlcnlMaXN0LmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Delivery/DeliveryList.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVsaXZlcnlcRGVsaXZlcnlMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Delivery/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVsaXZlcnkvSW5kZXguY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Delivery/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVsaXZlcnlcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Delivery/_DeliveryOrdersTable.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGVsaXZlcnkvX0RlbGl2ZXJ5T3JkZXJzVGFibGUuY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Delivery/_DeliveryOrdersTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGVsaXZlcnlcX0RlbGl2ZXJ5T3JkZXJzVGFibGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Discount/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnQvQ3JlYXRlLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Discount/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzY291bnRcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Discount/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGlzY291bnQvSW5kZXguY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Discount/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGlzY291bnRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Invoice/AllInvoices.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSW52b2ljZS9BbGxJbnZvaWNlcy5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Invoice/AllInvoices.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52b2ljZVxBbGxJbnZvaWNlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Invoice/MyInvoices.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSW52b2ljZS9NeUludm9pY2VzLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Invoice/MyInvoices.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52b2ljZVxNeUludm9pY2VzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Invoice/Print.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSW52b2ljZS9QcmludC5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Invoice/Print.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52b2ljZVxQcmludC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Invoice/RevenueReport.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSW52b2ljZS9SZXZlbnVlUmVwb3J0LmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Invoice/RevenueReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52b2ljZVxSZXZlbnVlUmVwb3J0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Order/AllOrders.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3JkZXIvQWxsT3JkZXJzLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Order/AllOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcQWxsT3JkZXJzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Order/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3JkZXIvRGV0YWlscy5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Order/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Order/MyOrders.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3JkZXIvTXlPcmRlcnMuY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Order/MyOrders.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcTXlPcmRlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Order/RequestRefund.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3JkZXIvUmVxdWVzdFJlZnVuZC5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Order/RequestRefund.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcUmVxdWVzdFJlZnVuZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Order/_OrdersTable.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvT3JkZXIvX09yZGVyc1RhYmxlLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Order/_OrdersTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcX09yZGVyc1RhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Product/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9DcmVhdGUuY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Product/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Product/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9EZXRhaWxzLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Product/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxEZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Product/Directory.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9EaXJlY3RvcnkuY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Product/Directory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxEaXJlY3RvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Product/Edit.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9FZGl0LmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Product/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Product/SetPrice.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdC9TZXRQcmljZS5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Product/SetPrice.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxTZXRQcmljZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Refund/Details.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVmdW5kL0RldGFpbHMuY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Refund/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVmdW5kXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Refund/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVmdW5kL0luZGV4LmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Refund/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVmdW5kXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Shared/_ValidationScriptsPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/ShoppingCart/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hvcHBpbmdDYXJ0L0luZGV4LmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/ShoppingCart/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hvcHBpbmdDYXJ0XEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/Stock/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3RvY2svSW5kZXguY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/Stock/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvY2tcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/SupportChat/Chat.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3VwcG9ydENoYXQvQ2hhdC5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/SupportChat/Chat.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcG9ydENoYXRcQ2hhdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/SupportChat/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3VwcG9ydENoYXQvSW5kZXguY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/SupportChat/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcG9ydENoYXRcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/WishList/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvV2lzaExpc3QvSW5kZXguY3NodG1s
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/WishList/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2lzaExpc3RcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/ayca.aydogdu/Documents/GitHub/cs308_Fall2526/Views/_ViewStart.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+[C:/Users/aaa/desktop/cs308main/cs308_Fall2526/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
